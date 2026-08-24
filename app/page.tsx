@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <main id="main-content">
       <section className="home-hero">
-        <img className="home-hero__image" src="/images/hero-car.png" alt="Zwarte lesauto van Van Dijk Rijschool" width="1672" height="941" />
+        <img className="home-hero__image" src="/images/hero-car.webp" alt="Zwarte lesauto van Van Dijk Rijschool" width="1672" height="941" fetchPriority="high" decoding="async" />
         <div className="home-hero__shade" />
         <div className="home-hero__route" aria-hidden="true" />
         <div className="site-shell home-hero__inner">
@@ -42,6 +42,28 @@ export default function Home() {
       </section>
 
       <TrustRail />
+
+      <section className="section section--photo-story" aria-labelledby="photo-story-title">
+        <div className="site-shell photo-story">
+          <figure className="photo-story__main">
+            <img src="/images/rijles-interieur.webp" alt="Leerling krijgt autorijles met persoonlijke begeleiding in Den Haag" width="1672" height="941" loading="lazy" decoding="async" />
+            <figcaption>
+              <span className="eyebrow">Persoonlijk in de auto</span>
+              <strong id="photo-story-title">Rust, overzicht en duidelijke feedback tijdens iedere rijles.</strong>
+            </figcaption>
+          </figure>
+          <div className="photo-story__side">
+            <figure>
+              <img src="/images/intake-instructor.webp" alt="Kennismaking tussen instructeur en leerling bij de lesauto" width="1672" height="941" loading="lazy" decoding="async" />
+              <figcaption><span>Persoonlijke intake</span><strong>Eerst kennismaken, dan gericht starten.</strong></figcaption>
+            </figure>
+            <figure>
+              <img src="/images/den-haag-drive.webp" alt="Zwarte lesauto bij de Hofvijver in Den Haag" width="1672" height="941" loading="lazy" decoding="async" />
+              <figcaption><span>Regio Den Haag</span><strong>Leren rijden in uiteenlopend stadsverkeer.</strong></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
 
       <section className="section section--cockpit">
         <div className="site-shell">

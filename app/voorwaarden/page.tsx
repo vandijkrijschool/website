@@ -1,0 +1,10 @@
+import type { Metadata } from "next";
+import { Breadcrumbs, PageHero } from "../components/SiteChrome";
+import { pageMetadata } from "../lib/site";
+
+export const metadata: Metadata = { ...pageMetadata("Les- en pakketvoorwaarden — concept", "Concept voorwaarden voor rijlessen en lespakketten bij Van Dijk Rijschool.", "/voorwaarden"), robots: { index: false, follow: false } };
+
+export default function TermsPage() {
+  return <main id="main-content"><PageHero eyebrow="Juridisch concept" title="Les- en pakketvoorwaarden" accent="in voorbereiding." intro="De visuele en inhoudelijke structuur staat klaar. Voor publicatie worden alle commerciële en juridische bepalingen door Van Dijk bevestigd."><Breadcrumbs items={[{ label: "Voorwaarden" }]} /></PageHero><section className="section"><article className="site-shell legal-copy"><p className="legal-warning">Conceptstructuur — bedragen en bepalingen zijn niet bindend.</p><h2>1. Inschrijving en intake</h2><p>Leg vast wanneer een aanvraag een overeenkomst wordt, welke gegevens nodig zijn en hoe minderjarige leerlingen toestemming regelen.</p><h2>2. Rijlessen en planning</h2><p>Beschrijf lesduur, start- en eindlocatie, te laat komen, annulering, ziekte, overmacht en wijzigingen door de rijschool.</p><h2>3. Lespakketten</h2><p>Bevestig inhoud, geldigheidsduur, betaling, eventuele termijnen, restitutie, overdraagbaarheid en de behandeling van resterende lesuren.</p><h2>4. Examens en toetsen</h2><p>Beschrijf CBR-kosten, aanvraagvoorwaarden, wachttijden, documenten, eigen verklaringen en wat er gebeurt bij verplaatsing of afwijzing.</p><h2>5. Herexamenregeling</h2><p>De voorwaarden van het Zeker Slagen-pakket moeten direct bij het aanbod zichtbaar zijn, inclusief uitsluitingen, deelnameverplichtingen en geldigheidsduur.</p><h2>6. Gedrag en veiligheid</h2><p>Leg verantwoordelijkheden vast rond instructies, rijgeschiktheid, middelengebruik, agressie, voertuigveiligheid en het beëindigen van een les.</p><h2>7. Klachten en geschillen</h2><p>Voeg de officiële klachtenprocedure, reactietermijn en toepasselijke geschillenregeling toe.</p></article></section></main>;
+}
+
