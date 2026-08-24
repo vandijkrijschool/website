@@ -32,6 +32,10 @@
 @keyframes slot-enter { from { opacity: 0; transform: translate3d(0,10px,0); } to { opacity: 1; transform: none; } }
 @keyframes skeleton-sweep { to { background-position: -200% 0; } }
 @keyframes spin { to { transform: rotate(360deg); } }
+@keyframes hero-image-settle { from { transform: scale(1.035); } to { transform: scale(1); } }
+@keyframes hero-route-reveal { from { opacity: 0; transform: rotate(-1.8deg) scaleX(.16); } to { opacity: 1; transform: rotate(-1.8deg) scaleX(1); } }
+@keyframes dashboard-breathe { 0%,100% { box-shadow: 0 0 40px rgba(255,194,28,.12); } 50% { box-shadow: 0 0 54px rgba(255,194,28,.2); } }
+@keyframes pin-breathe { 0%,100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(0,-4px,0); } }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; background: var(--ink); }
@@ -362,6 +366,14 @@ p { color: var(--muted-strong); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .home-hero__image { animation: hero-image-settle 1.35s var(--ease-premium) both; }
+  .home-hero__route { transform-origin: center; animation: hero-route-reveal 1.05s .18s var(--ease-premium) both; }
+  .home-hero__copy h1 { animation: premium-rise .68s .08s var(--ease-premium) both; }
+  .home-hero__copy > p { animation: premium-rise .68s .17s var(--ease-premium) both; }
+  .home-hero__copy .button-row { animation: premium-rise .68s .26s var(--ease-premium) both; }
+  .hero-proof { animation: premium-rise .68s .35s var(--ease-premium) both; }
+  .progress-device__score > div { animation: dashboard-breathe 5.5s ease-in-out infinite; }
+  .region-map__pin { animation: pin-breathe 3.8s ease-in-out infinite; }
   .page-hero__glow { animation: ambient-drift 13s ease-in-out infinite alternate; }
   .page-hero__inner > div:first-child { position: relative; z-index: 1; animation: premium-rise .62s var(--ease-premium) both; }
   .page-hero__route { position: relative; z-index: 1; animation: premium-rise .72s .1s var(--ease-premium) both; }
@@ -990,6 +1002,7 @@ p { color: var(--muted-strong); }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .home-hero__image, .home-hero__route, .home-hero__copy h1, .home-hero__copy > p, .home-hero__copy .button-row, .hero-proof, .progress-device__score > div, .region-map__pin { animation: none !important; }
   .page-hero__glow, .page-hero__inner > div:first-child, .page-hero__route, .page-hero__route i, .booking-widget__glow, .availability-status i, .booking-slots button, .booking-loading > span, .button-spinner, .booking-confirmation, .lead-form { animation: none !important; transform: none !important; }
   .button::before { display: none; }
   .button svg { transform: none !important; }

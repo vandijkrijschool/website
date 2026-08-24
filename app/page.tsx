@@ -25,7 +25,6 @@ export default function Home() {
         <div className="home-hero__route" aria-hidden="true" />
         <div className="site-shell home-hero__inner">
           <div className="home-hero__copy">
-            <span className="eyebrow">Professioneel · Persoonlijk · Doelgericht</span>
             <h1>De snelste weg naar <em>jouw rijbewijs.</em></h1>
             <p>Persoonlijke autorijlessen, flexibel gepland en ondersteund door een duidelijk digitaal lesplan voor Den Haag en omgeving.</p>
             <div className="button-row">
