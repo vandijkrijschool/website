@@ -46,6 +46,9 @@ export const Calendar = (props: IconProps) => (
 export const Smartphone = (props: IconProps) => (
   <Icon {...props}><rect x="6" y="2" width="12" height="20" rx="2" /><path d="M11 18h2" /></Icon>
 );
+export const Tablet = (props: IconProps) => (
+  <Icon {...props}><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M18 12h.01" /></Icon>
+);
 export const MapPin = (props: IconProps) => (
   <Icon {...props}><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2" /></Icon>
 );

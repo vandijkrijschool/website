@@ -11,6 +11,7 @@ import {
   Shield,
   Smartphone,
   Sparkles,
+  Tablet,
 } from "./components/Icons";
 import { AssuranceStrip, PackageCards, SectionHeading, TrustRail } from "./components/Marketing";
 import { JsonLd } from "./components/SiteChrome";
@@ -187,6 +188,37 @@ export default function Home() {
             <span className="region-map__pin"><MapPin width="30" /></span>
             <strong>DEN HAAG</strong><small>52.0705° N · 4.3007° E</small>
           </div>
+        </div>
+      </section>
+
+      <section className="section section--local-showcase" aria-labelledby="local-showcase-title">
+        <div className="site-shell">
+          <div className="local-showcase__intro">
+            <div>
+              <span className="eyebrow">Den Haag in beeld</span>
+              <h2 id="local-showcase-title">Leren rijden waar het écht gebeurt.</h2>
+            </div>
+            <p>Van de historische binnenstad tot de kust en de brede stadsroutes: iedere omgeving vraagt om ander inzicht. Zo bouw je stap voor stap ervaring op in het verkeer dat je straks zelfstandig tegenkomt.</p>
+          </div>
+          <div className="local-gallery">
+            <figure className="local-gallery__card local-gallery__card--featured">
+              <img src="/images/locatie-hofvijver.webp" srcSet="/images/locatie-hofvijver-640.webp 640w, /images/locatie-hofvijver-960.webp 960w, /images/locatie-hofvijver.webp 1672w" sizes="(max-width: 960px) calc(100vw - 28px), 680px" alt="Van Dijk Rijschool lesauto bij de Hofvijver en het Binnenhof in Den Haag" width="1672" height="941" loading="lazy" decoding="async" />
+              <figcaption><small><MapPin width="14" /> Centrum</small><strong>Hofvijver & Binnenhof</strong><span>Overzicht houden in het hart van de stad.</span></figcaption>
+            </figure>
+            <figure className="local-gallery__card local-gallery__card--wide">
+              <img src="/images/locatie-scheveningen.webp" srcSet="/images/locatie-scheveningen-640.webp 640w, /images/locatie-scheveningen-960.webp 960w, /images/locatie-scheveningen.webp 1672w" sizes="(max-width: 960px) calc(100vw - 28px), 480px" alt="Van Dijk Rijschool lesauto bij het Kurhaus op de boulevard van Scheveningen" width="1672" height="941" loading="lazy" decoding="async" />
+              <figcaption><small><MapPin width="14" /> Kust</small><strong>Scheveningen boulevard</strong><span>Van stadsverkeer naar kustroute.</span></figcaption>
+            </figure>
+            <figure className="local-gallery__card local-gallery__card--peace">
+              <img src="/images/locatie-vredespaleis.webp" srcSet="/images/locatie-vredespaleis-640.webp 640w, /images/locatie-vredespaleis-960.webp 960w, /images/locatie-vredespaleis.webp 1672w" sizes="(max-width: 560px) calc(100vw - 28px), (max-width: 960px) calc(50vw - 21px), 580px" alt="Van Dijk Rijschool lesauto bij het Vredespaleis in Den Haag" width="1672" height="941" loading="lazy" decoding="async" />
+              <figcaption><small><MapPin width="14" /> Zorgvliet</small><strong>Vredespaleis</strong><span>Rustig kijken en vooruit plannen.</span></figcaption>
+            </figure>
+            <figure className="local-gallery__card local-gallery__card--digital">
+              <img src="/images/locatie-tablet.webp" srcSet="/images/locatie-tablet-640.webp 640w, /images/locatie-tablet-960.webp 960w, /images/locatie-tablet.webp 1672w" sizes="(max-width: 560px) calc(100vw - 28px), (max-width: 960px) calc(50vw - 21px), 580px" alt="Tablet met een onscherp digitaal overzicht van lesplanning en rijvaardigheidsvoortgang" width="1672" height="941" loading="lazy" decoding="async" />
+              <figcaption><small><Tablet width="14" /> Digitaal ondersteund</small><strong>Voortgang in beeld</strong><span>Planning en leerdoelen via NXTDRIVE.</span></figcaption>
+            </figure>
+          </div>
+          <p className="local-showcase__note"><Sparkles width="15" /> Sfeerimpressies van het lesgebied voor dit websiteprototype.</p>
         </div>
       </section>
 
