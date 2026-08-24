@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Check, Clock, Gauge, Shield, Smartphone, Users } from "./Icons";
+import { ArrowRight, Calendar, Car, Check, Clock, Gauge, Shield, Users } from "./Icons";
 import { formatPrice, packages } from "../lib/site";
 
 export function SectionHeading({
@@ -24,14 +24,14 @@ export function SectionHeading({
 
 export function TrustRail() {
   const items = [
-    { icon: Users, title: "Persoonlijke begeleiding", text: "Een plan dat met je meegroeit" },
-    { icon: Clock, title: "Flexibel plannen", text: "Rijles rond school of werk" },
-    { icon: Gauge, title: "Gerichte voortgang", text: "Duidelijk inzicht per les" },
-    { icon: Smartphone, title: "NXTDRIVE", text: "Afspraken en leerdoelen bij de hand" },
+    { icon: Users, title: "Persoonlijk & geduldig", text: "Les op een tempo dat bij jou past" },
+    { icon: Calendar, title: "Flexibele lestijden", text: "Rond school, werk en andere afspraken" },
+    { icon: Gauge, title: "Gerichte vooruitgang", text: "Duidelijke leerdoelen per les" },
+    { icon: Car, title: "Moderne lesaanpak", text: "Inzicht en planning via NXTDRIVE" },
   ];
 
   return (
-    <section className="trust-rail" aria-label="Voordelen">
+    <div className="trust-rail" role="region" aria-label="Voordelen van Van Dijk Rijschool">
       <div className="site-shell trust-rail__grid">
         {items.map(({ icon: ItemIcon, title, text }) => (
           <article key={title}>
@@ -40,7 +40,7 @@ export function TrustRail() {
           </article>
         ))}
       </div>
-    </section>
+    </div>
   );
 }
 

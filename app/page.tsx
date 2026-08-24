@@ -40,27 +40,24 @@ export default function Home() {
         </div>
       </section>
 
-      <TrustRail />
-
-      <section className="section section--photo-story" aria-labelledby="photo-story-title">
-        <div className="site-shell photo-story">
-          <figure className="photo-story__main">
-            <img src="/images/rijles-interieur.webp" alt="Leerling krijgt autorijles met persoonlijke begeleiding in Den Haag" width="1672" height="941" loading="lazy" decoding="async" />
-            <figcaption>
-              <span className="eyebrow">Persoonlijk in de auto</span>
-              <strong id="photo-story-title">Rust, overzicht en duidelijke feedback tijdens iedere rijles.</strong>
-            </figcaption>
-          </figure>
-          <div className="photo-story__side">
-            <figure>
-              <img src="/images/intake-instructor.webp" alt="Kennismaking tussen instructeur en leerling bij de lesauto" width="1672" height="941" loading="lazy" decoding="async" />
-              <figcaption><span>Persoonlijke intake</span><strong>Eerst kennismaken, dan gericht starten.</strong></figcaption>
-            </figure>
-            <figure>
-              <img src="/images/den-haag-drive.webp" alt="Zwarte lesauto bij de Hofvijver in Den Haag" width="1672" height="941" loading="lazy" decoding="async" />
-              <figcaption><span>Regio Den Haag</span><strong>Leren rijden in uiteenlopend stadsverkeer.</strong></figcaption>
-            </figure>
+      <section className="home-about" aria-labelledby="home-about-title">
+        <TrustRail />
+        <div className="site-shell home-about__grid">
+          <div className="home-about__copy">
+            <span className="eyebrow">Over Van Dijk Rijschool</span>
+            <h2 id="home-about-title">Meer dan alleen rijles.</h2>
+            <p>Van Dijk Rijschool combineert persoonlijke aandacht met een duidelijke, moderne lesaanpak. Je leert niet alleen wat je op het examen moet doen, maar vooral hoe je zelfstandig, veilig en met vertrouwen de weg op gaat.</p>
+            <ul>
+              <li><Check width="17" /> Les op een tempo dat bij jou past</li>
+              <li><Check width="17" /> Eerlijk advies en duidelijke afspraken</li>
+              <li><Check width="17" /> Lokale kennis van Den Haag en omgeving</li>
+            </ul>
+            <Link className="button button--ghost" href="/over-ons">Meer over Van Dijk <ArrowRight width="17" /></Link>
           </div>
+          <figure className="home-about__visual">
+            <img src="/images/rijles-interieur.webp" alt="Rijinstructeur begeleidt een leerling tijdens een autorijles in Den Haag" width="1672" height="941" loading="lazy" decoding="async" />
+            <span className="home-about__location"><MapPin width="16" /> Regio Den Haag</span>
+          </figure>
         </div>
       </section>
 
