@@ -16,6 +16,7 @@ const faqGroups = [
     items: [
       ["Vanaf welke leeftijd mag ik beginnen met rijles?", "Je mag vanaf 16,5 jaar starten met autorijlessen. Voor het praktijkexamen en begeleid rijden gelden aanvullende wettelijke regels."],
       ["Hoe werkt een intake of proefles?", "We bespreken je ervaring en doelen, maken kennis in of rond de lesauto en geven daarna een voorlopig advies over de lesopbouw. Een aanvraag is nog geen definitieve boeking."],
+      ["Kan ik zelf een proeflesmoment kiezen?", "Ja. Je kiest eerst een voorkeursdag en één of meer dagdelen. De NXTDRIVE-widget toont daarna drie openstaande mogelijkheden waaruit je direct één moment kunt aanvragen. Het gekozen moment is definitief zodra Van Dijk de aanvraag bevestigt."],
       ["Wat moet ik meenemen naar de eerste les?", "Neem in ieder geval een geldig identiteitsbewijs mee wanneer dat voor de afspraak is afgesproken. De definitieve instructies ontvang je bij de bevestiging."],
       ["Kan ik overstappen van een andere rijschool?", "Ja. Omdat je al rijervaring hebt, beoordelen we tijdens een korte intake welke vaardigheden al voldoende zelfstandig zijn en waar nog winst te behalen is."],
     ],
