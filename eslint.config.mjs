@@ -7,7 +7,7 @@ const eslintConfig = defineConfig([
   ...nextTs,
   {
     rules: {
-      // Vinext deploys the pre-sized WebP assets directly; key galleries provide srcset/sizes.
+      // The supplied brand photography is already pre-sized as responsive WebP assets.
       "@next/next/no-img-element": "off",
     },
   },
@@ -17,6 +17,7 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    "dist/**",
     "next-env.d.ts",
   ]),
 ]);

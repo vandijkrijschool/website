@@ -1,23 +1,23 @@
-# QA-rapport prototype
+# QA-rapport production website
 
 ## Geautomatiseerde controles
 
-Uitgevoerd op 28 augustus 2026 in prototype-modus.
+Uitgevoerd op 28 augustus 2026 met Node.js 24 en de productionconfiguratie.
 
 | Controle | Commando | Resultaat |
 | --- | --- | --- |
-| schone lockfile-installatie | `npm ci` | PASS — 503 packages; alleen upstream deprecation-/allow-scriptsmeldingen |
+| schone lockfile-installatie | `npm ci` | PASS — 354 packages uit één npm-lockfile |
+| production dependency-audit | `npm audit --omit=dev --audit-level=high` | PASS — 0 kwetsbaarheden |
 | ESLint | `npm run lint` | PASS — 0 fouten |
 | TypeScript | `npm run typecheck` | PASS |
-| bron- en logica-tests | `npm run test:source` | PASS — 14/14 |
-| samengestelde controle | `npm run check` | PASS |
-| Vinext productiebuild | `npm run build` | PASS — alle routes gebundeld |
-| gerenderde HTML-integratie | `npm test` | PASS — 5/5 na geslaagde build |
+| bron-, contract- en logica-tests | `npm test` | PASS — 17/17 |
+| Next.js standalone productiebuild | `npm run build` | PASS — 23 routes en systeemroutes gebundeld |
+| standalone runtime-smoke | `npm run test:smoke` | PASS — health, 18 routes, metadata, sitemap, robots en 404 |
 | headless browser-QA | `npm run test:browser` | PASS — 8 viewports × 5 kernroutes plus interacties |
 
-De bron- en logica-tests controleren onder meer volledig configuratorherstel, corrupte storage, berekeningen, pakketgrenzen, Amsterdamse datumlogica, exact drie slots, leeg/providerfout/timeout, formulieradapterstatussen, 18 routes, demo-labels, assets, schema-gates, privésitemap en toetsenbordcontracten.
+De bron- en logica-tests controleren onder meer volledig configuratorherstel, corrupte storage, berekeningen, pakketgrenzen, Amsterdamse datumlogica, exact drie slots, foutafhandeling, formulieradapterstatussen, 18 routes, demo-labels, assets, schema-gates, publieke sitemap, production workflow en toetsenbordcontracten.
 
-De HTML-tests openen alle 18 routes in het gebouwde workerartifact en controleren unieke titel, description en canonical, één uiteindelijke H1, publieke indexering, interne links, afwezigheid van commerciële prototype-schema’s en de 404-status.
+De standalone smoketest start het echte VPS-artifact en controleert de healthpayload, alle 18 routes, canonicals, één uiteindelijke H1, publieke indexering, sitemap, robots en de 404-status.
 
 ## Responsive en interactief gecontroleerd
 
@@ -37,7 +37,7 @@ Daarnaast zijn screenshots visueel bekeken op 390, 820 en 1440 px, plus de 200%-
 ## SEO, veiligheid en toegankelijkheid
 
 - alle demoroutes zijn `index,follow` en staan in de publieke sitemap;
-- `Product`, `Offer` en `Service` JSON-LD vereist zowel productiemodus als `COMMERCIAL_DATA_CONFIRMED=true`;
+- `Product`, `Offer` en `Service` JSON-LD blijft uitgeschakeld zolang prijzen mockdata zijn;
 - breadcrumbs, DrivingSchool/Organization, WebSite en zichtbare FAQ-schema’s zijn aanwezig zonder demo-rating;
 - Open Graph-afbeelding is 1200×630 en teruggebracht tot circa 254 kB;
 - skiplinkdoel bestaat ook in loading-, error- en 404-states;
@@ -53,8 +53,8 @@ Deze punten zijn geen blokkades voor de demo. Ze worden pas relevant wanneer afz
 - echte NXTDRIVE-reservering, webhooks en server-side leadverwerking;
 - spambeveiliging, rate limiting, logging, analytics en consent;
 - vervanging van mockdata en juridische toetsing voor de echte onderneming;
-- monitoring, rollback, DNS en TLS.
+- functionele monitoring naast de deployment-healthcheck.
 
 ## Bewuste prototypegrenzen
 
-Geen live API, boeking, betaling, accountlogin, CRM-opslag, e-mail, SMS, analytics of persoonsgegevensopslag. Prijzen, voorwaarden, contactgegevens, reviews, profiel- en leerlinggegevens zijn zichtbaar gelabelde mockdata en gelden als complete demo-inhoud. De opdrachtgever heeft de beeldrechten bevestigd. De demo wordt publiek gepubliceerd op de tijdelijke Sites-URL.
+Geen live API, boeking, betaling, accountlogin, CRM-opslag, e-mail, SMS, analytics of persoonsgegevensopslag. Prijzen, voorwaarden, contactgegevens, reviews, profiel- en leerlinggegevens zijn zichtbaar gelabelde mockdata en gelden als complete demo-inhoud. De production runtime wordt uitsluitend via de repository-scoped runner en `dg-site-deploy` gepubliceerd.

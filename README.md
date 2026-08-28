@@ -1,6 +1,6 @@
-# Van Dijk Rijschool — premium prototype
+# Van Dijk Rijschool — production website
 
-Volledig klikbaar websiteprototype voor Van Dijk Rijschool, gericht op Den Haag en omgeving. Het prototype vertaalt de zwart-wit-gele huisstijl naar een premium automotive interface en combineert marketingpagina’s met een werkende pakketconfigurator, NXTDRIVE-proeflesplanner, democontactflow en interactieve leerlingomgeving.
+Production-ready Next.js-website voor Van Dijk Rijschool, gericht op Den Haag en omgeving. De site vertaalt de zwart-wit-gele huisstijl naar een premium automotive interface en combineert marketingpagina’s met een pakketconfigurator, NXTDRIVE-proeflesplanner, veilige democontactflow en interactieve leerlingomgeving.
 
 ## Wat is inbegrepen
 
@@ -18,17 +18,17 @@ Volledig klikbaar websiteprototype voor Van Dijk Rijschool, gericht op Den Haag 
 - 404-, route-loading- en foutstatus
 - Nederlands overdrachtspakket in `docs/`
 
-## Productie-afgewerkt demo-prototype
+## Publieke demogrens
 
-Het project is bewust een productie-afgewerkt demo-prototype: visueel, inhoudelijk en interactief compleet, maar zonder echte dienstverlening. Het blijft in `prototype`-modus voor alle lokale simulaties, terwijl de gepubliceerde demo normaal indexeerbaar is en een volledige sitemap aanbiedt. Formulieren bewaren of verzenden niets; NXTDRIVE-momenten, contactreacties en de leerlingomgeving worden lokaal gesimuleerd.
+De website is production-ready als applicatie en deployment, maar de bestaande formulieren en NXTDRIVE-schermen blijven bewust als demo functioneren. Formulieren bewaren of verzenden niets; momenten, contactreacties en de leerlingomgeving worden lokaal gesimuleerd en zijn als zodanig gelabeld.
 
-Contactgegevens, prijzen, voorwaarden, reviews, team- en leerlinggegevens zijn consistente mockdata. Integraties, spambeveiliging, juridische goedkeuring en het uiteindelijke domein zijn voor deze demo niet vereist. [`docs/PRODUCTION_CHECKLIST.md`](docs/PRODUCTION_CHECKLIST.md) legt vast wat voor de demo gereed is en welke uitbreidingen pas relevant worden bij een eventueel toekomstig echt product.
+Contactgegevens, prijzen, voorwaarden, reviews, team- en leerlinggegevens zijn consistente mockdata. Er zijn geen database-, mail-, externe API- of SaaS-integraties toegevoegd. [`docs/PRODUCTION_CHECKLIST.md`](docs/PRODUCTION_CHECKLIST.md) legt vast welke uitbreidingen pas relevant worden als de demofunctionaliteit later echte persoonsgegevens moet verwerken.
 
 ## Snel starten
 
 Vereisten:
 
-- Node.js `>=22.13.0`
+- Node.js 24
 - npm met de meegeleverde `package-lock.json`
 - Linux voor de meegeleverde gecontroleerde scripts
 
@@ -38,33 +38,31 @@ npm ci
 npm run dev
 ```
 
-Open tijdens lokale ontwikkeling de URL die Vite in de terminal toont.
+Open tijdens lokale ontwikkeling `http://localhost:3000`.
 
 ## Commando’s
 
 ```bash
-npm run dev          # lokale ontwikkelomgeving
+npm run dev          # lokale Next.js-ontwikkelomgeving
 npm run lint         # ESLint
 npm run typecheck    # TypeScript zonder output
-npm run test:source  # prototypecontract, routes en assets
+npm test             # broncontract, routes, assets en interactielogica
 npm run test:browser # headless responsive- en interactiecontrole; vereist Chromium of BROWSER_BIN
-npm run check        # lint + typecheck + broncontract
-npm run build        # productie-artifact bouwen
-npm test             # productiebuild + gerenderde HTML-test
-npm run start        # gebouwd artifact starten
+npm run build        # Next.js standalone productie-artifact bouwen
+npm run test:smoke   # standalone health-, route-, SEO- en 404-smoketest
+npm run check        # volledige lokale qualityflow
+npm run start        # standalone runtime op 127.0.0.1:3108
 ```
 
 ## Omgevingsvariabelen
 
-Zie `.env.example`. Geen enkele sleutel is nodig voor de lokale demo.
+Zie `.env.example`. De applicatie gebruikt alleen niet-geheime publieke en runtimeconfiguratie.
 
 | Variabele | Doel |
 | --- | --- |
-| `NEXT_PUBLIC_SITE_MODE` | `prototype` houdt alle interactieve demosimulaties zichtbaar |
-| `NEXT_PUBLIC_SITE_URL` | Canonieke publieke demo-URL |
-| `COMMERCIAL_DATA_CONFIRMED` | Blijft `false`, zodat mockprijzen geen commercieel schema worden |
-| `NXTDRIVE_*` | Alleen gereserveerd voor een optionele toekomstige koppeling |
-| `LEAD_NOTIFICATION_FROM/TO` | Alleen gereserveerd voor optionele toekomstige meldingen |
+| `NEXT_PUBLIC_SITE_URL` | Canonieke publieke URL |
+| `APP_ENVIRONMENT` | Runtimeomgeving, in productie `production` |
+| `APP_REVISION` | Volledige Git SHA van de actieve release |
 
 ## Architectuur
 
@@ -79,7 +77,13 @@ Zie `.env.example`. Geen enkele sleutel is nodig voor de lokale demo.
 - `docs/` — overdracht, routekaart, demo-inventaris, assets en integratiecontract
 - `tests/` — bron- en gerenderde outputcontracten
 
-De site gebruikt Next.js-compatible routing via Vinext, React 19, Tailwind CSS 4 en Cloudflare-compatible output. De bestaande Sites-hostingidentiteit en buildscripts moeten behouden blijven.
+De site gebruikt Next.js App Router, React 19, TypeScript en Tailwind CSS 4. `next build` produceert standalone output voor de bestaande Sites VPS-runtime.
+
+## Productiedeployment
+
+Alleen een push naar `production` start `.github/workflows/deploy-production.yml`. De repository-scoped runner bouwt en valideert exact die commit en publiceert daarna uitsluitend via `/usr/local/bin/dg-site-deploy`. `main` deployt nooit automatisch. Promotion naar `production` is altijd een fast-forward van een goedgekeurde `main`-commit.
+
+De publieke healthcheck staat op `/api/health` en rapporteert service, omgeving en actieve Git-revisie.
 
 ## Overdrachtsdocumenten
 
@@ -102,4 +106,4 @@ De site gebruikt Next.js-compatible routing via Vinext, React 19, Tailwind CSS 4
 
 ## Demogrens
 
-Betalingen, live NXTDRIVE API-calls, accounts, e-mail/SMS, CRM-opslag, analytics en echte persoonsgegevens zijn bewust gesimuleerd of weggelaten. Dat zijn geen openstaande vereisten: de publiek gepubliceerde demo is compleet binnen deze afbakening en gebruikt een tijdelijke Sites-URL.
+Betalingen, live NXTDRIVE API-calls, accounts, e-mail/SMS, CRM-opslag, analytics en echte persoonsgegevens zijn bewust gesimuleerd of weggelaten. Dat zijn geen deploymentvereisten voor deze publieke demoversie.

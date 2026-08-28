@@ -16,7 +16,11 @@ Dit bestand bewaart zijn bestaande naam voor compatibiliteit met de overdracht. 
 - [x] mockprijzen worden niet als Product-, Offer- of Service-schema gepubliceerd;
 - [x] lint, typecheck, bron-, build-, HTML- en browsercontroles slagen;
 - [x] toetsenbordbediening, foutstatussen, reduced motion en responsive reflow zijn ingericht;
-- [x] er zijn geen secrets, echte accounts, echte betalingen of externe gegevensstromen.
+- [x] er zijn geen secrets, echte accounts, echte betalingen of externe gegevensstromen;
+- [x] Node.js 24 en Next.js standalone output zijn ingericht;
+- [x] `/api/health` rapporteert omgeving en actieve Git-revisie;
+- [x] production promotion gebruikt uitsluitend dezelfde fast-forward `main`-SHA;
+- [x] deployment is beperkt tot de repository-scoped runner en `dg-site-deploy`.
 
 ## Bewuste demosimulaties
 
@@ -26,10 +30,10 @@ Voor dit prototype zijn de volgende onderdelen opzettelijk niet gekoppeld en dus
 - CRM, e-mail, sms of WhatsApp;
 - betaling, facturatie of kredietcontrole;
 - accountlogin en leerlingautorisatie;
-- analytics, consentmanagement en monitoring;
+- analytics en consentmanagement;
 - spambeveiliging, rate limiting en productie-logging;
 - definitieve bedrijfs-, commerciële of juridische gegevens;
-- een eigen domein, DNS en aanvullende redirects.
+- aanvullende functionele monitoring naast de publieke deployment-healthcheck.
 
 ## Optioneel bij een toekomstige echte dienst
 

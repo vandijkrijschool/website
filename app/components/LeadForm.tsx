@@ -5,8 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Check, Mail, Message, Phone } from "./Icons";
 import { packages } from "../lib/site";
 import TrialBookingWidget from "./TrialBookingWidget";
-import { isProductionSite } from "../lib/site";
-import { demoLeadAdapter, type DemoLeadScenario, type LeadPayload } from "../lib/leads";
+import { demoLeadAdapter, type LeadPayload } from "../lib/leads";
 
 type FieldName = "naam" | "email" | "telefoon" | "postcode" | "contactkanalen" | "toestemming" | "proeflesmoment";
 type FieldErrors = Partial<Record<FieldName, string>>;
@@ -25,7 +24,6 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
   const [appointment, setAppointment] = useState("");
   const [bookingInvalid, setBookingInvalid] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [submissionScenario, setSubmissionScenario] = useState<DemoLeadScenario>("success");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [reference, setReference] = useState("");
   const errorSummaryRef = useRef<HTMLDivElement>(null);
@@ -85,7 +83,7 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
       preferredDayParts: String(data.get("voorkeursdagdelen") ?? "").split(",").map((item) => item.trim()).filter(Boolean),
       selectedSlot: appointment || undefined,
     };
-    const result = await demoLeadAdapter.submit(payload, submissionScenario);
+    const result = await demoLeadAdapter.submit(payload);
     setSubmitting(false);
     if (result.status === "accepted") {
       setReference(result.reference);
@@ -118,7 +116,6 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
         <p>{kind === "proefles" ? "Kies je voorkeuren en selecteer daarna direct één van drie beschikbare NXTDRIVE-momenten." : "Een aanvraag is nog geen definitieve boeking. We nemen persoonlijk contact op om de mogelijkheden te bespreken."}</p>
       </div>
       {packageName ? <div className="selected-package"><Check width="17" /><span>Gekozen route: <strong>{packageName}</strong></span></div> : null}
-      {!isProductionSite ? <label className="form-scenario"><span>Prototype-submitstatus testen</span><select value={submissionScenario} onChange={(event) => setSubmissionScenario(event.target.value as DemoLeadScenario)}><option value="success">Succes</option><option value="provider-error">Koppelfout</option><option value="timeout">Timeout</option></select></label> : null}
       <div className="form-grid">
         <label htmlFor={`${kind}-naam`}><span>Voor- en achternaam *</span><input aria-describedby={fieldErrors.naam ? `${kind}-naam-error` : undefined} aria-invalid={Boolean(fieldErrors.naam)} id={`${kind}-naam`} name="naam" autoComplete="name" placeholder="Jouw naam" required />{fieldErrors.naam ? <small className="field-error" id={`${kind}-naam-error`}>{fieldErrors.naam}</small> : null}</label>
         <label htmlFor={`${kind}-postcode`}><span>Postcode</span><input aria-describedby={fieldErrors.postcode ? `${kind}-postcode-error` : undefined} aria-invalid={Boolean(fieldErrors.postcode)} id={`${kind}-postcode`} name="postcode" autoComplete="postal-code" inputMode="text" placeholder="2583 AB" />{fieldErrors.postcode ? <small className="field-error" id={`${kind}-postcode-error`}>{fieldErrors.postcode}</small> : null}</label>

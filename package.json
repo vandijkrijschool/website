@@ -1,48 +1,43 @@
 {
   "name": "van-dijk-rijschool-den-haag",
-  "version": "0.1.0",
-  "description": "Premium, responsive Van Dijk Rijschool prototype voor regio Den Haag",
+  "version": "1.0.0",
+  "description": "Production-ready website voor Van Dijk Rijschool in regio Den Haag",
   "private": true,
   "engines": {
-    "node": ">=22.13.0"
+    "node": ">=24.0.0 <25"
   },
   "scripts": {
-    "install:ci": "bash scripts/install-ci.sh",
-    "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vite",
-    "build": "bash scripts/build-verified.sh",
-    "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs",
-    "test:source": "node --test tests/prototype-contract.test.mjs tests/interaction-logic.test.mjs",
+    "dev": "next dev",
+    "build": "next build",
+    "postbuild": "node scripts/prepare-standalone.mjs",
+    "start": "HOSTNAME=127.0.0.1 PORT=${PORT:-3108} node .next/standalone/server.js",
+    "test": "node --test tests/*.test.mjs",
     "test:browser": "node scripts/browser-qa.mjs",
-    "typecheck": "bash scripts/sites-env.sh -- tsc --noEmit -p tsconfig.prototype.json",
-    "check": "npm run lint && npm run typecheck && npm run test:source",
-    "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate"
+    "test:smoke": "node scripts/smoke-standalone.mjs",
+    "validate:production-env": "node scripts/validate-production-env.mjs",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build && npm run test:smoke",
+    "lint": "eslint . --ignore-pattern .next"
   },
   "dependencies": {
-    "drizzle-orm": "0.45.2",
-    "next": "16.2.6",
-    "react": "19.2.6",
-    "react-dom": "19.2.6"
+    "next": "16.3.3",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.37.1",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "6.0.2",
-    "@vitejs/plugin-rsc": "0.5.26",
-    "drizzle-kit": "0.31.10",
     "eslint": "9.39.4",
-    "eslint-config-next": "16.2.6",
-    "react-server-dom-webpack": "19.2.6",
+    "eslint-config-next": "16.3.3",
     "tailwindcss": "4.2.1",
-    "typescript": "5.9.3",
-    "vinext": "0.0.50",
-    "vite": "8.0.13",
-    "wrangler": "4.92.0"
+    "typescript": "5.9.3"
   },
   "type": "module",
-  "displayName": "Van Dijk Rijschool \u2014 Premium Rijschool Den Haag"
+  "displayName": "Van Dijk Rijschool \u2014 Premium Rijschool Den Haag",
+  "allowScripts": {
+    "sharp": true,
+    "unrs-resolver": true
+  }
 }

@@ -9,16 +9,17 @@ export const siteConfig = {
   title: "Van Dijk Rijschool — Premium Rijschool Den Haag",
   description:
     "Persoonlijke autorijlessen en duidelijke lespakketten in Den Haag en omgeving. Stel online jouw rijopleiding samen en plan een vrijblijvende intake.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://van-dijk-rijschool-den-haag.famgoldenbelt.chatgpt.site",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://voorbeeld.vandijkrijschool.nl",
   areaLabel: "Den Haag en omgeving",
   areas: ["Den Haag", "Scheveningen", "Rijswijk", "Voorburg", "Leidschendam"],
 } as const;
 
-export const isProductionSite =
-  process.env.NEXT_PUBLIC_SITE_MODE === "production";
+// Prijzen en formulieren zijn nog demodata. Publiceer daarom geen Product-,
+// Offer- of Service-schema totdat commerciële gegevens expliciet zijn bevestigd.
+export const isCommercialStructuredDataEnabled = false;
 
-export const isCommercialStructuredDataEnabled =
-  isProductionSite && process.env.COMMERCIAL_DATA_CONFIRMED === "true";
+// The public runtime deliberately hides prototype-only scenario controls.
+export const isProductionSite = true;
 
 export const primaryNavigation = [
   { href: "/rijlessen", label: "Rijlessen" },

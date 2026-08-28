@@ -33,7 +33,7 @@ const requiredAssets = [
   "public/og.png",
 ];
 
-test("all agreed prototype routes have a filled source page", async () => {
+test("all agreed public routes have a filled source page", async () => {
   for (const file of routeFiles) {
     const source = await readFile(file, "utf8");
     assert.ok(source.length > 350, `${file} should contain a filled page`);
@@ -80,7 +80,7 @@ test("all 18 content routes and system states are documented", async () => {
   await Promise.all(["app/not-found.tsx", "app/loading.tsx", "app/error.tsx"].map((file) => access(file)));
 });
 
-test("public demo gates commercial schema and includes all routes in sitemap", async () => {
+test("unconfirmed commercial data stays out of schema and all routes are in the sitemap", async () => {
   const site = await readFile("app/lib/site.ts", "utf8");
   const sitemap = await readFile("app/sitemap.ts", "utf8");
   const pages = await Promise.all([
@@ -90,7 +90,7 @@ test("public demo gates commercial schema and includes all routes in sitemap", a
     "app/rijschool-den-haag/page.tsx",
     "app/regio/[slug]/page.tsx",
   ].map((file) => readFile(file, "utf8")));
-  assert.match(site, /COMMERCIAL_DATA_CONFIRMED/);
+  assert.match(site, /isCommercialStructuredDataEnabled = false/);
   pages.forEach((source) => assert.match(source, /isCommercialStructuredDataEnabled/));
   assert.match(sitemap, /leerlingomgeving/);
   assert.match(sitemap, /privacy/);
@@ -124,4 +124,39 @@ test("public demo is indexable and exposes a sitemap", async () => {
   assert.match(layout, /index: true/);
   assert.doesNotMatch(layout, /index: false/);
   assert.match(robots, /sitemap/);
+});
+
+test("standalone production runtime and health endpoint are configured", async () => {
+  const packageJson = JSON.parse(await readFile("package.json", "utf8"));
+  const nextConfig = await readFile("next.config.ts", "utf8");
+  const health = await readFile("app/api/health/route.ts", "utf8");
+  assert.equal(packageJson.engines.node, ">=24.0.0 <25");
+  assert.equal(packageJson.scripts.start, "HOSTNAME=127.0.0.1 PORT=${PORT:-3108} node .next/standalone/server.js");
+  assert.match(nextConfig, /output: "standalone"/);
+  assert.match(health, /service: "vandijkrijschool"/);
+  assert.match(health, /process\.env\.APP_ENVIRONMENT/);
+  assert.match(health, /process\.env\.APP_REVISION/);
+});
+
+test("production workflow is branch-scoped, fail-closed and deploys only through dg-site-deploy", async () => {
+  const workflow = await readFile(".github/workflows/deploy-production.yml", "utf8");
+  assert.match(workflow, /branches:\s*\n\s*- production/);
+  assert.doesNotMatch(workflow, /branches:\s*\n\s*- main/);
+  assert.match(workflow, /group: production-vandijkrijschool/);
+  assert.match(workflow, /cancel-in-progress: false/);
+  for (const label of ["self-hosted", "Linux", "X64", "dg-sites", "production", "vandijkrijschool"]) {
+    assert.match(workflow, new RegExp(`^\\s+- ${label}$`, "m"));
+  }
+  assert.match(workflow, /test "\$\(id -un\)" = "vandijkrijschool"/);
+  assert.match(workflow, /dg-sites-vps-01-vandijkrijschool-01/);
+  assert.match(workflow, /\/srv\/sites\/vandijkrijschool\/actions-runner\/_work\//);
+  assert.match(workflow, /test "\$\(git rev-parse HEAD\)" = "\$\{GITHUB_SHA\}"/);
+  assert.match(workflow, /\/usr\/local\/bin\/dg-site-deploy/);
+  assert.doesNotMatch(workflow, /\b(?:ssh|scp|rsync)\b/);
+});
+
+test("runtime has no database, mail or SaaS integration dependencies", async () => {
+  const packageJson = await readFile("package.json", "utf8");
+  const environment = await readFile(".env.example", "utf8");
+  assert.doesNotMatch(`${packageJson}\n${environment}`, /supabase|drizzle|sendgrid|smtp/i);
 });

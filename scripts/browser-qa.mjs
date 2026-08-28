@@ -4,7 +4,7 @@ import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from "node
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-const baseUrl = process.env.BROWSER_QA_URL ?? "http://localhost:5173";
+const baseUrl = process.env.BROWSER_QA_URL ?? "http://localhost:3000";
 
 function findBrowser() {
   const candidates = [process.env.BROWSER_BIN, "/usr/bin/chromium", "/usr/bin/google-chrome"];
