@@ -96,11 +96,14 @@ async function navigate(path, viewport) {
   const loaded = once("Page.loadEventFired");
   await send("Page.navigate", { url: `${baseUrl}${path}` });
   await loaded;
-  for (let attempt = 0; attempt < 60; attempt += 1) {
-    if (await evaluate("Boolean(document.querySelector('main:not(.route-state) h1'))")) break;
+  let settled = false;
+  for (let attempt = 0; attempt < 100; attempt += 1) {
+    settled = await evaluate("!document.querySelector('main.route-state') && document.querySelectorAll('main:not(.route-state) h1').length === 1");
+    if (settled) break;
     await delay(50);
   }
-  await delay(220);
+  assert.equal(settled, true, `${path} bleef in de loading-state staan`);
+  await delay(100);
 }
 
 await send("Page.enable");
