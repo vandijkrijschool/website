@@ -161,12 +161,34 @@ try {
           brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
           overflowers: [...document.querySelectorAll('body *')].map((element) => ({ element, rect: element.getBoundingClientRect() })).filter(({ rect }) => rect.width > 0 && (rect.right > document.documentElement.clientWidth + 1 || rect.left < -1)).slice(0, 12).map(({ element, rect }) => ({ tag: element.tagName, className: String(element.className), left: Math.round(rect.left), right: Math.round(rect.right), width: Math.round(rect.width) })),
           overflowingBoxes: [...document.querySelectorAll('body *')].filter((element) => element.scrollWidth > element.clientWidth + 1).slice(0, 12).map((element) => ({ tag: element.tagName, className: String(element.className), clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, overflowX: getComputedStyle(element).overflowX })),
+          hero: (() => {
+            const element = document.querySelector('.home-hero, .page-hero');
+            if (!element) return null;
+            const rect = element.getBoundingClientRect();
+            return { top: Math.round(rect.top), bottom: Math.round(rect.bottom), height: Math.round(rect.height) };
+          })(),
+          homeRail: (() => {
+            const rail = document.querySelector('.home-hero .trust-rail');
+            const copy = document.querySelector('.home-hero__copy');
+            if (!rail || !copy) return null;
+            const railRect = rail.getBoundingClientRect();
+            const copyRect = copy.getBoundingClientRect();
+            return { top: Math.round(railRect.top), bottom: Math.round(railRect.bottom), copyTop: Math.round(copyRect.top), copyBottom: Math.round(copyRect.bottom), copyHeight: Math.round(copyRect.height) };
+          })(),
         };
       })()`);
       const viewportLabel = viewport.label ?? `${viewport.width}px`;
       assert.ok(state.horizontalTravel <= 1, `${route} overflowt op ${viewportLabel}: ${JSON.stringify(state)}`);
       assert.deepEqual(state.overflowingHeadings, [], `${route} heeft een te brede headline op ${viewportLabel}: ${JSON.stringify(state.overflowingHeadings)}`);
       assert.deepEqual(state.splitHeadingWords, [], `${route} breekt woorden middenin af op ${viewportLabel}: ${JSON.stringify(state.splitHeadingWords)}`);
+      if (viewport.height >= 700) {
+        assert.ok(state.hero.bottom >= viewport.height - 1, `${route} vult de viewport niet op ${viewportLabel}: ${JSON.stringify(state.hero)}`);
+        assert.ok(state.hero.bottom <= viewport.height + 1, `${route} loopt buiten de eerste viewport op ${viewportLabel}: ${JSON.stringify(state.hero)}`);
+        if (route === "/") {
+          assert.ok(state.homeRail.bottom <= viewport.height - 12, `Homepage-voordelen missen onderruimte op ${viewportLabel}: ${JSON.stringify(state.homeRail)}`);
+          assert.ok(state.homeRail.top >= state.homeRail.copyBottom + 8, `Homepage-inhoud overlapt de voordelen op ${viewportLabel}: ${JSON.stringify(state.homeRail)}`);
+        }
+      }
       assert.equal(state.h1, 1, `${route} heeft niet precies één H1 in de uiteindelijke DOM`);
       assert.deepEqual(state.brokenImages, [], `${route} heeft ontbrekende beelden`);
       assert.equal(consoleProblems.length, 0, `${route} geeft browser-/consolefouten op ${viewportLabel}: ${JSON.stringify(consoleProblems)}`);

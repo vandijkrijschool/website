@@ -40,10 +40,10 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <TrustRail />
       </section>
 
       <section className="home-about" aria-labelledby="home-about-title">
-        <TrustRail />
         <div className="site-shell home-about__grid">
           <div className="home-about__copy">
             <span className="eyebrow">Over Van Dijk Rijschool</span>
