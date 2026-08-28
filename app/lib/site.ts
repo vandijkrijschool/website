@@ -6,10 +6,13 @@ export const siteConfig = {
   title: "Van Dijk Rijschool — Premium Rijschool Den Haag",
   description:
     "Persoonlijke autorijlessen en duidelijke lespakketten in Den Haag en omgeving. Stel online jouw rijopleiding samen en plan een vrijblijvende intake.",
-  url: "https://vandijkrijschool.nl",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://vandijkrijschool.nl",
   areaLabel: "Den Haag en omgeving",
   areas: ["Den Haag", "Scheveningen", "Rijswijk", "Voorburg", "Leidschendam"],
 } as const;
+
+export const isProductionSite =
+  process.env.NEXT_PUBLIC_SITE_MODE === "production";
 
 export const packages = [
   {
@@ -17,6 +20,7 @@ export const packages = [
     name: "Instappakket",
     lessons: 20,
     price: 1250,
+    featured: false,
     description: "Een compacte route voor leerlingen met aanleg of eerdere rijervaring.",
     features: ["20 rijlessen", "Praktijkexamen", "Persoonlijk lesplan", "NXTDRIVE-inzicht"],
   },
@@ -40,6 +44,7 @@ export const packages = [
     name: "Zeker Slagen",
     lessons: 40,
     price: 2450,
+    featured: false,
     description: "Maximale voorbereiding en extra zekerheid tijdens jouw rijopleiding.",
     features: [
       "40 rijlessen",
@@ -103,4 +108,3 @@ export function formatPrice(value: number) {
     maximumFractionDigits: 0,
   }).format(value);
 }
-

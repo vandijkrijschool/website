@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { siteConfig } from "./lib/site";
+import { isProductionSite, siteConfig } from "./lib/site";
 
 const routes = [
   "",
@@ -21,6 +21,7 @@ const routes = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  if (!isProductionSite) return [];
   return routes.map((route) => ({
     url: new URL(route || "/", siteConfig.url).toString(),
     lastModified: new Date(),

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { siteConfig } from "./lib/site";
+import { isProductionSite, siteConfig } from "./lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/leerlingomgeving"],
       },
     ],
-    sitemap: `${siteConfig.url}/sitemap.xml`,
+    sitemap: isProductionSite ? `${siteConfig.url}/sitemap.xml` : undefined,
     host: siteConfig.url,
   };
 }

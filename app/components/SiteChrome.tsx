@@ -108,7 +108,7 @@ export function Footer() {
 
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} Van Dijk Rijschool</span>
-          <span className="footer-affiliation">drive<span>•</span>you franchisenemer · Powered by NXTDRIVE</span>
+          <span className="footer-affiliation">drive<span>•</span>you franchisenemer · Powered by NXTDRIVE · Premium prototype</span>
           <div>
             <Link href="/privacy">Privacy</Link>
             <Link href="/voorwaarden">Voorwaarden</Link>
@@ -167,4 +167,3 @@ export function PageHero({
 export function JsonLd({ data }: { data: Record<string, unknown> | Record<string, unknown>[] }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;
 }
-

@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Footer, Header, JsonLd } from "./components/SiteChrome";
-import { siteConfig } from "./lib/site";
+import { isProductionSite, siteConfig } from "./lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
   publisher: siteConfig.name,
+  robots: isProductionSite
+    ? { index: true, follow: true }
+    : { index: false, follow: true, noarchive: true },
   alternates: { canonical: siteConfig.url },
   openGraph: {
     type: "website",

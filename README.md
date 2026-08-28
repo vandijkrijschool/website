@@ -1,107 +1,104 @@
-# vinext-starter
+# Van Dijk Rijschool — premium prototype
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Volledig klikbaar websiteprototype voor Van Dijk Rijschool, gericht op Den Haag en omgeving. Het prototype vertaalt de zwart-wit-gele huisstijl naar een premium automotive interface en combineert marketingpagina’s met een werkende pakketconfigurator, NXTDRIVE-proeflesplanner, democontactflow en interactieve leerlingomgeving.
 
-## Prerequisites
+## Wat is inbegrepen
+
+- 16 gevulde routes, inclusief vier lokale regiopagina’s en een aparte Den Haag-pagina
+- vierstaps lespakketconfigurator met sessieherstel, berekeningen en deelbare pakketlink
+- proeflesflow: voorkeursdag → dagdelen → drie dynamische demomomenten → bevestiging
+- contact- en proeflesformulieren met validatie, laad-, fout- en successtatus
+- interactieve NXTDRIVE-demo met overzicht, agenda, voortgang en lesverslagen
+- zes duidelijk gelabelde fictieve reviewkaarten
+- centraal beheerde demo-data in `app/lib/demo.ts`
+- responsive ontwerp voor desktop, tablet en mobiel
+- subtiele motion met volledige `prefers-reduced-motion`-fallback
+- metadata, canonicals, Open Graph, JSON-LD, robots, sitemap en manifest
+- Haagse beeldbibliotheek in WebP, inclusief responsive varianten
+- 404-, route-loading- en foutstatus
+- Nederlands overdrachtspakket in `docs/`
+
+## Belangrijk: prototype versus productie
+
+Het project staat standaard in `prototype`-modus. Daardoor krijgt iedere pagina `noindex,follow` en wordt geen productiesitemap gevuld. Formulieren bewaren of verzenden niets; NXTDRIVE-momenten worden lokaal gesimuleerd.
+
+Zet de website pas op productie nadat alle punten in [`docs/PRODUCTION_CHECKLIST.md`](docs/PRODUCTION_CHECKLIST.md) zijn bevestigd. Daarna kan `NEXT_PUBLIC_SITE_MODE=production` worden ingesteld.
+
+## Snel starten
+
+Vereisten:
 
 - Node.js `>=22.13.0`
-- Linux with `flock`, `curl`, and GNU `timeout`
+- npm met de meegeleverde `package-lock.json`
+- Linux voor de meegeleverde gecontroleerde scripts
 
-## Sites Lifecycle
-
-The Sites lifecycle CLI runs the locked dependency install before returning this checkout. Edit the source under `app/`, then checkpoint when a coherent milestone is ready to inspect or share. The remote Sites builder runs `npm run build` against the pushed commit. Do not repeat install or build as a normal pre-checkpoint step.
-
-This starter does not use `wrangler.jsonc`.
-
-`install:ci` is intentionally a single, non-retrying `npm ci`. It refuses a concurrent install for the same project, consumes a matching image-seeded npm cache with `--prefer-offline` while retaining registry fallback for a missing cache object, otherwise downloads and verifies the complete vinext tarball recorded in `package-lock.json`, limits npm to one socket, and terminates a stalled install. `build` applies a short timeout. These helpers target Linux and use GNU `timeout`; they are not native macOS scripts.
-
-Scripts that need writable project-scoped home, npm, XDG, and temporary paths use `scripts/sites-env.sh`. The `dev` and `start` scripts honor the caller's runtime environment and keep Wrangler logs inside the checkout. The generated `.sites-runtime/` directory is disposable and ignored by Git.
-
-## Included Shape
-
-- edit site code under `app/`
-- `app/chatgpt-auth.ts` provides optional dispatch-owned ChatGPT sign-in helpers
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/index.ts` reads the D1 binding from the Cloudflare Worker environment
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```bash
+cp .env.example .env.local
+npm ci
+npm run dev
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+Open tijdens lokale ontwikkeling de URL die Vite in de terminal toont.
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+## Commando’s
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+```bash
+npm run dev          # lokale ontwikkelomgeving
+npm run lint         # ESLint
+npm run typecheck    # TypeScript zonder output
+npm run test:source  # prototypecontract, routes en assets
+npm run check        # lint + typecheck + broncontract
+npm run build        # productie-artifact bouwen
+npm test             # productiebuild + gerenderde HTML-test
+npm run start        # gebouwd artifact starten
+```
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+## Omgevingsvariabelen
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+Zie `.env.example`. Geen enkele sleutel is nodig voor de lokale demo.
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+| Variabele | Doel |
+| --- | --- |
+| `NEXT_PUBLIC_SITE_MODE` | `prototype` voor noindex/demo of expliciet `production` na livegangcontrole |
+| `NEXT_PUBLIC_SITE_URL` | Definitieve canonieke domeinnaam |
+| `NXTDRIVE_API_BASE_URL` | Toekomstige server-side API-basis |
+| `NXTDRIVE_TENANT_ID` | Van Dijk-tenant binnen NXTDRIVE |
+| `NXTDRIVE_API_KEY` | Private servercredential; nooit in clientcode |
+| `NXTDRIVE_WEBHOOK_SECRET` | Verificatie van callbacks en webhooks |
+| `LEAD_NOTIFICATION_FROM/TO` | Toekomstige transactionele leadmeldingen |
 
-## Diagnostic Commands
+## Architectuur
 
-- `npm run install:ci`: perform the one bounded lockfile install
-- `npm run dev`: start the Vite/Vinext development server
-- `npm run build`: build the deployable Sites artifact
-- `npm run start`: start the built Vinext application
-- `npm test`: build and verify the rendered development-preview metadata
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+- `app/` — routes, metadata, layouts en fout-/loadingstates
+- `app/components/` — herbruikbare marketing- en interactieve componenten
+- `app/lib/site.ts` — merkconfiguratie, navigatie, pakketten en metadatahelpers
+- `app/lib/demo.ts` — alle fictieve reviews, contact-, team- en leerlingdata
+- `public/images/` — logo’s, fotoserie en responsive locatievarianten
+- `docs/` — overdracht, routekaart, demo-inventaris, assets en integratiecontract
+- `tests/` — bron- en gerenderde outputcontracten
 
-Use build commands for targeted diagnosis after a remote failure, not as part of the normal checkpoint path.
+De site gebruikt Next.js-compatible routing via Vinext, React 19, Tailwind CSS 4 en Cloudflare-compatible output. De bestaande Sites-hostingidentiteit en buildscripts moeten behouden blijven.
 
-The timeout defaults can be overridden for a controlled canary with `SITES_INSTALL_TIMEOUT`, `SITES_INSTALL_KILL_AFTER`, `SITES_BUILD_TIMEOUT`, and `SITES_BUILD_KILL_AFTER`. A timeout fails the command; the helpers never retry an unchanged install or build.
+## Overdrachtsdocumenten
 
-## Learn More
+- [`docs/HANDOVER_NL.md`](docs/HANDOVER_NL.md) — functionele en technische overdracht
+- [`docs/ROUTES_AND_CONTENT.md`](docs/ROUTES_AND_CONTENT.md) — alle routes en inhoud
+- [`docs/DEMO_DATA.md`](docs/DEMO_DATA.md) — wat fictief of voorlopig is
+- [`docs/ASSET_MANIFEST.md`](docs/ASSET_MANIFEST.md) — afbeeldingen, herkomst en gebruik
+- [`docs/NXTDRIVE_INTEGRATION.md`](docs/NXTDRIVE_INTEGRATION.md) — voorgesteld productiecontract
+- [`docs/PRODUCTION_CHECKLIST.md`](docs/PRODUCTION_CHECKLIST.md) — livegangpoort
+- [`docs/QA_REPORT.md`](docs/QA_REPORT.md) — uitgevoerde en nog handmatige controles
 
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+## Ontwerpprincipes
+
+- matzwart en gelaagd grafiet als basis
+- verkeersgeel als actie-, focus- en statuskleur
+- korte, krachtige Nederlandse koppen
+- grote Haagse fotografie met rustige gradients
+- afgeronde cockpitpanelen, dunne contrastlijnen en duidelijke focusstates
+- motion ondersteunt hiërarchie en feedback, nooit de leesbaarheid
+
+## Productiegrens
+
+Niet inbegrepen als echte productiefunctionaliteit: betalingen, live NXTDRIVE API-calls, accounts, e-mail/SMS, CRM-opslag, analytics, cookietoestemming en juridisch definitieve teksten. De interfaces en integratiepunten zijn wel voorbereid en gedocumenteerd.
+

@@ -1,25 +1,72 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, Check, Gauge, Shield, Star, Users } from "../components/Icons";
+import { DemoNotice } from "../components/DemoContent";
+import { Gauge, Shield, Star, Users } from "../components/Icons";
 import { SplitCta } from "../components/PageSections";
 import { SectionHeading } from "../components/Marketing";
 import { Breadcrumbs, PageHero } from "../components/SiteChrome";
+import { demoReviews } from "../lib/demo";
 import { pageMetadata } from "../lib/site";
 
 export const metadata: Metadata = pageMetadata(
   "Ervaringen met Van Dijk Rijschool",
-  "Ontdek waarop leerlingen een rijschool en instructeur beoordelen: persoonlijke begeleiding, planning, voortgang en examenvoorbereiding.",
+  "Bekijk demonstratievoorbeelden van de toekomstige reviewpresentatie van Van Dijk Rijschool en ontdek welke onderdelen van begeleiding centraal staan.",
   "/reviews",
 );
 
 export default function ReviewsPage() {
   return (
     <main id="main-content">
-      <PageHero eyebrow="Echte ervaringen tellen" title="Wat leerlingen mogen" accent="verwachten van begeleiding." intro="Voor dit prototype plaatsen we bewust geen verzonnen namen, cijfers of reviews. Bij livegang worden uitsluitend geverifieerde ervaringen vanuit de officiële bron getoond."><Breadcrumbs items={[{ label: "Ervaringen" }]} /></PageHero>
-      <section className="section"><div className="site-shell"><SectionHeading eyebrow="Waar goede begeleiding zichtbaar wordt" title="Meer dan alleen een eindcijfer." text="Een beoordeling zegt het meest wanneer duidelijk is waarop die gebaseerd is. Daarom krijgt iedere echte review straks een bron en, waar toegestaan, een datum." /><div className="review-aspects"><article><Users width="25" /><h3>Persoonlijke aandacht</h3><p>Voelt de leerling zich gehoord en sluit de uitleg aan op zijn of haar manier van leren?</p></article><article><Gauge width="25" /><h3>Duidelijke voortgang</h3><p>Is inzichtelijk wat goed gaat, wat aandacht nodig heeft en waarom een vervolgstap wordt gekozen?</p></article><article><Shield width="25" /><h3>Rust en veiligheid</h3><p>Is er ruimte om fouten te bespreken en situaties opnieuw op te bouwen zonder onnodige druk?</p></article><article><Star width="25" /><h3>Eerlijke voorbereiding</h3><p>Worden verwachtingen rond lessen, kosten en examenmomenten tijdig en duidelijk besproken?</p></article></div></div></section>
-      <section className="section section--soft"><div className="site-shell review-placeholder"><div className="review-placeholder__stars"><Star width="22" /><Star width="22" /><Star width="22" /><Star width="22" /><Star width="22" /></div><small>Geverifieerde reviewkoppeling</small><h2>Reviews worden bij livegang uit de officiële bron geladen.</h2><p>Zo voorkomen we fictieve testimonials, verouderde beoordelingen en een beoordelingsscore die niet controleerbaar is. Ook structured data wordt pas geactiveerd als dezelfde echte reviews zichtbaar op de pagina staan.</p><ul className="checklist"><li><Check width="17" /> Bron zichtbaar</li><li><Check width="17" /> Geen handmatig opgehoogde score</li><li><Check width="17" /> Alleen publiceerbare reviewtekst</li></ul><Link className="button button--ghost" href="/contact">Vraag naar actuele ervaringen <ArrowRight width="17" /></Link></div></section>
+      <PageHero
+        eyebrow="Ervaringen in beeld"
+        title="Zo krijgt vertrouwen"
+        accent="een geloofwaardige plek."
+        intro="Deze gevulde prototypepagina laat zien hoe echte leerlingervaringen straks premium en controleerbaar worden gepresenteerd. Alle onderstaande namen en teksten zijn herkenbaar gelabelde demo-inhoud."
+      >
+        <Breadcrumbs items={[{ label: "Ervaringen" }]} />
+      </PageHero>
+
+      <section className="section">
+        <div className="site-shell">
+          <DemoNotice
+            title="Zes fictieve reviews voor een volledig gevuld prototype."
+            text="Vóór livegang worden deze kaarten vervangen door publiceerbare, geverifieerde ervaringen uit de officiële bron. Demo-reviews worden niet opgenomen in structured data."
+          />
+          <div className="review-grid">
+            {demoReviews.map((review) => (
+              <article className="review-card" key={`${review.name}-${review.area}`}>
+                <div className="review-card__top">
+                  <span className="review-avatar" aria-hidden="true">{review.initials}</span>
+                  <div><strong>{review.name}</strong><small>Fictief demoprofiel · {review.area}</small></div>
+                  <span className="demo-pill">Demo-review</span>
+                </div>
+                <div className="review-stars" aria-label={`${review.rating} van 5 sterren`} role="img">
+                  {Array.from({ length: review.rating }, (_, index) => <Star width="17" key={index} />)}
+                </div>
+                <blockquote>“{review.quote}”</blockquote>
+                <footer><span>Voorbeeldtraject</span><strong>{review.route}</strong></footer>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--soft">
+        <div className="site-shell">
+          <SectionHeading
+            eyebrow="Waar goede begeleiding zichtbaar wordt"
+            title="Meer dan alleen een eindcijfer."
+            text="De definitieve pagina toont niet alleen een score, maar maakt duidelijk waarop de ervaring is gebaseerd en uit welke officiële bron de review komt."
+          />
+          <div className="review-aspects">
+            <article><Users width="25" /><h3>Persoonlijke aandacht</h3><p>Sluit de uitleg aan op de leerling en voelt die zich gehoord?</p></article>
+            <article><Gauge width="25" /><h3>Duidelijke voortgang</h3><p>Is zichtbaar wat goed gaat, wat aandacht nodig heeft en waarom?</p></article>
+            <article><Shield width="25" /><h3>Rust en veiligheid</h3><p>Is er ruimte om fouten te bespreken en opnieuw te oefenen?</p></article>
+            <article><Star width="25" /><h3>Eerlijke voorbereiding</h3><p>Worden verwachtingen rond lessen, kosten en examen tijdig besproken?</p></article>
+          </div>
+        </div>
+      </section>
+
       <SplitCta title="Zelf ervaren hoe Van Dijk lesgeeft?" text="Een kennismaking geeft je een beter beeld dan iedere losse review. Bespreek jouw verwachtingen tijdens een intake." />
     </main>
   );
 }
-
