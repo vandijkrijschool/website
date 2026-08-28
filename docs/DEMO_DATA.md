@@ -23,14 +23,14 @@ Losse les: € 60 per lesuur. Demo-afspraken: één lesuur duurt 60 minuten, pak
 
 Geen van deze personen of gegevens vertegenwoordigt een echte leerling of medewerker.
 
-## Contactvoorbeelden
+## Bedrijfsgegevens
 
-- telefoon: `070 000 00 00`;
-- e-mail: `demo@vandijkrijschool.example`;
-- beschikbaarheid: ma–vr 08:00–20:30, zaterdag 08:00–16:00;
-- locatie: Den Haag, bezoek op afspraak.
+- telefoon: `+31 6 59116366` (bedrijfsgegeven, geen demo-data);
+- vestigingsadres: `Melis Stokelaan 2440, 2541 GR 's-Gravenhage` (bedrijfsgegeven);
+- KVK-nummer: `42130985` (bedrijfsgegeven);
+- er is geen publiek e-mailadres of vaste bereikbaarheid opgegeven.
 
-Deze gegevens zijn niet actief gekoppeld.
+De website toont deze gegevens als echte bedrijfsinformatie. Alleen de formulierafhandeling blijft lokaal gesimuleerd.
 
 ## Beschikbaarheid
 

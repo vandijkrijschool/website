@@ -20,7 +20,7 @@ export default function ReviewsPage() {
         eyebrow="Ervaringen in beeld"
         title="Zo krijgt vertrouwen"
         accent="een geloofwaardige plek."
-        intro="Deze gevulde prototypepagina laat zien hoe echte leerlingervaringen straks premium en controleerbaar worden gepresenteerd. Alle onderstaande namen en teksten zijn herkenbaar gelabelde demo-inhoud."
+        intro="Deze gevulde prototypepagina laat zien hoe echte leerlingervaringen straks duidelijk en controleerbaar worden gepresenteerd. Alle onderstaande namen en teksten zijn herkenbaar gelabelde demo-inhoud."
       >
         <Breadcrumbs currentPath="/reviews" items={[{ label: "Ervaringen" }]} />
       </PageHero>

@@ -24,7 +24,7 @@ Belangrijkste tokens staan in `app/globals.css`:
 - `--text`, `--muted` — teksthiërarchie
 - `--yellow`, `--yellow-deep`, `--yellow-soft` — merk- en actiekleur
 - `--radius-*`, `--shadow` — componentvorm en diepte
-- `--ease-premium`, `--motion-*` — motionritme
+- `--ease-smooth`, `--motion-*` — motionritme
 
 Breakpoints: 1060, 900, 820, 560 en 380 px. Motion wordt uitgeschakeld bij `prefers-reduced-motion: reduce`.
 

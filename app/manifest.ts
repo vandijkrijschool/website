@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
+import { siteConfig } from "./lib/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Van Dijk Rijschool",
-    short_name: "Van Dijk",
-    description: "Persoonlijke rijlessen en lespakketten in regio Den Haag.",
+    name: siteConfig.tradeName,
+    short_name: siteConfig.shortName,
+    description: siteConfig.description,
     start_url: "/",
     display: "standalone",
     background_color: "#08090b",

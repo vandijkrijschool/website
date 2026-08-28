@@ -4,12 +4,23 @@ import { extraLessonPrice, packages } from "./packages.js";
 export { extraLessonPrice, packages };
 
 export const siteConfig = {
-  name: "Van Dijk Rijschool",
+  name: "Van Dijk - Rijschool",
+  tradeName: "Van Dijk - Rijschool",
   shortName: "Van Dijk",
-  title: "Van Dijk Rijschool — Premium Rijschool Den Haag",
+  title: "Van Dijk - Rijschool | Rijschool Den Haag",
   description:
     "Persoonlijke autorijlessen en duidelijke lespakketten in Den Haag en omgeving. Stel online jouw rijopleiding samen en plan een vrijblijvende intake.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://voorbeeld.vandijkrijschool.nl",
+  phone: "+31 6 59116366",
+  phoneHref: "tel:+31659116366",
+  chamberOfCommerceNumber: "42130985",
+  chamberOfCommerceUrl: "https://www.kvk.nl/bestellen/#/42130985000066352479?origin=search",
+  address: {
+    street: "Melis Stokelaan 2440",
+    postalCode: "2541 GR",
+    locality: "'s-Gravenhage",
+    countryCode: "NL",
+  },
   areaLabel: "Den Haag en omgeving",
   areas: ["Den Haag", "Scheveningen", "Rijswijk", "Voorburg", "Leidschendam"],
 } as const;

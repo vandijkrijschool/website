@@ -4,7 +4,7 @@ De applicatie bevat 18 inhoudelijke routes, aangevuld met 404-, loading- en erro
 
 | Route | Inhoud | Primaire actie |
 | --- | --- | --- |
-| `/` | premium homepage, configuratorpreview, pakketten, NXTDRIVE, regio en fotogalerij | pakket samenstellen / intake |
+| `/` | verzorgde homepage, configuratorpreview, pakketten, NXTDRIVE, regio en fotogalerij | pakket samenstellen / intake |
 | `/rijlessen` | lesopbouw, curriculum, planning en digitale ondersteuning | intake / pakketten |
 | `/lespakketten` | drie pakketkaarten, vergelijking en voorwaardenkader | pakket kiezen |
 | `/configurator` | vierstaps interactieve pakketkeuze | route bespreken |

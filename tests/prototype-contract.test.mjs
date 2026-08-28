@@ -52,8 +52,38 @@ test("demo-only claims are explicitly labelled", async () => {
   const portal = await readFile("app/components/StudentPortalDemo.tsx", "utf8");
   assert.match(demoData, /demoReviews/);
   assert.match(reviews, /fictieve reviews/i);
-  assert.match(contact, /voorbeeldgegevens/i);
+  assert.match(contact, /formulier nog in demonstratiemodus/i);
   assert.match(portal, /fictief/i);
+});
+
+test("official company details are centralised and present across public identity surfaces", async () => {
+  const site = await readFile("app/lib/site.ts", "utf8");
+  const layout = await readFile("app/layout.tsx", "utf8");
+  const footer = await readFile("app/components/SiteChrome.tsx", "utf8");
+  const contact = await readFile("app/contact/page.tsx", "utf8");
+  const privacy = await readFile("app/privacy/page.tsx", "utf8");
+  const terms = await readFile("app/voorwaarden/page.tsx", "utf8");
+  for (const value of ["Van Dijk - Rijschool", "42130985", "Melis Stokelaan 2440", "2541 GR", "'s-Gravenhage", "+31 6 59116366"]) {
+    assert.ok(site.includes(value), `siteConfig mist ${value}`);
+  }
+  assert.match(layout, /PostalAddress/);
+  assert.match(layout, /siteConfig\.chamberOfCommerceNumber/);
+  [footer, contact, privacy, terms].forEach((source) => assert.match(source, /siteConfig\.(?:tradeName|chamberOfCommerceNumber|address|phone)/));
+});
+
+test("public identity uses neutral rijschool positioning", async () => {
+  const sources = await Promise.all([
+    ...routeFiles,
+    "app/layout.tsx",
+    "app/lib/site.ts",
+    "app/components/SiteChrome.tsx",
+    "app/components/DemoContent.tsx",
+    "app/globals.css",
+    "package.json",
+    "README.md",
+  ].map((file) => readFile(file, "utf8")));
+  const disallowedPositioning = new RegExp(["prem", "ium"].join(""), "i");
+  assert.doesNotMatch(sources.join("\n"), disallowedPositioning);
 });
 
 test("core interactive flows remain present", async () => {

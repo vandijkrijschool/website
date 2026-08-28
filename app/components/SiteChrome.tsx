@@ -14,7 +14,7 @@ import MobileNav from "./MobileNav";
 
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
-    <Link className={`brand ${compact ? "brand--compact" : ""}`} href="/" aria-label="Van Dijk Rijschool home">
+    <Link className={`brand ${compact ? "brand--compact" : ""}`} href="/" aria-label={`${siteConfig.tradeName} home`}>
       <img src="/images/vd-mark.jpg" alt="" width="72" height="58" />
       <span className="brand__copy">
         <strong>VAN DIJK</strong>
@@ -60,6 +60,13 @@ export function Footer() {
               <span><MapPin width="16" /> {siteConfig.areaLabel}</span>
               <span><Smartphone width="16" /> Voortgang via NXTDRIVE</span>
             </div>
+            <address className="footer-company-details">
+              <strong>{siteConfig.tradeName}</strong>
+              <span>{siteConfig.address.street}</span>
+              <span>{siteConfig.address.postalCode} {siteConfig.address.locality}</span>
+              <a href={siteConfig.phoneHref}>{siteConfig.phone}</a>
+              <a href={siteConfig.chamberOfCommerceUrl} target="_blank" rel="noreferrer">KVK {siteConfig.chamberOfCommerceNumber}</a>
+            </address>
           </div>
           <div>
             <h3>Rijopleiding</h3>
@@ -83,8 +90,8 @@ export function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Van Dijk Rijschool</span>
-          <span className="footer-affiliation">drive<span>•</span>you franchisenemer · Powered by NXTDRIVE · Premium prototype</span>
+          <span>© {new Date().getFullYear()} {siteConfig.tradeName}</span>
+          <span className="footer-affiliation">drive<span>•</span>you franchisenemer · Powered by NXTDRIVE · Websiteprototype</span>
           <div>
             <Link href="/privacy">Privacy</Link>
             <Link href="/voorwaarden">Voorwaarden</Link>

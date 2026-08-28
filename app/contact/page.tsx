@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { DemoNotice } from "../components/DemoContent";
-import { Clock, Mail, MapPin, Message, Phone } from "../components/Icons";
+import { Clock, MapPin, Phone, RouteIcon, Shield } from "../components/Icons";
 import LeadForm from "../components/LeadForm";
 import { Breadcrumbs, PageHero } from "../components/SiteChrome";
-import { demoContact } from "../lib/demo";
-import { pageMetadata } from "../lib/site";
+import { pageMetadata, siteConfig } from "../lib/site";
 
 export const metadata: Metadata = pageMetadata(
   "Contact met Van Dijk Rijschool Den Haag",
@@ -19,16 +18,16 @@ export default function ContactPage() {
       <section className="section">
         <div className="site-shell">
           <DemoNotice
-            title="Contactpagina volledig gevuld met veilige voorbeeldgegevens."
-            text="Het telefoonnummer, e-mailadres en de openingstijden zijn demo-data en niet actief. Gebruik het formulier om de interactie en successtatus van het prototype te bekijken."
+            title="Bedrijfsgegevens actueel, formulier nog in demonstratiemodus."
+            text="Het telefoonnummer, adres en KVK-nummer hieronder zijn de bedrijfsgegevens van Van Dijk - Rijschool. Het formulier toont de volledige interactie, maar verzendt nog geen gegevens."
           />
           <div className="contact-layout">
             <div className="contact-options">
-              <article><span><Message width="23" /></span><div><small>Demo WhatsApp</small><h3>{demoContact.phone}</h3><p>Voorbeeldkanaal voor een korte vraag of een geschikt belmoment.</p><a className="text-link" href="#contactformulier">Open het demoformulier</a></div></article>
-              <article><span><Phone width="23" /></span><div><small>Voorbeeldbeschikbaarheid</small><h3>Telefonisch</h3><p>{demoContact.availability}</p><a className="text-link" href="#contactformulier">Vraag een demobelmoment aan</a></div></article>
-              <article><span><Mail width="23" /></span><div><small>Demo e-mailadres</small><h3>{demoContact.email}</h3><p>Veilig voorbeeldadres voor dit niet-publieke demo-prototype.</p><a className="text-link" href="#contactformulier">Schrijf een demobericht</a></div></article>
-              <article><span><MapPin width="23" /></span><div><small>Werkgebied</small><h3>Regio Den Haag</h3><p>{demoContact.location}</p><a className="text-link" href="/rijschool-den-haag">Bekijk het lesgebied</a></div></article>
-              <div className="availability-note"><Clock width="19" /><p>De getoonde bereikbaarheid en responstijden zijn mockdata. De formulierflow blijft volledig lokaal en simuleert de reactie.</p></div>
+              <article><span><Phone width="23" /></span><div><small>Telefoon</small><h3>{siteConfig.phone}</h3><p>Neem telefonisch contact op voor vragen over rijlessen, intake of beschikbaarheid.</p><a className="text-link" href={siteConfig.phoneHref}>Bel Van Dijk - Rijschool</a></div></article>
+              <article><span><MapPin width="23" /></span><div><small>Vestigingsadres</small><h3>{siteConfig.address.street}</h3><p>{siteConfig.address.postalCode} {siteConfig.address.locality}</p></div></article>
+              <article><span><Shield width="23" /></span><div><small>Handelsregister</small><h3>KVK {siteConfig.chamberOfCommerceNumber}</h3><p>Handelsnaam: {siteConfig.tradeName}</p><a className="text-link" href={siteConfig.chamberOfCommerceUrl} target="_blank" rel="noreferrer">Bekijk bij KVK</a></div></article>
+              <article><span><RouteIcon width="23" /></span><div><small>Werkgebied</small><h3>Regio Den Haag</h3><p>Den Haag, Scheveningen, Rijswijk, Voorburg en Leidschendam, afhankelijk van beschikbaarheid.</p><a className="text-link" href="/rijschool-den-haag">Bekijk het lesgebied</a></div></article>
+              <div className="availability-note"><Clock width="19" /><p>Het formulier blijft lokaal en simuleert de reactie. Bel voor direct contact via <a href={siteConfig.phoneHref}>{siteConfig.phone}</a>.</p></div>
             </div>
             <div id="contactformulier"><LeadForm kind="contact" /></div>
           </div>

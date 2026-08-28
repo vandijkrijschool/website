@@ -35,7 +35,7 @@
     "eslint-config-next": "16.3.3"
   },
   "type": "module",
-  "displayName": "Van Dijk Rijschool \u2014 Premium Rijschool Den Haag",
+  "displayName": "Van Dijk - Rijschool | Rijschool Den Haag",
   "allowScripts": {
     "sharp": true,
     "unrs-resolver": true

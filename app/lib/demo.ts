@@ -68,13 +68,6 @@ export const demoInstructor = {
   ],
 } as const;
 
-export const demoContact = {
-  phone: "070 000 00 00",
-  email: "demo@vandijkrijschool.example",
-  availability: "Ma–vr 08:00–20:30 · za 08:00–16:00",
-  location: "Den Haag · bezoek uitsluitend op afspraak",
-} as const;
-
 export const demoStudent = {
   name: "Noor",
   package: "Meest gekozen · 30 lesuren",

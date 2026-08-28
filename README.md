@@ -1,6 +1,6 @@
 # Van Dijk Rijschool — production website
 
-Production-ready Next.js-website voor Van Dijk Rijschool, gericht op Den Haag en omgeving. De site vertaalt de zwart-wit-gele huisstijl naar een premium automotive interface en combineert marketingpagina’s met een pakketconfigurator, NXTDRIVE-proeflesplanner, veilige democontactflow en interactieve leerlingomgeving.
+Production-ready Next.js-website voor Van Dijk Rijschool, gericht op Den Haag en omgeving. De site vertaalt de zwart-wit-gele huisstijl naar een verzorgde automotive interface en combineert marketingpagina’s met een pakketconfigurator, NXTDRIVE-proeflesplanner, veilige democontactflow en interactieve leerlingomgeving.
 
 ## Wat is inbegrepen
 

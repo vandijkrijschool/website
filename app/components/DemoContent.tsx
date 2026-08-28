@@ -11,11 +11,10 @@ export function DemoNotice({
     <aside className="demo-notice" aria-label="Demonstratie-inhoud">
       <span><Sparkles width="19" /></span>
       <div>
-        <small>Premium prototype · demo-data</small>
+        <small>Websiteprototype · demo-data</small>
         <strong>{title}</strong>
         <p>{text}</p>
       </div>
     </aside>
   );
 }
-
