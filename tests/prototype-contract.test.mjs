@@ -146,6 +146,8 @@ test("responsive and reduced-motion contracts are included", async () => {
   assert.match(css, /@media \(max-width: 560px\)/);
   assert.match(css, /@media \(max-width: 380px\)/);
   assert.match(css, /prefers-reduced-motion: reduce/);
+  assert.match(css, /overflow-wrap: normal/);
+  assert.doesNotMatch(css, /overflow-wrap: anywhere/);
 });
 
 test("public demo is indexable and exposes a sitemap", async () => {

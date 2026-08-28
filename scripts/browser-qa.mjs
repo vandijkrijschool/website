@@ -133,12 +133,30 @@ try {
         const horizontalTravel = window.scrollX;
         window.scrollTo(0, window.scrollY);
         document.documentElement.style.scrollBehavior = previousBehavior;
+        const splitHeadingWords = [...document.querySelectorAll("h1,h2")].flatMap((heading) => {
+          const splitWords = [];
+          const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
+          let node = walker.nextNode();
+          while (node) {
+            for (const match of node.data.matchAll(/[\\p{L}\\p{N}]+/gu)) {
+              const range = document.createRange();
+              range.setStart(node, match.index);
+              range.setEnd(node, match.index + match[0].length);
+              const lineTops = new Set([...range.getClientRects()].filter((rect) => rect.width > 0).map((rect) => Math.round(rect.top)));
+              if (lineTops.size > 1) splitWords.push({ word: match[0], heading: heading.textContent.trim() });
+            }
+            node = walker.nextNode();
+          }
+          return splitWords;
+        });
         return {
           width: document.documentElement.clientWidth,
           scrollWidth: document.documentElement.scrollWidth,
           bodyScrollWidth: document.body.scrollWidth,
           innerWidth: window.innerWidth,
           horizontalTravel,
+          splitHeadingWords,
+          overflowingHeadings: [...document.querySelectorAll("h1,h2")].filter((heading) => heading.scrollWidth > heading.clientWidth + 1).map((heading) => heading.textContent.trim()),
           h1: document.querySelectorAll('main h1').length,
           brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
           overflowers: [...document.querySelectorAll('body *')].map((element) => ({ element, rect: element.getBoundingClientRect() })).filter(({ rect }) => rect.width > 0 && (rect.right > document.documentElement.clientWidth + 1 || rect.left < -1)).slice(0, 12).map(({ element, rect }) => ({ tag: element.tagName, className: String(element.className), left: Math.round(rect.left), right: Math.round(rect.right), width: Math.round(rect.width) })),
@@ -147,6 +165,8 @@ try {
       })()`);
       const viewportLabel = viewport.label ?? `${viewport.width}px`;
       assert.ok(state.horizontalTravel <= 1, `${route} overflowt op ${viewportLabel}: ${JSON.stringify(state)}`);
+      assert.deepEqual(state.overflowingHeadings, [], `${route} heeft een te brede headline op ${viewportLabel}: ${JSON.stringify(state.overflowingHeadings)}`);
+      assert.deepEqual(state.splitHeadingWords, [], `${route} breekt woorden middenin af op ${viewportLabel}: ${JSON.stringify(state.splitHeadingWords)}`);
       assert.equal(state.h1, 1, `${route} heeft niet precies één H1 in de uiteindelijke DOM`);
       assert.deepEqual(state.brokenImages, [], `${route} heeft ontbrekende beelden`);
       assert.equal(consoleProblems.length, 0, `${route} geeft browser-/consolefouten op ${viewportLabel}: ${JSON.stringify(consoleProblems)}`);
