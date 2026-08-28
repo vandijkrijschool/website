@@ -367,10 +367,12 @@ p { color: var(--muted-strong); }
 .partner-band i { width: 1px; height: 42px; background: var(--line-strong); }
 .partner-band p { margin: 0 0 0 auto; max-width: 520px; font-size: .78rem; }
 
+.home-closing-cta { background: #060708; }
+.home-closing-cta__inner { min-height: 230px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+.home-closing-cta h2 { max-width: 650px; margin: 0; font-size: clamp(2rem,3.6vw,3.7rem); text-transform: uppercase; }
+.home-closing-cta .eyebrow { margin-bottom: 12px; }
+
 .site-footer { border-top: 1px solid rgba(255,194,28,.25); background: #060708; }
-.footer-lead { min-height: 230px; display: flex; align-items: center; justify-content: space-between; gap: 40px; border-bottom: 1px solid var(--line); }
-.footer-lead h2 { max-width: 650px; margin: 0; font-size: clamp(2rem,3.6vw,3.7rem); text-transform: uppercase; }
-.footer-lead .eyebrow { margin-bottom: 12px; }
 .footer-grid { display: grid; grid-template-columns: 2fr repeat(3,1fr); gap: 65px; padding: 68px 0; }
 .footer-brand p { max-width: 370px; margin: 24px 0; font-size: .82rem; }
 .footer-badges { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -492,7 +494,7 @@ p { color: var(--muted-strong); }
   .faq-teaser > .text-link { grid-column: 1; }
   .partner-band__inner { align-items: flex-start; flex-wrap: wrap; }
   .partner-band p { margin-left: 0; flex-basis: 100%; }
-  .footer-lead { align-items: flex-start; flex-direction: column; justify-content: center; padding: 55px 0; }
+  .home-closing-cta__inner { align-items: flex-start; flex-direction: column; justify-content: center; padding: 55px 0; }
   .footer-grid { grid-template-columns: repeat(2,1fr); }
   .footer-brand { grid-column: 1 / -1; }
   .footer-bottom { align-items: flex-start; flex-direction: column; padding: 24px 0; }

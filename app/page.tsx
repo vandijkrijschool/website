@@ -240,6 +240,19 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="home-closing-cta" aria-labelledby="home-closing-cta-title">
+        <div className="site-shell home-closing-cta__inner">
+          <div>
+            <span className="eyebrow">Klaar voor de eerste kilometer?</span>
+            <h2 id="home-closing-cta-title">Jouw rijbewijs begint met een goed plan.</h2>
+          </div>
+          <div className="button-row">
+            <Link className="button" href="/proefles">Vraag een intake aan <ArrowRight width="18" /></Link>
+            <Link className="button button--ghost" href="/configurator">Stel je pakket samen</Link>
+          </div>
+        </div>
+      </section>
+
       <section className="partner-band">
         <div className="site-shell partner-band__inner">
           <div><small>Aangesloten als</small><strong>drive<span>•</span>you franchisenemer</strong></div>

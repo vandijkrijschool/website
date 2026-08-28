@@ -52,17 +52,6 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <div className="site-shell">
-        <div className="footer-lead">
-          <div>
-            <span className="eyebrow">Klaar voor de eerste kilometer?</span>
-            <h2>Jouw rijbewijs begint met een goed plan.</h2>
-          </div>
-          <div className="button-row">
-            <Link className="button" href="/proefles">Vraag een intake aan <ArrowRight width="18" /></Link>
-            <Link className="button button--ghost" href="/configurator">Stel je pakket samen</Link>
-          </div>
-        </div>
-
         <div className="footer-grid">
           <div className="footer-brand">
             <Brand />

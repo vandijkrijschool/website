@@ -160,3 +160,14 @@ test("runtime has no database, mail or SaaS integration dependencies", async () 
   const environment = await readFile(".env.example", "utf8");
   assert.doesNotMatch(`${packageJson}\n${environment}`, /supabase|drizzle|sendgrid|smtp/i);
 });
+
+test("closing CTA appears only on the homepage between FAQ and partner band", async () => {
+  const home = await readFile("app/page.tsx", "utf8");
+  const chrome = await readFile("app/components/SiteChrome.tsx", "utf8");
+  const faqIndex = home.indexOf('className="site-shell faq-teaser"');
+  const ctaIndex = home.indexOf('className="home-closing-cta"');
+  const partnerIndex = home.indexOf('className="partner-band"');
+  assert.ok(faqIndex >= 0 && faqIndex < ctaIndex && ctaIndex < partnerIndex);
+  assert.doesNotMatch(chrome, /Klaar voor de eerste kilometer/);
+  assert.equal((home.match(/Klaar voor de eerste kilometer/g) ?? []).length, 1);
+});
