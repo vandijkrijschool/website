@@ -164,10 +164,12 @@ test("runtime has no database, mail or SaaS integration dependencies", async () 
 test("closing CTA appears only on the homepage between FAQ and partner band", async () => {
   const home = await readFile("app/page.tsx", "utf8");
   const chrome = await readFile("app/components/SiteChrome.tsx", "utf8");
+  const styles = await readFile("app/globals.css", "utf8");
   const faqIndex = home.indexOf('className="site-shell faq-teaser"');
   const ctaIndex = home.indexOf('className="home-closing-cta"');
   const partnerIndex = home.indexOf('className="partner-band"');
   assert.ok(faqIndex >= 0 && faqIndex < ctaIndex && ctaIndex < partnerIndex);
   assert.doesNotMatch(chrome, /Klaar voor de eerste kilometer/);
   assert.equal((home.match(/Klaar voor de eerste kilometer/g) ?? []).length, 1);
+  assert.match(styles, /\.home-closing-cta \{[^}]*border-top: 1px solid var\(--line\)/);
 });

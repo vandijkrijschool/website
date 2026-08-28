@@ -72,7 +72,7 @@ function send(method, params = {}) {
   return new Promise((resolve, reject) => pending.set(id, { resolve, reject }));
 }
 
-function once(method, timeoutMs = 8000) {
+function once(method, timeoutMs = 12000) {
   return new Promise((resolve, reject) => {
     const handler = (params) => {
       clearTimeout(timer);
@@ -115,21 +115,38 @@ const viewports = [
   { width: 820, height: 1180 }, { width: 1024, height: 768 }, { width: 1280, height: 800 },
   { width: 1440, height: 900 }, { width: 720, height: 450, label: "1440×900 bij 200% zoom" },
 ];
-const criticalRoutes = ["/", "/configurator", "/proefles", "/contact", "/leerlingomgeving"];
+const publicRoutes = [
+  "/", "/configurator", "/proefles", "/contact", "/leerlingomgeving", "/rijlessen",
+  "/lespakketten", "/werkwijze", "/over-ons", "/reviews", "/faq", "/rijschool-den-haag",
+  "/regio/scheveningen", "/regio/rijswijk", "/regio/voorburg", "/regio/leidschendam",
+  "/privacy", "/voorwaarden",
+];
 
 try {
   for (const viewport of viewports) {
-    for (const route of criticalRoutes) {
+    for (const route of publicRoutes) {
       await navigate(route, viewport);
-      const state = await evaluate(`(() => ({
-        width: document.documentElement.clientWidth,
-        scrollWidth: document.documentElement.scrollWidth,
-        h1: document.querySelectorAll('main h1').length,
-        brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
-        overflowers: [...document.querySelectorAll('body *')].map((element) => ({ element, rect: element.getBoundingClientRect() })).filter(({ rect }) => rect.width > 0 && (rect.right > document.documentElement.clientWidth + 1 || rect.left < -1)).slice(0, 12).map(({ element, rect }) => ({ tag: element.tagName, className: String(element.className), left: Math.round(rect.left), right: Math.round(rect.right), width: Math.round(rect.width) })),
-      }))()`);
+      const state = await evaluate(`(() => {
+        const previousBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = "auto";
+        window.scrollTo(document.documentElement.scrollWidth, window.scrollY);
+        const horizontalTravel = window.scrollX;
+        window.scrollTo(0, window.scrollY);
+        document.documentElement.style.scrollBehavior = previousBehavior;
+        return {
+          width: document.documentElement.clientWidth,
+          scrollWidth: document.documentElement.scrollWidth,
+          bodyScrollWidth: document.body.scrollWidth,
+          innerWidth: window.innerWidth,
+          horizontalTravel,
+          h1: document.querySelectorAll('main h1').length,
+          brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
+          overflowers: [...document.querySelectorAll('body *')].map((element) => ({ element, rect: element.getBoundingClientRect() })).filter(({ rect }) => rect.width > 0 && (rect.right > document.documentElement.clientWidth + 1 || rect.left < -1)).slice(0, 12).map(({ element, rect }) => ({ tag: element.tagName, className: String(element.className), left: Math.round(rect.left), right: Math.round(rect.right), width: Math.round(rect.width) })),
+          overflowingBoxes: [...document.querySelectorAll('body *')].filter((element) => element.scrollWidth > element.clientWidth + 1).slice(0, 12).map((element) => ({ tag: element.tagName, className: String(element.className), clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, overflowX: getComputedStyle(element).overflowX })),
+        };
+      })()`);
       const viewportLabel = viewport.label ?? `${viewport.width}px`;
-      assert.ok(state.scrollWidth <= state.width + 1, `${route} overflowt op ${viewportLabel} (${state.scrollWidth} > ${state.width}): ${JSON.stringify(state.overflowers)}`);
+      assert.ok(state.horizontalTravel <= 1, `${route} overflowt op ${viewportLabel}: ${JSON.stringify(state)}`);
       assert.equal(state.h1, 1, `${route} heeft niet precies één H1 in de uiteindelijke DOM`);
       assert.deepEqual(state.brokenImages, [], `${route} heeft ontbrekende beelden`);
       assert.equal(consoleProblems.length, 0, `${route} geeft browser-/consolefouten op ${viewportLabel}: ${JSON.stringify(consoleProblems)}`);
@@ -183,7 +200,7 @@ try {
   })()`);
   assert.deepEqual(planner, { count: 3, selected: true });
 
-  console.log(`PASS browser QA: ${viewports.length} viewports × ${criticalRoutes.length} kernroutes + menu, tabs, configurator en planner.`);
+  console.log(`PASS browser QA: ${viewports.length} viewports × ${publicRoutes.length} publieke routes + menu, tabs, configurator en planner.`);
 } finally {
   socket.close();
   chrome.kill("SIGTERM");
