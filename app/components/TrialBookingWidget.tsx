@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { ArrowRight, Calendar, Check, Clock, Sparkles } from "./Icons";
-import { isProductionSite } from "../lib/site";
 import {
   AMSTERDAM_TIME_ZONE,
   demoAvailabilityAdapter,
@@ -157,7 +156,7 @@ export default function TrialBookingWidget({
         <span className="availability-status"><i aria-hidden="true" /> Demo-agenda actief</span>
       </header>
 
-      {!isProductionSite ? (
+      {process.env.NODE_ENV !== "production" ? (
         <details className="demo-scenario">
           <summary>Prototype-scenario testen</summary>
           <label><span>Agenda-uitkomst</span><select value={scenario} onChange={(event) => { setScenario(event.target.value as DemoAvailabilityScenario); resetResults(); }}>{scenarios.map((item) => <option key={item.value} value={item.value}>{item.label} — {item.help}</option>)}</select></label>

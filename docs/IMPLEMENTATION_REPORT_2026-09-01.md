@@ -151,4 +151,6 @@ Een eerste push van die jobsplitsing werd door GitHub vóór workflowstart afgew
 
 Run `33493664097` installeerde Chromium en alle systeemdependencies correct, maar toonde dat de handmatige `DevToolsActivePort`-bootstrap runnerspecifiek was. `scripts/browser-qa.mjs` gebruikt nu Playwrights officiële `chromium.launch()` en behoudt alle bestaande CDP-asserties; deze bootstrap is lokaal opnieuw met de volledige browsermatrix gevalideerd.
 
+Run `33494019868` bereikte daarmee de echte UI-gate en vond een hydration mismatch op `/proefles`: een private serveromgevingvariabele stuurde clientmarkup aan. De ontwikkelscenarioknoppen gebruiken nu de door Next.js aan beide zijden vastgezette `NODE_ENV`, zodat productie-SSR en -hydratie identiek zijn.
+
 Push- en deploymentresultaten worden na deze lokale, immutable QA-gate aan de uiteindelijke oplevering toegevoegd.

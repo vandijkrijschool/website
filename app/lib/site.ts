@@ -58,10 +58,6 @@ export const siteConfig = {
 // bevestigd. Publiceer daarom nog geen Offer- of Product-schema.
 export const isCommercialStructuredDataEnabled = false;
 
-// Houd ontwikkeltools zichtbaar buiten de productieomgeving; de publieke site
-// toont alleen de ondubbelzinnig gelabelde prototypeflow.
-export const isProductionSite = isProductionEnvironment;
-
 export const primaryNavigation = [
   { href: "/rijlessen", label: "Rijlessen" },
   { href: "/lespakketten", label: "Lespakketten" },
