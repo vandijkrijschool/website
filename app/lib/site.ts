@@ -29,7 +29,7 @@ export function validateProductionOrigin(origin: string) {
     parsed.protocol !== "https:" ||
     !parsed.hostname ||
     /^(?:localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(parsed.hostname) ||
-    /voorbeeld|example/i.test(parsed.hostname)
+    parsed.origin !== intendedOrigin
   ) {
     throw new Error(`Ongeldige productie-origin: ${origin}.`);
   }
@@ -46,8 +46,8 @@ export const siteConfig = {
   description: coreRouteMetadata["/"].description,
   url: configuredOrigin.replace(/\/$/, ""),
   intendedOrigin,
-  organizationId: `${intendedOrigin}/#organization`,
-  websiteId: `${intendedOrigin}/#website`,
+  organizationId: `${configuredOrigin.replace(/\/$/, "")}/#organization`,
+  websiteId: `${configuredOrigin.replace(/\/$/, "")}/#website`,
   legalName: siteFacts.brand.legalName,
   contact: siteFacts.contactFromRepository,
   areaLabel: "Den Haag, Delft, Pijnacker en Westland",

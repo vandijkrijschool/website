@@ -16,8 +16,12 @@
   },
   "web": {
     "intendedCanonicalOrigin": {
+      "value": "https://voorbeeld.vandijkrijschool.nl",
+      "status": "userConfirmedTemporaryOn2026-09-01"
+    },
+    "futureCanonicalOrigin": {
       "value": "https://vandijkrijschool.nl",
-      "status": "userProvidedNeedsDnsAndRedirectConfirmation"
+      "status": "deferredUntilUserApprovesMigration"
     }
   },
   "contactFromRepository": {

@@ -55,7 +55,7 @@ npm run start        # standalone runtime op 127.0.0.1:3108
 
 | Variabele | Doel |
 | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Exacte canonieke oorsprong; productie vereist `https://vandijkrijschool.nl` |
+| `NEXT_PUBLIC_SITE_URL` | Exacte tijdelijke canonieke oorsprong; voorlopig `https://voorbeeld.vandijkrijschool.nl` |
 | `NEXT_PUBLIC_INDEXING_ENABLED` | Alleen `true` na afronding van alle releasegates |
 | `APP_ENVIRONMENT` | In productie exact `production` |
 | `APP_REVISION` | Volledige Git SHA van de actieve release |

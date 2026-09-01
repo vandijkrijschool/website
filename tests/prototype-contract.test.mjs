@@ -121,7 +121,7 @@ test("interactive flows preserve full state, cent costs and startmoment", async 
   assert.match(form, /configurator/);
 });
 
-test("source and runtime code contain no placeholder host, old packages or wrong image references", async () => {
+test("source and runtime code use only the approved temporary host and contain no old packages or wrong image references", async () => {
   const files = [
     ...contentRouteFiles,
     "app/layout.tsx", "app/lib/site.ts", "app/lib/content.ts", "app/lib/configurator.ts",
@@ -129,7 +129,8 @@ test("source and runtime code contain no placeholder host, old packages or wrong
     "scripts/smoke-standalone.mjs", "scripts/validate-production-env.mjs", ".github/workflows/deploy-production.yml",
   ];
   const source = (await Promise.all(files.map((file) => readFile(file, "utf8")))).join("\n");
-  assert.doesNotMatch(source, /voorbeeld\.vandijkrijschool\.nl/);
+  assert.doesNotMatch(source, /https:\/\/vandijkrijschool\.nl/);
+  assert.match(source, /https:\/\/voorbeeld\.vandijkrijschool\.nl/);
   assert.doesNotMatch(source, /Instappakket|Meest gekozen|Zeker Slagen|Gratis herexamen/);
   assert.doesNotMatch(source, /hero-car\.webp|den-haag-drive\.webp|scheveningen-drive\.webp|intake-instructor\.webp|\/og\.png/);
 });
@@ -146,5 +147,5 @@ test("responsive, keyboard and reduced-motion quality gates are wired into check
   assert.match(packageJson.scripts.check, /test:browser/);
   assert.match(workflow, /npm run test:browser/);
   assert.match(workflow, /NEXT_PUBLIC_INDEXING_ENABLED: "false"/);
-  assert.match(workflow, /https:\/\/vandijkrijschool\.nl/);
+  assert.match(workflow, /https:\/\/voorbeeld\.vandijkrijschool\.nl/);
 });

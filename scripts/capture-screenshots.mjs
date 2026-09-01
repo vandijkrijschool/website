@@ -33,7 +33,7 @@ const viewports = [["desktop", 1440, 900], ["mobile", 390, 844]];
 
 const server = spawn(process.execPath, [".next/standalone/server.js"], {
   cwd: resolve("."),
-  env: { ...process.env, APP_ENVIRONMENT: "production", APP_REVISION: "fedcba9876543210fedcba9876543210fedcba98", HOSTNAME: "127.0.0.1", NEXT_PUBLIC_SITE_URL: "https://vandijkrijschool.nl", NEXT_PUBLIC_INDEXING_ENABLED: "false", PORT: String(port) },
+  env: { ...process.env, APP_ENVIRONMENT: "production", APP_REVISION: "fedcba9876543210fedcba9876543210fedcba98", HOSTNAME: "127.0.0.1", NEXT_PUBLIC_SITE_URL: "https://voorbeeld.vandijkrijschool.nl", NEXT_PUBLIC_INDEXING_ENABLED: "false", PORT: String(port) },
   stdio: "ignore",
 });
 const chrome = spawn(browser, ["--headless=new", "--no-sandbox", "--disable-gpu", "--hide-scrollbars", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "about:blank"], { stdio: "ignore" });

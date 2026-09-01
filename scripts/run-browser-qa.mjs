@@ -13,7 +13,7 @@ const server = spawn(process.execPath, [".next/standalone/server.js"], {
     APP_ENVIRONMENT: "production",
     APP_REVISION: revision,
     HOSTNAME: "127.0.0.1",
-    NEXT_PUBLIC_SITE_URL: "https://vandijkrijschool.nl",
+    NEXT_PUBLIC_SITE_URL: "https://voorbeeld.vandijkrijschool.nl",
     NEXT_PUBLIC_INDEXING_ENABLED: "false",
     PORT: String(port),
   },

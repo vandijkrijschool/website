@@ -5,7 +5,7 @@ import { setTimeout as delay } from "node:timers/promises";
 
 const port = 43108;
 const origin = `http://127.0.0.1:${port}`;
-const publicOrigin = "https://vandijkrijschool.nl";
+const publicOrigin = "https://voorbeeld.vandijkrijschool.nl";
 const revision = "0123456789abcdef0123456789abcdef01234567";
 const output = [];
 const sitemapDefinition = JSON.parse(await readFile(new URL("../data/sitemap.json", import.meta.url), "utf8"));

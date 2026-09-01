@@ -1,4 +1,4 @@
-const expectedUrl = "https://vandijkrijschool.nl";
+const expectedUrl = "https://voorbeeld.vandijkrijschool.nl";
 const errors = [];
 let parsed;
 
@@ -13,9 +13,9 @@ if (process.env.NEXT_PUBLIC_SITE_URL !== expectedUrl) {
 }
 if (
   parsed &&
-  (parsed.protocol !== "https:" || /localhost|127\.0\.0\.1|0\.0\.0\.0|voorbeeld|example/i.test(parsed.hostname))
+  (parsed.protocol !== "https:" || parsed.origin !== expectedUrl)
 ) {
-  errors.push("NEXT_PUBLIC_SITE_URL must be a non-placeholder HTTPS production origin");
+  errors.push("NEXT_PUBLIC_SITE_URL must be the explicitly approved temporary HTTPS origin");
 }
 if (process.env.APP_ENVIRONMENT !== "production") {
   errors.push("APP_ENVIRONMENT must equal production");

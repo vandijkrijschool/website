@@ -5,7 +5,7 @@ De aangeleverde implementatieopdracht en het overdrachtspakket zijn verwerkt bov
 ## Belangrijkste keuzes
 
 - ontbrekende bedrijfs-, juridische en commerciële feiten zijn niet ingevuld met aannames;
-- de bedoelde canonical origin is `https://vandijkrijschool.nl`;
+- de actieve canonical origin blijft op expliciet gebruikersverzoek voorlopig `https://voorbeeld.vandijkrijschool.nl`; migratie naar de apex is uitgesteld;
 - de release wordt veilig gedeployed met sitewide noindex en een lege sitemap;
 - Den Haag bestaat alleen op `/rijschool-den-haag`; 16 andere plaatsen gebruiken `/regio/[slug]`;
 - generated-location beelden zijn zichtbare sfeerimpressies;

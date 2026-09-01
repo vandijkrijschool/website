@@ -5,7 +5,7 @@
 - bronrevision: `fea1503fac1d5f4ca9cb7847f762e4a7920d0cae`;
 - werkbranch: `codex/implement-handoff-2026-09-01`;
 - opdrachtbron: het complete overdrachtspakket van 31 augustus 2026;
-- intended origin: `https://vandijkrijschool.nl`;
+- actieve tijdelijke origin: `https://voorbeeld.vandijkrijschool.nl` (opdrachtgever bevestigd op 1 september 2026);
 - veilige releasestand: `NEXT_PUBLIC_INDEXING_ENABLED=false`.
 
 De repository, `origin/main` en `origin/production` stonden vóór implementatie op dezelfde bronrevision. De productionbranch was bij controle op GitHub niet beschermd (API: `Branch not protected`). Advies: vereis minimaal de workflowcheck, restrict force-pushes en laat alleen gereviewde fast-forwards naar `production` toe.
@@ -26,7 +26,7 @@ De repository, `origin/main` en `origin/production` stonden vóór implementatie
 - `data/assets.json` — responsive beeldcontract en goedkeuringsregels.
 - `data/pricing.json` — alle bronprijzen in eurocenten, pakketten en onzekerheden.
 - `data/regions.json` — exact 17 plaatsen met canonical, nabije plaatsen en beeldbasis.
-- `data/site-facts.json` — merk-, web-, contact-, operatie- en integratiestatussen zonder oude voorbeeldhost.
+- `data/site-facts.json` — merk-, web-, contact-, operatie- en integratiestatussen met expliciete tijdelijke voorbeeldhost en uitgestelde apexmigratie.
 - `data/sitemap.json` — exact 29 beoogde indexroutes en 4 ondersteunende routes.
 - `app/lib/content.ts` — getypeerde imports, prijsformattering, regio-editorial en fail-fast datavalidatie.
 - `app/lib/site.ts` — strikte productie-origin, metadata, navigatie en fail-closed indexeringsgate.

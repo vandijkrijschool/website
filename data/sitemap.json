@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "expectedIndexableCount": 29,
-  "intendedOrigin": "https://vandijkrijschool.nl",
+  "intendedOrigin": "https://voorbeeld.vandijkrijschool.nl",
   "routes": [
     {"path": "/", "type": "core"},
     {"path": "/rijlessen", "type": "core"},
