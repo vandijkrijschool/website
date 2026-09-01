@@ -24,7 +24,7 @@ jobs:
       NEXT_PUBLIC_INDEXING_ENABLED: "false"
       APP_ENVIRONMENT: production
       APP_REVISION: ${{ github.sha }}
-      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/vandijkrijschool-playwright
+      PLAYWRIGHT_BROWSERS_PATH: /tmp/vandijkrijschool-playwright
     steps:
       - name: Check out exact revision
         uses: actions/checkout@v7

@@ -147,4 +147,6 @@ De 29 beoogde sitemaproutes zijn:
 
 De eerste productionworkflow-run `33492823131` stopte veilig vóór deployment doordat de self-hosted runner nog geen Chromium had. Run `33493263491` bevestigde daarna dat de minimale VPS-runner de Chromium-systeemlibraries bewust niet bevat. De gepinde browsergate draait daarom in een afzonderlijke GitHub-hosted Linux-job met officiële systeemdependencies; de dedicated deploymentjob heeft die job als harde `needs`-voorwaarde. Geen van beide mislukte runs heeft een gedeeltelijke deployment uitgevoerd.
 
+Een eerste push van die jobsplitsing werd door GitHub vóór workflowstart afgewezen omdat `runner.temp` niet in jobniveau-`env` beschikbaar is. De cache gebruikt nu een expliciete tijdelijke map op de geïsoleerde hosted VM.
+
 Push- en deploymentresultaten worden na deze lokale, immutable QA-gate aan de uiteindelijke oplevering toegevoegd.
