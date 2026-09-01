@@ -1,10 +1,18 @@
-import { extraLessonPrice, packages } from "./packages.js";
+import {
+  guaranteeFundFee,
+  installmentAdministrationFee,
+  packageById,
+  packages,
+  registrationFee,
+  type StarterPackageId,
+} from "./content.ts";
 
 export type Experience = "none" | "some" | "experienced" | "transfer" | "exam";
 export type Confidence = "uncertain" | "neutral" | "confident";
-export type PackageId = (typeof packages)[number]["id"];
+export type PaymentInstallments = 1 | 2 | 3 | 4;
+export type PackageId = StarterPackageId;
 
-export const CONFIGURATOR_STORAGE_KEY = "van-dijk-configurator-v1";
+export const CONFIGURATOR_STORAGE_KEY = "van-dijk-configurator-v2";
 
 export const experienceValues: readonly Experience[] = [
   "none",
@@ -28,17 +36,23 @@ export const availabilityValues = [
   "Flexibel",
 ] as const;
 
+export const desiredStartValues = [
+  "Zo snel mogelijk",
+  "Binnen een maand",
+  "Over 1 tot 3 maanden",
+  "Ik weet het nog niet",
+] as const;
+
 export type ConfiguratorState = {
   step: 1 | 2 | 3 | 4;
   experience: Experience | null;
   confidence: Confidence | null;
   sessionsPerWeek: 1 | 2 | 3;
-  sessionMinutes: 60 | 90 | 120;
-  desiredStart: string;
+  desiredStart: (typeof desiredStartValues)[number];
   availability: string[];
   selectedId: PackageId;
   manualSelection: boolean;
-  extraLessons: number;
+  paymentInstallments: PaymentInstallments;
 };
 
 export const defaultConfiguratorState: ConfiguratorState = {
@@ -46,103 +60,127 @@ export const defaultConfiguratorState: ConfiguratorState = {
   experience: null,
   confidence: null,
   sessionsPerWeek: 2,
-  sessionMinutes: 90,
   desiredStart: "Zo snel mogelijk",
   availability: ["Na school of werk", "Flexibel"],
-  selectedId: "meest-gekozen",
+  selectedId: "starter-40",
   manualSelection: false,
-  extraLessons: 0,
+  paymentInstallments: 1,
 };
-
-const desiredStartValues = [
-  "Zo snel mogelijk",
-  "Binnen een maand",
-  "Over 1 tot 3 maanden",
-  "Ik weet het nog niet",
-] as const;
 
 function isOneOf<T extends string | number>(value: unknown, values: readonly T[]): value is T {
   return values.includes(value as T);
 }
 
+function normaliseState(value: Record<string, unknown>): ConfiguratorState {
+  const availability = Array.isArray(value.availability)
+    ? value.availability.filter((item): item is string =>
+        typeof item === "string" && isOneOf(item, availabilityValues),
+      )
+    : defaultConfiguratorState.availability;
+  return {
+    step: isOneOf(value.step, [1, 2, 3, 4] as const) ? value.step : 1,
+    experience: isOneOf(value.experience, experienceValues) ? value.experience : null,
+    confidence: isOneOf(value.confidence, confidenceValues) ? value.confidence : null,
+    sessionsPerWeek: isOneOf(value.sessionsPerWeek, [1, 2, 3] as const)
+      ? value.sessionsPerWeek
+      : defaultConfiguratorState.sessionsPerWeek,
+    desiredStart: isOneOf(value.desiredStart, desiredStartValues)
+      ? value.desiredStart
+      : defaultConfiguratorState.desiredStart,
+    availability,
+    selectedId: isOneOf(value.selectedId, packages.map((item) => item.id))
+      ? value.selectedId
+      : defaultConfiguratorState.selectedId,
+    manualSelection: typeof value.manualSelection === "boolean" ? value.manualSelection : false,
+    paymentInstallments: isOneOf(value.paymentInstallments, [1, 2, 3, 4] as const)
+      ? value.paymentInstallments
+      : 1,
+  };
+}
+
 /** Defensieve grens voor onbetrouwbare sessionStorage-inhoud. */
 export function restoreConfiguratorState(raw: string | null): ConfiguratorState | null {
   if (!raw) return null;
-
   try {
     const value = JSON.parse(raw) as Record<string, unknown>;
     if (!value || typeof value !== "object" || Array.isArray(value)) return null;
-
-    const selectedId = isOneOf(value.selectedId, packages.map((item) => item.id))
-      ? value.selectedId
-      : defaultConfiguratorState.selectedId;
-    const selectedPackage = packages.find((item) => item.id === selectedId) ?? packages[1];
-    const maxExtras = 60 - selectedPackage.lessons;
-    const availability = Array.isArray(value.availability)
-      ? value.availability.filter((item): item is string =>
-          typeof item === "string" && isOneOf(item, availabilityValues),
-        )
-      : defaultConfiguratorState.availability;
-
-    return {
-      step: isOneOf(value.step, [1, 2, 3, 4] as const) ? value.step : 1,
-      experience: isOneOf(value.experience, experienceValues) ? value.experience : null,
-      confidence: isOneOf(value.confidence, confidenceValues) ? value.confidence : null,
-      sessionsPerWeek: isOneOf(value.sessionsPerWeek, [1, 2, 3] as const)
-        ? value.sessionsPerWeek
-        : defaultConfiguratorState.sessionsPerWeek,
-      sessionMinutes: isOneOf(value.sessionMinutes, [60, 90, 120] as const)
-        ? value.sessionMinutes
-        : defaultConfiguratorState.sessionMinutes,
-      desiredStart: isOneOf(value.desiredStart, desiredStartValues)
-        ? value.desiredStart
-        : defaultConfiguratorState.desiredStart,
-      availability,
-      selectedId,
-      manualSelection: typeof value.manualSelection === "boolean" ? value.manualSelection : false,
-      extraLessons:
-        typeof value.extraLessons === "number" && Number.isInteger(value.extraLessons)
-          ? Math.min(maxExtras, Math.max(0, value.extraLessons))
-          : 0,
-    };
+    return normaliseState(value);
   } catch {
     return null;
   }
+}
+
+export function restoreConfiguratorSearch(search: string): Partial<ConfiguratorState> {
+  const params = new URLSearchParams(search);
+  const availability = (params.get("beschikbaar") ?? "").split("|").filter(Boolean);
+  const raw: Record<string, unknown> = {
+    step: Number(params.get("stap")),
+    experience: params.get("ervaring"),
+    confidence: params.get("vertrouwen"),
+    sessionsPerWeek: Number(params.get("ritme")),
+    desiredStart: params.get("start"),
+    availability,
+    selectedId: params.get("pakket"),
+    manualSelection: params.has("pakket"),
+    paymentInstallments: Number(params.get("termijnen")),
+  };
+  const normalised = normaliseState(raw);
+  return {
+    ...normalised,
+    ...(params.has("stap") ? {} : { step: undefined }),
+    ...(params.has("ervaring") ? {} : { experience: undefined }),
+    ...(params.has("vertrouwen") ? {} : { confidence: undefined }),
+    ...(params.has("ritme") ? {} : { sessionsPerWeek: undefined }),
+    ...(params.has("start") ? {} : { desiredStart: undefined }),
+    ...(params.has("beschikbaar") ? {} : { availability: undefined }),
+    ...(params.has("pakket") ? {} : { selectedId: undefined, manualSelection: undefined }),
+    ...(params.has("termijnen") ? {} : { paymentInstallments: undefined }),
+  };
+}
+
+export function serializeConfiguratorState(state: ConfiguratorState) {
+  const params = new URLSearchParams({
+    stap: String(state.step),
+    ervaring: state.experience ?? "",
+    vertrouwen: state.confidence ?? "",
+    ritme: String(state.sessionsPerWeek),
+    start: state.desiredStart,
+    beschikbaar: state.availability.join("|"),
+    pakket: state.selectedId,
+    termijnen: String(state.paymentInstallments),
+  });
+  return params.toString();
 }
 
 export function recommendationFor(
   experience: Experience | null,
   confidence: Confidence | null,
 ): PackageId {
-  const experienceScore =
-    experience === "none"
-      ? 2
-      : experience === "some" || experience === "transfer" || experience === "exam"
-        ? 1
-        : 0;
+  const experienceScore = experience === "none" ? 3 : experience === "some" ? 2 : 1;
   const confidenceScore = confidence === "uncertain" ? 2 : confidence === "neutral" ? 1 : 0;
   const score = experienceScore + confidenceScore;
-  if (score >= 4) return "zeker-slagen";
-  if (score >= 2) return "meest-gekozen";
-  return "instap";
+  if (score >= 5) return "starter-50";
+  if (score >= 4) return "starter-40";
+  if (score >= 3) return "starter-30";
+  return "starter-20";
 }
 
 export function calculateConfigurator(
   packageId: PackageId,
-  extraLessons: number,
-  sessionMinutes: 60 | 90 | 120,
-  sessionsPerWeek: 1 | 2 | 3,
+  paymentInstallments: PaymentInstallments,
 ) {
-  const selectedPackage = packages.find((item) => item.id === packageId) ?? packages[1];
-  const boundedExtras = Math.min(60 - selectedPackage.lessons, Math.max(0, Math.trunc(extraLessons)));
-  const totalLessons = selectedPackage.lessons + boundedExtras;
-
+  const selectedPackage = packageById.get(packageId) ?? packages[2];
+  const administrationFeeCents = paymentInstallments > 1
+    ? installmentAdministrationFee.amount
+    : 0;
   return {
     selectedPackage,
-    extraLessons: boundedExtras,
-    totalLessons,
-    totalPrice: selectedPackage.price + boundedExtras * extraLessonPrice,
-    appointments: Math.ceil((totalLessons * 60) / sessionMinutes),
-    weeks: Math.ceil((totalLessons * 60) / (sessionsPerWeek * sessionMinutes)),
+    packagePriceCents: selectedPackage.amountCents,
+    administrationFeeCents,
+    chosenTotalCents: selectedPackage.amountCents + administrationFeeCents,
+    possibleAdditionalCosts: [
+      { id: registrationFee.id, name: registrationFee.name, amountCents: registrationFee.amount },
+      { id: guaranteeFundFee.id, name: guaranteeFundFee.name, amountCents: guaranteeFundFee.amount },
+    ],
   };
 }

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "expectedIndexableCount": 29,
+  "intendedOrigin": "https://vandijkrijschool.nl",
+  "routes": [
+    {"path": "/", "type": "core"},
+    {"path": "/rijlessen", "type": "core"},
+    {"path": "/lespakketten", "type": "core"},
+    {"path": "/tarieven", "type": "core"},
+    {"path": "/configurator", "type": "core"},
+    {"path": "/proefles", "type": "core"},
+    {"path": "/theorie", "type": "core"},
+    {"path": "/werkwijze", "type": "core"},
+    {"path": "/over-ons", "type": "core"},
+    {"path": "/faq", "type": "core"},
+    {"path": "/contact", "type": "core"},
+    {"path": "/werkgebied", "type": "core"},
+    {"path": "/rijschool-den-haag", "type": "region", "regionSlug": "den-haag"},
+    {"path": "/regio/den-hoorn", "type": "region", "regionSlug": "den-hoorn"},
+    {"path": "/regio/de-lier", "type": "region", "regionSlug": "de-lier"},
+    {"path": "/regio/delft", "type": "region", "regionSlug": "delft"},
+    {"path": "/regio/honselersdijk", "type": "region", "regionSlug": "honselersdijk"},
+    {"path": "/regio/kwintsheul", "type": "region", "regionSlug": "kwintsheul"},
+    {"path": "/regio/leidschendam", "type": "region", "regionSlug": "leidschendam"},
+    {"path": "/regio/monster", "type": "region", "regionSlug": "monster"},
+    {"path": "/regio/naaldwijk", "type": "region", "regionSlug": "naaldwijk"},
+    {"path": "/regio/nootdorp", "type": "region", "regionSlug": "nootdorp"},
+    {"path": "/regio/pijnacker", "type": "region", "regionSlug": "pijnacker"},
+    {"path": "/regio/poeldijk", "type": "region", "regionSlug": "poeldijk"},
+    {"path": "/regio/rijswijk", "type": "region", "regionSlug": "rijswijk"},
+    {"path": "/regio/scheveningen", "type": "region", "regionSlug": "scheveningen"},
+    {"path": "/regio/s-gravenzande", "type": "region", "regionSlug": "s-gravenzande"},
+    {"path": "/regio/voorburg", "type": "region", "regionSlug": "voorburg"},
+    {"path": "/regio/wateringen", "type": "region", "regionSlug": "wateringen"}
+  ],
+  "excludedRoutes": [
+    {"path": "/reviews", "robots": "noindex,follow", "reason": "demo reviews"},
+    {"path": "/leerlingomgeving", "robots": "noindex,follow", "reason": "demo student portal"},
+    {"path": "/privacy", "robots": "noindex,follow", "reason": "legal support page"},
+    {"path": "/voorwaarden", "robots": "noindex,follow", "reason": "legal support page"}
+  ]
+}

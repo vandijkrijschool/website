@@ -1,51 +1,26 @@
-# Demo-dataregister
+# Data- en demogrens
 
-Alle items in dit document zijn bewust fictieve, consistente mockdata voor een productie-afgewerkt demo-prototype. Ze maken de ervaring compleet zonder een echte onderneming, leerling of commerciële aanbieding voor te stellen.
+## Bevestigde brondata
 
-## Pakketten en tarieven
+De prijstabellen in [`data/pricing.json`](../data/pricing.json), de 17 werkgebieden in [`data/regions.json`](../data/regions.json), het beoogde routecontract in [`data/sitemap.json`](../data/sitemap.json) en de statussen in [`data/site-facts.json`](../data/site-facts.json) zijn de centrale bron. De website voegt geen oude mockpakketten of afgeronde centbedragen toe.
 
-De pakketdata staat centraal in `app/lib/packages.js`, met een her-export via `app/lib/site.ts`.
+De vijf startpakketten zijn Pakket 20, 30, 40, 50 en Alles-in-1. Losse tarieven, vervolgpakketten en herexamenpakketten worden uit dezelfde prijsbron getoond. De toeslag voor betaling in 2, 3 of 4 termijnen is eenmalig € 39.
 
-| ID | Naam | Lesuren | Mockprijs | Belangrijkste inclusies |
-| --- | --- | ---: | ---: | --- |
-| `instap` | Instappakket | 20 | € 1.250 | praktijkexamen, lesplan, NXTDRIVE |
-| `meest-gekozen` | Meest gekozen | 30 | € 1.950 | praktijkexamen, tussentijdse toets, NXTDRIVE |
-| `zeker-slagen` | Zeker Slagen | 40 | € 2.450 | praktijkexamen, tussentijdse toets, voorwaardelijke herexamenregeling |
+## Niet als bevestigd publiceren
 
-Losse les: € 60 per lesuur. Demo-afspraken: één lesuur duurt 60 minuten, pakketten zijn twaalf maanden geldig, kosteloos annuleren kan tot 24 uur vooraf en betaling kan in drie gelijke mocktermijnen. Er vindt geen echte verkoop of betaling plaats.
+- duur van één rijles, btw-status, prijspeildatum en pakketgeldigheid;
+- annulerings-, no-show- en restitutievoorwaarden;
+- exacte exameninclusies en voorwaarden van de gratis proefles;
+- verplichte toepasselijkheid van € 39,50 inschrijfkosten en € 41,50 garantiefonds;
+- juridische handelsnaam, NAP, KVK, e-mail, openingstijden en privacyverantwoordelijke;
+- actuele beschikbaarheid, geen wachtlijst en gemiddeld 45 lessen;
+- exacte DriveYOU-relatie en een echte NXTDRIVE-endpoint/widget.
 
-## Fictieve persoonsgegevens
+## Bewuste demo-inhoud
 
-- instructeur: Robin van Dijk — demonstratieprofiel;
-- reviews: Noor, Milan, Sara, Yassin, Lotte en Daan;
-- leerlingomgeving: Noor, pakket “Meest gekozen”, 12 gevolgde lesuren en 68% voortgang;
-- bevestigingsreferentie: `DEMO-NXT-2048`.
+- de proeflesplanner genereert lokaal exact drie momenten en kan loading, leeg, providerfout, timeout en conflict tonen;
+- formulierinzendingen worden lokaal gevalideerd maar niet verzonden of opgeslagen;
+- de leerlingomgeving en reviews zijn duidelijk gelabelde demonstraties en staan op `noindex`;
+- gegenereerde voertuig- en locatiescènes zijn sfeerimpressies.
 
-Geen van deze personen of gegevens vertegenwoordigt een echte leerling of medewerker.
-
-## Bedrijfsgegevens
-
-- telefoon: `+31 6 59116366` (bedrijfsgegeven, geen demo-data);
-- vestigingsadres: `Melis Stokelaan 2440, 2541 GR 's-Gravenhage` (bedrijfsgegeven);
-- KVK-nummer: `42130985` (bedrijfsgegeven);
-- er is geen publiek e-mailadres of vaste bereikbaarheid opgegeven.
-
-De website toont deze gegevens als echte bedrijfsinformatie. Alleen de formulierafhandeling blijft lokaal gesimuleerd.
-
-## Beschikbaarheid
-
-De proefleswidget genereert lokaal drie toekomstige data op basis van de gekozen weekdag en dagdelen. De tijden zijn fixtures:
-
-- ochtend: 09:00, 10:30, 11:15;
-- middag: 13:00, 14:30, 16:00;
-- avond: 17:30, 18:30, 19:15.
-
-De scenariokiezer simuleert een normale flow, lege agenda, providerfout, timeout en een ingenomen eerste slot. De formulieradapter simuleert succes, koppelfout en timeout. Geen scenario doet een netwerkcall of bewaart formulierinvoer.
-
-## Reviews en structured data
-
-De reviewteksten zijn fictief en dragen ieder het label `Demo-review`. Er wordt geen `Review` of `AggregateRating` JSON-LD gepubliceerd. Mockprijzen worden evenmin als commerciële Product-, Offer- of Service-data aangeboden.
-
-## Optionele vervanging bij een toekomstige echte site
-
-Pas wanneer later expliciet een echte publieke dienst wordt gebouwd, kunnen bedrijfsgegevens, instructeurs, tarieven, reviews, lesgebied, juridische teksten en integraties door echte bronnen worden vervangen. Deze vervanging valt buiten de huidige demo en blokkeert de oplevering niet.
+Geen UI-successtatus betekent dat een afspraak, betaling, bericht of account extern is verwerkt.

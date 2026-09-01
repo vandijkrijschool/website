@@ -1,33 +1,28 @@
 # Afbeeldingenmanifest
 
-## Merkbestanden
+De machineleesbare bron staat in [`data/assets.json`](../data/assets.json). De website gebruikt 23 beeldbasissen met varianten van 640, 960, 1280 en 1600 px (92 WebP-bestanden) en 19 Open Graph-JPG’s van 1200×630.
 
-| Bestand | Afmeting | Herkomst | Gebruik |
-| --- | ---: | --- | --- |
-| `images/logo-stacked.jpg` | 1536×1347 | door opdrachtgever aangeleverd merkbeeld | grote logo-/merktoepassing |
-| `images/vd-mark.jpg` | 492×405 | uitsnede van aangeleverd merkbeeld | header en footer |
-| `icon-192.png` | 192×192 | afgeleid prototype-icoon | PWA/favicon |
-| `icon-512.png` | 512×512 | afgeleid prototype-icoon | PWA |
-| `og.png` | 1200×630 | branded, geoptimaliseerde prototypekaart | social preview |
+## Algemeen beeld
 
-## Fotoserie
+| Basis | Belangrijkste route(s) |
+| --- | --- |
+| `hero-den-haag-blue-hour` | `/` |
+| `intake-bij-lesauto` | `/proefles`, `/over-ons` |
+| `rijles-interieur-den-haag` | `/rijlessen`, `/werkwijze` |
+| `nxtdrive-tablet-met-lesauto` | `/leerlingomgeving`, `/werkwijze` |
+| `theorie-itheorie-met-lesauto` | `/theorie` |
+| `den-haag-vredespaleis` | `/`, `/rijschool-den-haag` |
 
-| Bestand | Afmeting | Inhoud |
-| --- | ---: | --- |
-| `images/hero-car.webp` | 1672×941 | filmische Van Dijk-lesauto voor homepagehero |
-| `images/rijles-interieur.webp` | 1672×941 | rijlesinterieur / persoonlijke begeleiding |
-| `images/intake-instructor.webp` | 1672×941 | kennismaking bij de lesauto |
-| `images/den-haag-drive.webp` | 1672×941 | lesauto in Haagse setting |
-| `images/scheveningen-drive.webp` | 1672×941 | lesauto in Scheveningse setting |
-| `images/locatie-hofvijver.webp` | 1672×941 | lesauto bij Hofvijver/Binnenhof |
-| `images/locatie-scheveningen.webp` | 1672×941 | lesauto bij boulevard/Kurhaus |
-| `images/locatie-vredespaleis.webp` | 1672×941 | lesauto bij Vredespaleis |
-| `images/locatie-tablet.webp` | 1672×941 | interieur met bewust onscherpe NXTDRIVE-achtige tablet |
+De overige 17 beeldbasissen volgen exact de `imageBase`-velden in [`data/regions.json`](../data/regions.json). Merklogo’s, iconen en manifestbestanden blijven rechtstreeks onder `public/` en `public/images/` staan.
 
-Voor de vier locatiebeelden zijn tevens 960×540- en 640×360-WebP’s aanwezig voor responsive `srcset`.
+## Technisch gebruik
 
-## Herkomst en rechtenstatus
+- `ResponsiveImage` gebruikt `next/image` met expliciete `sizes`;
+- alleen het echte LCP-beeld krijgt `priority`;
+- AVIF en WebP zijn in `next.config.ts` ingeschakeld;
+- 8K-bronbestanden worden niet aan websitebezoekers geserveerd;
+- alle gebruikte lokale beelden worden door tests op bestaan en decodeerbaarheid gecontroleerd.
 
-De opdrachtgever heeft bevestigd over de benodigde beeldrechten te beschikken; aanvullende juridische goedkeuring is voor dit demo-prototype niet vereist. De Haagse voertuigsfeerbeelden zijn AI-gegenereerde prototype-assets, samengesteld binnen dit project op basis van de aangeleverde merkcontext. Zij bevatten geen echte leerlingdata; de tabletinterface is bewust onscherp en merkloos. Portretten en voertuigsituaties zijn sfeerimpressies, geen documentaire registraties.
+## Goedkeuringsgrens
 
-Alle webbeelden hebben vaste dimensies. Onder-de-vouwbeelden laden lazy; de hero krijgt hoge prioriteit. Als een toekomstige echte site andere fotografie gebruikt, worden het manifest en de alt-teksten dan bijgewerkt.
+De locatiebeelden zijn gegenereerde sfeerimpressies. Ze bewijzen geen vaste lesroute, vestiging, ophaalpunt of echt lesmoment. Menselijke goedkeuring van voertuig, belettering en merknauwkeurigheid blijft verplicht vóór publieke merkgoedkeuring. De aangeleverde 8K-master is opgeschaald en niet native 8K; er is geen transparante cut-out.

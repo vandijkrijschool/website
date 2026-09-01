@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "currency": "EUR",
+  "locale": "nl-NL",
+  "amountUnit": "cents",
+  "source": {
+    "file": "source/website-informatie-van-dijk-driveyou.pdf",
+    "receivedOn": "2026-08-31",
+    "effectiveDate": null,
+    "effectiveDateStatus": "needsVerification"
+  },
+  "globalUnknowns": [
+    "durationOfOneDrivingLesson",
+    "vatStatus",
+    "packageValidity",
+    "cancellationAndNoShowTerms",
+    "refundTerms",
+    "exactExamInclusions",
+    "trialLessonTerms",
+    "whetherRegistrationFeeIsUnavoidable",
+    "whetherGuaranteeFundIsUnavoidable"
+  ],
+  "singleRates": [
+    {
+      "id": "single-driving-lesson",
+      "name": "Losse rijles",
+      "amount": 5900
+    },
+    {
+      "id": "itheorie",
+      "name": "iTheoriepakket",
+      "amount": 6500,
+      "recommendedRetailAmount": 7900
+    },
+    {
+      "id": "practical-exam",
+      "name": "Praktijkexamen",
+      "amount": 31100
+    },
+    {
+      "id": "practical-retest",
+      "name": "Praktijkherexamen",
+      "amount": 31100
+    },
+    {
+      "id": "bnor-exam",
+      "name": "BNOR-examen",
+      "amount": 40700
+    },
+    {
+      "id": "fear-of-failure-exam",
+      "name": "Faalangstexamen",
+      "amount": 42100
+    },
+    {
+      "id": "interim-test",
+      "name": "Tussentijdse toets",
+      "amount": 26700
+    },
+    {
+      "id": "registration-fee",
+      "name": "Eenmalige inschrijfkosten",
+      "amount": 3950,
+      "applicability": "needsVerification"
+    },
+    {
+      "id": "driveyou-guarantee-fund",
+      "name": "DriveYOU-garantiefonds",
+      "amount": 4150,
+      "frequency": "one-time",
+      "applicability": "needsVerification"
+    },
+    {
+      "id": "installment-administration-fee",
+      "name": "Administratiekosten betaling in termijnen",
+      "amount": 3900,
+      "frequency": "one-time",
+      "appliesWhen": "paymentInTwoThreeOrFourInstallments"
+    }
+  ],
+  "followUpLessonPackages": [
+    {
+      "id": "follow-up-5",
+      "lessonCount": 5,
+      "amount": 29000,
+      "amountPerLesson": 5800
+    },
+    {
+      "id": "follow-up-10",
+      "lessonCount": 10,
+      "amount": 57000,
+      "amountPerLesson": 5700
+    },
+    {
+      "id": "follow-up-15",
+      "lessonCount": 15,
+      "amount": 84000,
+      "amountPerLesson": 5600
+    },
+    {
+      "id": "follow-up-20",
+      "lessonCount": 20,
+      "amount": 110000,
+      "amountPerLesson": 5500
+    }
+  ],
+  "retestPackages": [
+    {
+      "id": "retest-7",
+      "name": "Herexamen 7",
+      "amount": 72400,
+      "lessonCount": 7,
+      "includes": ["7 rijlessen", "praktijkexamen"]
+    },
+    {
+      "id": "retest-11",
+      "name": "Herexamen 11",
+      "amount": 94900,
+      "lessonCount": 11,
+      "includes": ["11 rijlessen", "praktijkexamen"]
+    }
+  ],
+  "starterPackages": [
+    {
+      "id": "starter-20",
+      "name": "Pakket 20",
+      "amount": 143100,
+      "lessonCount": 20,
+      "registrationFeeIncluded": false,
+      "includes": [
+        "100% gratis proefles",
+        "20 rijlessen",
+        "praktijkexamen",
+        "digitale rijlesmap"
+      ]
+    },
+    {
+      "id": "starter-30",
+      "name": "Pakket 30",
+      "amount": 197600,
+      "lessonCount": 30,
+      "registrationFeeIncluded": false,
+      "includes": [
+        "100% gratis proefles",
+        "30 rijlessen",
+        "praktijkexamen",
+        "digitale rijlesmap"
+      ]
+    },
+    {
+      "id": "starter-40",
+      "name": "Pakket 40",
+      "amount": 251100,
+      "lessonCount": 40,
+      "registrationFeeIncluded": false,
+      "includes": [
+        "100% gratis proefles",
+        "40 rijlessen",
+        "praktijkexamen",
+        "digitale rijlesmap"
+      ]
+    },
+    {
+      "id": "starter-50",
+      "name": "Pakket 50",
+      "amount": 303600,
+      "lessonCount": 50,
+      "registrationFeeIncluded": false,
+      "includes": [
+        "100% gratis proefles",
+        "50 rijlessen",
+        "praktijkexamen",
+        "digitale rijlesmap"
+      ]
+    },
+    {
+      "id": "all-in-one",
+      "name": "Alles-in-1",
+      "amount": 253300,
+      "lessonCount": 35,
+      "registrationFeeIncluded": false,
+      "registrationFeeApplicability": "needsVerification",
+      "includes": [
+        "100% gratis proefles",
+        "35 rijlessen",
+        "praktijkexamen",
+        "tussentijdse toets",
+        "iTheoriepakket",
+        "digitale rijlesmap"
+      ]
+    }
+  ],
+  "faqFacts": [
+    {
+      "id": "average-lessons",
+      "question": "Wat is het gemiddelde aantal rijlessen dat iemand nodig heeft?",
+      "answer": "Het aantal lessen dat een gemiddelde leerling nodig heeft ligt rond de 45.",
+      "status": "timeSensitiveNeedsVerification"
+    },
+    {
+      "id": "start-immediately",
+      "question": "Kan ik gelijk starten met rijlessen?",
+      "answer": "Bij ons kun je direct starten, wij hebben geen wachtlijst.",
+      "status": "timeSensitiveNeedsVerification"
+    },
+    {
+      "id": "installments",
+      "question": "Is het mogelijk om in termijnen te betalen?",
+      "answer": "Bij ons kun je altijd in 2, 3 of 4 termijnen betalen. Hiervoor berekenen wij eenmalig € 39 administratiekosten.",
+      "status": "sourceProvidedTermsNeedVerification"
+    },
+    {
+      "id": "theory-validity",
+      "question": "Hoelang is je theorie geldig?",
+      "answer": "Na het behalen van je theorie-examen heb je anderhalf jaar de tijd om te slagen voor het praktijkexamen.",
+      "status": "sourceProvidedAndExternallyConfirmed"
+    }
+  ]
+}

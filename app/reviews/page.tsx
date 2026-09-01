@@ -11,6 +11,7 @@ export const metadata: Metadata = pageMetadata(
   "Ervaringen met Van Dijk Rijschool",
   "Bekijk demonstratievoorbeelden van de toekomstige reviewpresentatie van Van Dijk Rijschool en ontdek welke onderdelen van begeleiding centraal staan.",
   "/reviews",
+  { noIndex: true },
 );
 
 export default function ReviewsPage() {

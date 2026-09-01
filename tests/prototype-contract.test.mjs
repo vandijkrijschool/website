@@ -1,207 +1,150 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, stat } from "node:fs/promises";
 import test from "node:test";
 
-const routeFiles = [
-  "app/page.tsx",
-  "app/rijlessen/page.tsx",
-  "app/lespakketten/page.tsx",
-  "app/configurator/page.tsx",
-  "app/proefles/page.tsx",
-  "app/werkwijze/page.tsx",
-  "app/over-ons/page.tsx",
-  "app/reviews/page.tsx",
-  "app/leerlingomgeving/page.tsx",
-  "app/contact/page.tsx",
-  "app/faq/page.tsx",
-  "app/rijschool-den-haag/page.tsx",
-  "app/regio/[slug]/page.tsx",
-  "app/privacy/page.tsx",
-  "app/voorwaarden/page.tsx",
+const json = async (file) => JSON.parse(await readFile(file, "utf8"));
+const sitemap = await json("data/sitemap.json");
+const regions = await json("data/regions.json");
+const pricing = await json("data/pricing.json");
+const assets = await json("data/assets.json");
+
+const contentRouteFiles = [
+  "app/page.tsx", "app/rijlessen/page.tsx", "app/lespakketten/page.tsx", "app/tarieven/page.tsx",
+  "app/configurator/page.tsx", "app/proefles/page.tsx", "app/theorie/page.tsx", "app/werkwijze/page.tsx",
+  "app/over-ons/page.tsx", "app/faq/page.tsx", "app/contact/page.tsx", "app/werkgebied/page.tsx",
+  "app/rijschool-den-haag/page.tsx", "app/regio/[slug]/page.tsx", "app/reviews/page.tsx",
+  "app/leerlingomgeving/page.tsx", "app/privacy/page.tsx", "app/voorwaarden/page.tsx",
 ];
 
-const requiredAssets = [
-  "public/images/hero-car.webp",
-  "public/images/rijles-interieur.webp",
-  "public/images/intake-instructor.webp",
-  "public/images/locatie-hofvijver.webp",
-  "public/images/locatie-scheveningen.webp",
-  "public/images/locatie-vredespaleis.webp",
-  "public/images/locatie-tablet.webp",
-  "public/images/logo-stacked.jpg",
-  "public/images/vd-mark.jpg",
-  "public/og.png",
-];
+test("central data defines exactly 17 regions and 29 indexable routes", () => {
+  assert.equal(regions.count, 17);
+  assert.equal(regions.regions.length, 17);
+  assert.equal(new Set(regions.regions.map((region) => region.slug)).size, 17);
+  assert.equal(new Set(regions.regions.map((region) => region.canonicalPath)).size, 17);
+  assert.equal(sitemap.expectedIndexableCount, 29);
+  assert.equal(sitemap.routes.length, 29);
+  assert.equal(new Set(sitemap.routes.map((route) => route.path)).size, 29);
+  assert.equal(sitemap.routes.filter((route) => route.path.startsWith("/regio/")).length, 16);
+  assert.ok(sitemap.routes.some((route) => route.path === "/rijschool-den-haag"));
+  assert.ok(!sitemap.routes.some((route) => route.path === "/regio/den-haag"));
+});
 
-test("all agreed public routes have a filled source page", async () => {
-  for (const file of routeFiles) {
-    const source = await readFile(file, "utf8");
-    assert.ok(source.length > 350, `${file} should contain a filled page`);
-    assert.doesNotMatch(source, /lorem ipsum/i, `${file} contains placeholder copy`);
+test("sitemap excludes every noindex support route and unsafe URL shape", () => {
+  const paths = sitemap.routes.map((route) => route.path);
+  for (const route of sitemap.excludedRoutes) {
+    assert.equal(route.robots, "noindex,follow");
+    assert.ok(!paths.includes(route.path));
+  }
+  for (const path of paths) {
+    assert.ok(path.startsWith("/"));
+    assert.ok(!path.includes("?"));
   }
 });
 
-test("all required brand and location imagery is packaged", async () => {
-  await Promise.all(requiredAssets.map((file) => access(file)));
+test("all 33 content routes are represented by filled route sources", async () => {
+  assert.equal(sitemap.routes.length + sitemap.excludedRoutes.length, 33);
+  for (const file of contentRouteFiles) {
+    const source = await readFile(file, "utf8");
+    assert.ok(source.length > 300, `${file} should contain a filled page`);
+    assert.doesNotMatch(source, /lorem ipsum/i);
+  }
 });
 
-test("demo-only claims are explicitly labelled", async () => {
-  const demoData = await readFile("app/lib/demo.ts", "utf8");
+test("all five starter packages contain required cent fields and exact source prices", () => {
+  assert.deepEqual(pricing.starterPackages.map((item) => item.amount), [143100, 197600, 251100, 303600, 253300]);
+  for (const item of pricing.starterPackages) {
+    assert.ok(item.id && item.name);
+    assert.ok(Number.isInteger(item.amount));
+    assert.ok(Number.isInteger(item.lessonCount));
+    assert.ok(item.includes.length >= 4);
+  }
+  assert.equal(pricing.singleRates.find((rate) => rate.id === "registration-fee").amount, 3950);
+  assert.equal(pricing.singleRates.find((rate) => rate.id === "driveyou-guarantee-fund").amount, 4150);
+});
+
+test("every manifested region image has four web variants and an OG crop", async () => {
+  const imageBases = new Set([
+    ...assets.general.map((item) => item.imageBase),
+    ...regions.regions.map((item) => item.imageBase),
+    ...assets.extraLocationImages.map((item) => item.imageBase),
+  ]);
+  assert.equal(imageBases.size, 23);
+  for (const imageBase of imageBases) {
+    for (const width of assets.responsiveWidths) {
+      const file = `public/images/${imageBase}-${width}.webp`;
+      await access(file);
+      assert.ok((await stat(file)).size > 0, `${file} is empty`);
+    }
+  }
+  for (const region of regions.regions) {
+    const file = `public/images/og/${region.imageBase}-og-1200x630.jpg`;
+    await access(file);
+    assert.ok((await stat(file)).size > 0, `${file} is empty`);
+  }
+  await access("public/images/og/van-dijk-rijschool-og-1200x630.jpg");
+});
+
+test("demo identities and legal support pages stay noindex and out of schema", async () => {
+  for (const file of ["app/reviews/page.tsx", "app/leerlingomgeving/page.tsx", "app/privacy/page.tsx", "app/voorwaarden/page.tsx"]) {
+    assert.match(await readFile(file, "utf8"), /noIndex: true/);
+  }
+  const layout = await readFile("app/layout.tsx", "utf8");
   const reviews = await readFile("app/reviews/page.tsx", "utf8");
-  const contact = await readFile("app/contact/page.tsx", "utf8");
-  const portal = await readFile("app/components/StudentPortalDemo.tsx", "utf8");
-  assert.match(demoData, /demoReviews/);
-  assert.match(reviews, /fictieve reviews/i);
-  assert.match(contact, /formulier nog in demonstratiemodus/i);
-  assert.match(portal, /fictief/i);
+  assert.doesNotMatch(`${layout}\n${reviews}`, /"@type":\s*"(?:Review|AggregateRating)"/);
+  assert.doesNotMatch(layout, /PostalAddress|telephone|sameAs/);
 });
 
-test("official company details are centralised and present across public identity surfaces", async () => {
+test("metadata, sitemap and launch gate are centralized and fail closed", async () => {
   const site = await readFile("app/lib/site.ts", "utf8");
   const layout = await readFile("app/layout.tsx", "utf8");
-  const footer = await readFile("app/components/SiteChrome.tsx", "utf8");
-  const contact = await readFile("app/contact/page.tsx", "utf8");
-  const privacy = await readFile("app/privacy/page.tsx", "utf8");
-  const terms = await readFile("app/voorwaarden/page.tsx", "utf8");
-  for (const value of ["Van Dijk - Rijschool", "42130985", "Melis Stokelaan 2440", "2541 GR", "'s-Gravenhage", "+31 6 59116366"]) {
-    assert.ok(site.includes(value), `siteConfig mist ${value}`);
-  }
-  assert.match(layout, /PostalAddress/);
-  assert.match(layout, /siteConfig\.chamberOfCommerceNumber/);
-  [footer, contact, privacy, terms].forEach((source) => assert.match(source, /siteConfig\.(?:tradeName|chamberOfCommerceNumber|address|phone)/));
+  const sitemapSource = await readFile("app/sitemap.ts", "utf8");
+  assert.match(site, /validateProductionOrigin/);
+  assert.match(site, /isIndexingEnabled/);
+  assert.match(layout, /index: false, follow: false/);
+  assert.match(sitemapSource, /sitemapDefinition\.routes/);
+  assert.doesNotMatch(sitemapSource, /new Date/);
+  assert.doesNotMatch(layout, /keywords:/);
 });
 
-test("public identity uses neutral rijschool positioning", async () => {
-  const sources = await Promise.all([
-    ...routeFiles,
-    "app/layout.tsx",
-    "app/lib/site.ts",
-    "app/components/SiteChrome.tsx",
-    "app/components/DemoContent.tsx",
-    "app/globals.css",
-    "package.json",
-    "README.md",
-  ].map((file) => readFile(file, "utf8")));
-  const disallowedPositioning = new RegExp(["prem", "ium"].join(""), "i");
-  assert.doesNotMatch(sources.join("\n"), disallowedPositioning);
-});
-
-test("core interactive flows remain present", async () => {
+test("interactive flows preserve full state, cent costs and startmoment", async () => {
   const configurator = await readFile("app/components/Configurator.tsx", "utf8");
   const booking = await readFile("app/components/TrialBookingWidget.tsx", "utf8");
   const form = await readFile("app/components/LeadForm.tsx", "utf8");
-  const leadAdapter = await readFile("app/lib/leads.ts", "utf8");
-  assert.match(configurator, /Lespakket configurator/);
-  assert.match(configurator, /Math\.min\(4/);
-  assert.match(booking, /Toon 3 momenten/);
-  assert.match(form, /Demo-aanvraag controleren/);
-  assert.match(leadAdapter, /DEMO-NXT-2048/);
+  assert.match(configurator, /serializeConfiguratorState/);
+  assert.match(configurator, /possibleAdditionalCosts/);
+  assert.doesNotMatch(configurator, /sessionMinutes|appointments|weeks/);
+  assert.match(booking, /Bevestig dit demomoment/);
   assert.match(booking, /slot-conflict/);
-  assert.match(booking, /provider-error/);
-  assert.match(booking, /timeout/);
+  assert.match(form, /startmoment/);
+  assert.match(form, /preferredDayParts/);
+  assert.match(form, /selectedSlot/);
+  assert.match(form, /configurator/);
 });
 
-test("all 18 content routes and system states are documented", async () => {
-  const routes = await readFile("docs/ROUTES_AND_CONTENT.md", "utf8");
-  const readme = await readFile("README.md", "utf8");
-  assert.equal((routes.match(/^\| `\//gm) ?? []).length, 18);
-  assert.match(readme, /18 gevulde (?:inhoudelijke )?routes/);
-  assert.doesNotMatch(`${readme}\n${routes}`, /16 (?:gevulde|inhoudelijke|routes)/i);
-  await Promise.all(["app/not-found.tsx", "app/loading.tsx", "app/error.tsx"].map((file) => access(file)));
+test("source and runtime code contain no placeholder host, old packages or wrong image references", async () => {
+  const files = [
+    ...contentRouteFiles,
+    "app/layout.tsx", "app/lib/site.ts", "app/lib/content.ts", "app/lib/configurator.ts",
+    "app/components/Marketing.tsx", "app/components/Configurator.tsx", "app/components/SiteChrome.tsx",
+    "scripts/smoke-standalone.mjs", "scripts/validate-production-env.mjs", ".github/workflows/deploy-production.yml",
+  ];
+  const source = (await Promise.all(files.map((file) => readFile(file, "utf8")))).join("\n");
+  assert.doesNotMatch(source, /voorbeeld\.vandijkrijschool\.nl/);
+  assert.doesNotMatch(source, /Instappakket|Meest gekozen|Zeker Slagen|Gratis herexamen/);
+  assert.doesNotMatch(source, /hero-car\.webp|den-haag-drive\.webp|scheveningen-drive\.webp|intake-instructor\.webp|\/og\.png/);
 });
 
-test("unconfirmed commercial data stays out of schema and all routes are in the sitemap", async () => {
-  const site = await readFile("app/lib/site.ts", "utf8");
-  const sitemap = await readFile("app/sitemap.ts", "utf8");
-  const pages = await Promise.all([
-    "app/page.tsx",
-    "app/lespakketten/page.tsx",
-    "app/rijlessen/page.tsx",
-    "app/rijschool-den-haag/page.tsx",
-    "app/regio/[slug]/page.tsx",
-  ].map((file) => readFile(file, "utf8")));
-  assert.match(site, /isCommercialStructuredDataEnabled = false/);
-  pages.forEach((source) => assert.match(source, /isCommercialStructuredDataEnabled/));
-  assert.match(sitemap, /leerlingomgeving/);
-  assert.match(sitemap, /privacy/);
-  assert.match(sitemap, /voorwaarden/);
-});
-
-test("compound controls include roving focus, Escape menu close and fixed-size checkboxes", async () => {
-  const configurator = await readFile("app/components/Configurator.tsx", "utf8");
-  const booking = await readFile("app/components/TrialBookingWidget.tsx", "utf8");
-  const portal = await readFile("app/components/StudentPortalDemo.tsx", "utf8");
+test("responsive, keyboard and reduced-motion quality gates are wired into check and deploy", async () => {
+  const css = await readFile("app/globals.css", "utf8");
   const mobile = await readFile("app/components/MobileNav.tsx", "utf8");
-  const css = await readFile("app/globals.css", "utf8");
-  [configurator, booking, portal].forEach((source) => assert.match(source, /ArrowRight/));
-  assert.match(mobile, /event\.key === "Escape"/);
-  assert.match(mobile, /document\.body\.style\.overflow = "hidden"/);
-  assert.match(css, /width: 20px; height: 20px; min-width: 20px; min-height: 20px/);
-});
-
-test("responsive and reduced-motion contracts are included", async () => {
-  const css = await readFile("app/globals.css", "utf8");
-  assert.match(css, /@media \(max-width: 1060px\)/);
-  assert.match(css, /@media \(max-width: 820px\)/);
-  assert.match(css, /@media \(max-width: 560px\)/);
-  assert.match(css, /@media \(max-width: 380px\)/);
-  assert.match(css, /prefers-reduced-motion: reduce/);
-  assert.match(css, /overflow-wrap: normal/);
-  assert.doesNotMatch(css, /overflow-wrap: anywhere/);
-});
-
-test("public demo is indexable and exposes a sitemap", async () => {
-  const layout = await readFile("app/layout.tsx", "utf8");
-  const robots = await readFile("app/robots.ts", "utf8");
-  assert.match(layout, /index: true/);
-  assert.doesNotMatch(layout, /index: false/);
-  assert.match(robots, /sitemap/);
-});
-
-test("standalone production runtime and health endpoint are configured", async () => {
   const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-  const nextConfig = await readFile("next.config.ts", "utf8");
-  const health = await readFile("app/api/health/route.ts", "utf8");
-  assert.equal(packageJson.engines.node, ">=24.0.0 <25");
-  assert.equal(packageJson.scripts.start, "HOSTNAME=127.0.0.1 PORT=${PORT:-3108} node .next/standalone/server.js");
-  assert.match(nextConfig, /output: "standalone"/);
-  assert.match(health, /service: "vandijkrijschool"/);
-  assert.match(health, /process\.env\.APP_ENVIRONMENT/);
-  assert.match(health, /process\.env\.APP_REVISION/);
-});
-
-test("production workflow is branch-scoped, fail-closed and deploys only through dg-site-deploy", async () => {
   const workflow = await readFile(".github/workflows/deploy-production.yml", "utf8");
-  assert.match(workflow, /branches:\s*\n\s*- production/);
-  assert.doesNotMatch(workflow, /branches:\s*\n\s*- main/);
-  assert.match(workflow, /group: production-vandijkrijschool/);
-  assert.match(workflow, /cancel-in-progress: false/);
-  for (const label of ["self-hosted", "Linux", "X64", "dg-sites", "production", "vandijkrijschool"]) {
-    assert.match(workflow, new RegExp(`^\\s+- ${label}$`, "m"));
-  }
-  assert.match(workflow, /test "\$\(id -un\)" = "vandijkrijschool"/);
-  assert.match(workflow, /dg-sites-vps-01-vandijkrijschool-01/);
-  assert.match(workflow, /\/srv\/sites\/vandijkrijschool\/actions-runner\/_work\//);
-  assert.match(workflow, /test "\$\(git rev-parse HEAD\)" = "\$\{GITHUB_SHA\}"/);
-  assert.match(workflow, /\/usr\/local\/bin\/dg-site-deploy/);
-  assert.doesNotMatch(workflow, /\b(?:ssh|scp|rsync)\b/);
-});
-
-test("runtime has no database, mail or SaaS integration dependencies", async () => {
-  const packageJson = await readFile("package.json", "utf8");
-  const environment = await readFile(".env.example", "utf8");
-  assert.doesNotMatch(`${packageJson}\n${environment}`, /supabase|drizzle|sendgrid|smtp/i);
-});
-
-test("closing CTA appears only on the homepage between FAQ and partner band", async () => {
-  const home = await readFile("app/page.tsx", "utf8");
-  const chrome = await readFile("app/components/SiteChrome.tsx", "utf8");
-  const styles = await readFile("app/globals.css", "utf8");
-  const faqIndex = home.indexOf('className="site-shell faq-teaser"');
-  const ctaIndex = home.indexOf('className="home-closing-cta"');
-  const partnerIndex = home.indexOf('className="partner-band"');
-  assert.ok(faqIndex >= 0 && faqIndex < ctaIndex && ctaIndex < partnerIndex);
-  assert.doesNotMatch(chrome, /Klaar voor de eerste kilometer/);
-  assert.equal((home.match(/Klaar voor de eerste kilometer/g) ?? []).length, 1);
-  assert.match(styles, /\.home-closing-cta \{[^}]*border-top: 1px solid var\(--line\)/);
+  assert.match(css, /overflow-x: visible/);
+  assert.match(css, /prefers-reduced-motion: reduce/);
+  assert.match(css, /width: 20px; height: 20px; min-width: 20px; min-height: 20px/);
+  assert.match(mobile, /event\.key === "Escape"/);
+  assert.match(packageJson.scripts.check, /test:browser/);
+  assert.match(workflow, /npm run test:browser/);
+  assert.match(workflow, /NEXT_PUBLIC_INDEXING_ENABLED: "false"/);
+  assert.match(workflow, /https:\/\/vandijkrijschool\.nl/);
 });

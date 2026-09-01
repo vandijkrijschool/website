@@ -24,10 +24,10 @@ export function SectionHeading({
 
 export function TrustRail() {
   const items = [
-    { icon: Users, title: "Persoonlijk & geduldig", text: "Les op een tempo dat bij jou past" },
-    { icon: Calendar, title: "Flexibele lestijden", text: "Rond school, werk en andere afspraken" },
-    { icon: Gauge, title: "Gerichte vooruitgang", text: "Duidelijke leerdoelen per les" },
-    { icon: Car, title: "Moderne lesaanpak", text: "Inzicht en planning via NXTDRIVE" },
+    { icon: Users, title: "Persoonlijke aanpak", text: "Lesopbouw afgestemd tijdens de intake" },
+    { icon: Calendar, title: "Voorkeuren vastleggen", text: "Planning pas definitief na bevestiging" },
+    { icon: Gauge, title: "Transparante prijzen", text: "Alle bedragen uit één centrale bron" },
+    { icon: Car, title: "Veilige prototypeflow", text: "Geen schijnboeking of gegevensopslag" },
   ];
 
   return (
@@ -49,21 +49,22 @@ export function PackageCards({ compact = false }: { compact?: boolean }) {
     <div className={`package-grid ${compact ? "package-grid--compact" : ""}`}>
       {packages.map((item) => (
         <article className={`package-card ${item.featured ? "package-card--featured" : ""}`} id={item.id} key={item.id}>
-          {item.featured ? <span className="package-card__badge">Meest gekozen</span> : null}
+          {item.featured ? <span className="package-card__badge">Inclusief iTheorie en toets</span> : null}
           <div className="package-card__top">
-            <span className="package-card__number">{String(item.lessons).padStart(2, "0")}</span>
-            <div><small>lesuren</small><h3>{item.name}</h3></div>
+            <span className="package-card__number">{String(item.lessonCount).padStart(2, "0")}</span>
+            <div><small>rijlessen</small><h3>{item.name}</h3></div>
           </div>
           {!compact ? <p>{item.description}</p> : null}
           <ul>
-            {item.features.slice(0, compact ? 3 : undefined).map((feature) => (
+            {item.includes.slice(0, compact ? 4 : undefined).map((feature) => (
               <li key={feature}><Check width="17" /> {feature}</li>
             ))}
           </ul>
           <div className="package-card__price">
-            <span>Totaalprijs</span>
-            <strong>{formatPrice(item.price)}</strong>
+            <span>Pakketprijs</span>
+            <strong>{formatPrice(item.amountCents)}</strong>
           </div>
+          <p className="package-card__fee-note">Exclusief € 39,50 inschrijfkosten volgens de bron. Verplicht karakter wordt nog bevestigd.</p>
           <Link className={item.featured ? "button" : "button button--ghost"} href={`/configurator?pakket=${item.id}`}>
             Kies dit pakket <ArrowRight width="17" />
           </Link>
@@ -78,7 +79,7 @@ export function AssuranceStrip() {
     <div className="assurance-strip">
       <span><Shield width="18" /> Duidelijke pakketinhoud</span>
       <span><Check width="18" /> Persoonlijk advies vóór je start</span>
-      <span><Clock width="18" /> Lestempo afgestemd op jouw agenda</span>
+      <span><Clock width="18" /> Geen onbevestigde kosten in het totaal</span>
     </div>
   );
 }

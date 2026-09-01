@@ -12,11 +12,11 @@
     "postbuild": "node scripts/prepare-standalone.mjs",
     "start": "HOSTNAME=127.0.0.1 PORT=${PORT:-3108} node .next/standalone/server.js",
     "test": "node --test tests/*.test.mjs",
-    "test:browser": "node scripts/browser-qa.mjs",
+    "test:browser": "node scripts/run-browser-qa.mjs",
     "test:smoke": "node scripts/smoke-standalone.mjs",
     "validate:production-env": "node scripts/validate-production-env.mjs",
     "typecheck": "tsc --noEmit",
-    "check": "npm run lint && npm run typecheck && npm test && npm run build && npm run test:smoke",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build && npm run test:smoke && npm run test:browser",
     "lint": "eslint . --ignore-pattern .next"
   },
   "dependencies": {

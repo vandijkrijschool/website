@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "master": {
+    "source": "assets/master/van-dijk-lesauto-master-source.png",
+    "upscaled8k": "assets/master/van-dijk-lesauto-master-8k-7680x4320.png",
+    "webPreview": "assets/master/van-dijk-lesauto-master-4k.webp",
+    "nativeGenerationSize": "1798x875",
+    "upscaled8kSize": "7680x4320",
+    "isNative8k": false,
+    "hasTransparentCutout": false,
+    "approvalRequired": true
+  },
+  "responsivePattern": "assets/website/webp/{imageBase}-{width}.webp",
+  "responsiveWidths": [640, 960, 1280, 1600],
+  "locationOgPattern": "assets/website/og/{imageBase}-og-1200x630.jpg",
+  "fallbackOg": "assets/website/og/van-dijk-rijschool-og-1200x630.jpg",
+  "general": [
+    {
+      "id": "hero",
+      "imageBase": "hero-den-haag-blue-hour",
+      "source": "assets/website/general-sources/hero-den-haag-blue-hour.png",
+      "recommendedRoutes": ["/"],
+      "alt": "Zwarte Van Dijk Rijschool-lesauto met de Haagse skyline tijdens het blauwe uur"
+    },
+    {
+      "id": "intake",
+      "imageBase": "intake-bij-lesauto",
+      "source": "assets/website/general-sources/intake-bij-lesauto.png",
+      "recommendedRoutes": ["/proefles", "/over-ons"],
+      "alt": "Kennismaking naast de zwarte Van Dijk Rijschool-lesauto"
+    },
+    {
+      "id": "interior-lesson",
+      "imageBase": "rijles-interieur-den-haag",
+      "source": "assets/website/general-sources/rijles-interieur-den-haag.png",
+      "recommendedRoutes": ["/rijlessen", "/werkwijze"],
+      "alt": "Rijles vanuit de auto in stedelijk verkeer in Den Haag"
+    },
+    {
+      "id": "nxtdrive-tablet",
+      "imageBase": "nxtdrive-tablet-met-lesauto",
+      "source": "assets/website/general-sources/nxtdrive-tablet-met-lesauto.png",
+      "recommendedRoutes": ["/leerlingomgeving", "/werkwijze"],
+      "alt": "Tablet met een bewust onscherp lesvoortgangsoverzicht en de Van Dijk-lesauto op de achtergrond"
+    },
+    {
+      "id": "itheorie",
+      "imageBase": "theorie-itheorie-met-lesauto",
+      "source": "assets/website/general-sources/theorie-itheorie-met-lesauto.png",
+      "recommendedRoutes": ["/theorie"],
+      "alt": "Digitale theorievoorbereiding met de Van Dijk Rijschool-lesauto buiten in beeld"
+    }
+  ],
+  "locationSourceDirectory": "assets/website/location-sources",
+  "locationMappingSource": "data/regions.json",
+  "extraLocationImages": [
+    {
+      "imageBase": "den-haag-vredespaleis",
+      "recommendedRoutes": ["/", "/rijschool-den-haag"],
+      "alt": "Zwarte Van Dijk Rijschool-lesauto bij het Vredespaleis in Den Haag"
+    }
+  ],
+  "globalUsageRules": [
+    "Do not serve the 8K source directly to web visitors",
+    "Use next/image or responsive srcset with width height and sizes",
+    "Only the real LCP hero receives priority",
+    "Label generated locations as Sfeerimpressie until human approval",
+    "Do not claim a parked generated car is an actual driving lesson",
+    "Require human brand approval or pixel-locked compositing for exact livery"
+  ]
+}

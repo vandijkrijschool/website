@@ -1,41 +1,21 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { DemoNotice } from "../components/DemoContent";
-import { ArrowRight, Check, MapPin, Shield, Smartphone, Users } from "../components/Icons";
+import { ArrowRight, MapPin, Shield, Users } from "../components/Icons";
 import { IconCards, SplitCta } from "../components/PageSections";
 import { SectionHeading } from "../components/Marketing";
+import ResponsiveImage from "../components/ResponsiveImage";
 import { Breadcrumbs, PageHero } from "../components/SiteChrome";
-import { demoInstructor } from "../lib/demo";
-import { pageMetadata } from "../lib/site";
+import { corePageMetadata, siteConfig } from "../lib/site";
 
-export const metadata: Metadata = pageMetadata(
-  "Over Van Dijk Rijschool",
-  "Maak kennis met Van Dijk Rijschool, de persoonlijke lesaanpak en de digitale ondersteuning via DriveYou en NXTDRIVE in regio Den Haag.",
-  "/over-ons",
-);
+export const metadata: Metadata = corePageMetadata("/over-ons");
 
 export default function AboutPage() {
   return (
     <main id="main-content">
-      <PageHero eyebrow="Van Dijk Rijschool" title="Persoonlijke rijles," accent="professioneel georganiseerd." intro="Achter iedere leerling zit een ander verhaal. Daarom combineren we persoonlijke begeleiding met een duidelijke structuur, moderne ondersteuning en korte lijnen."><Breadcrumbs currentPath="/over-ons" items={[{ label: "Over ons" }]} /></PageHero>
-      <section className="section"><div className="site-shell story-grid"><div><SectionHeading eyebrow="Onze visie" title="Niet alleen slagen. Leren zelfstandig rijden." /><p>Het praktijkexamen is een belangrijke mijlpaal, maar niet het enige doel. Je moet na je rijopleiding zelfstandig, veilig en met vertrouwen beslissingen kunnen nemen in het dagelijks verkeer.</p><p>Van Dijk Rijschool richt de lessen daarom in rond inzicht, verantwoordelijkheid en een opbouw die past bij jouw ontwikkeling.</p><ul className="checklist"><li><Check width="17" /> Heldere communicatie</li><li><Check width="17" /> Persoonlijke aandacht</li><li><Check width="17" /> Realistische verwachtingen</li></ul></div><figure className="story-visual"><img src="/images/intake-instructor.webp" alt="Instructeur maakt kennis met een leerling naast de lesauto" width="1672" height="941" loading="eager" decoding="async" /><span>Persoonlijk vanaf de eerste kennismaking</span></figure></div></section>
-      <section className="section section--soft"><div className="site-shell"><SectionHeading eyebrow="Wat je mag verwachten" title="Een moderne rijschool met een menselijk gezicht." /><IconCards items={[{ icon: Users, title: "Persoonlijke instructie", text: "Begeleiding die rekening houdt met jouw ervaring, tempo en manier van leren." },{ icon: Shield, title: "Veilig leren kiezen", text: "Niet alleen uitvoeren wat wordt gezegd, maar situaties leren begrijpen en oplossen." },{ icon: Smartphone, title: "Digitaal ondersteund", text: "Planning, leerdoelen en voortgang zijn overzichtelijk beschikbaar via NXTDRIVE." },{ icon: MapPin, title: "Lokaal in de regio", text: "Rijlessen in Den Haag en omliggende plaatsen, afhankelijk van beschikbaarheid." }]} /></div></section>
-      <section className="section"><div className="site-shell partnerships"><div><small>Demonstratieverband</small><strong>drive<span>•</span>you</strong><p>DriveYou laat in deze demo zien hoe een franchisepropositie en gedeelde kwaliteitsbelofte een plek kunnen krijgen binnen het merkverhaal.</p></div><i /><div><small>Demonstratieplatform</small><strong>NXTDRIVE</strong><p>NXTDRIVE simuleert de intake, planning en voortgang. De persoonlijke begeleiding blijft in het verhaal altijd bij Van Dijk en de instructeur.</p></div></div></section>
-      <section className="section section--compact">
-        <div className="site-shell">
-          <DemoNotice
-            title="Een compleet instructeurprofiel met veilige mockdata."
-            text="Naam, profieltekst, bevoegdheid en voertuiginformatie hieronder zijn bewust fictief en maken dit productieprototype volledig presenteerbaar."
-          />
-          <article className="instructor-profile">
-            <div className="instructor-profile__identity"><span>RV</span><div><small>Demonstratieprofiel</small><h2>{demoInstructor.name}</h2><strong>{demoInstructor.role}</strong></div></div>
-            <p>{demoInstructor.intro}</p>
-            <dl>{demoInstructor.facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
-            <Link className="button button--ghost" href="/contact">Stel een vraag <ArrowRight width="17" /></Link>
-          </article>
-        </div>
-      </section>
-      <SplitCta title="Kennismaken met onze aanpak?" text="Vraag een persoonlijke intake aan en ontdek of Van Dijk bij jouw manier van leren past." />
+      <PageHero eyebrow="Van Dijk Rijschool" title="Persoonlijke rijles met" accent="transparante grenzen." intro="De website gebruikt alleen de bevestigde merknaam. Juridische handelsnaam, eigenaar, instructeurprofiel en precieze DriveYOU-relatie moeten nog primair worden bevestigd."><Breadcrumbs currentPath="/over-ons" items={[{ label: "Over ons" }]} /></PageHero>
+      <section className="section"><div className="site-shell story-grid"><div><SectionHeading eyebrow="De lesaanpak" title="Leren zelfstandig beslissen." /><p>De inhoudelijke richting is een rijopleiding waarin basisvaardigheden, verkeersinzicht en zelfstandigheid logisch worden opgebouwd. De website vermijdt onbevestigde ervaring-, resultaat- en beschikbaarheidsclaims.</p><p>Een persoonlijke kennismaking blijft de juiste plek om niveau, planning en verwachtingen te bespreken.</p></div><figure className="story-visual"><ResponsiveImage imageBase="intake-bij-lesauto" alt="Kennismaking naast de zwarte Van Dijk Rijschool-lesauto" priority sizes="(max-width: 820px) 100vw, 50vw" /><span>Sfeerimpressie — geen echte instructeur of leerling geïdentificeerd</span></figure></div></section>
+      <section className="section section--soft"><div className="site-shell"><SectionHeading eyebrow="Wat de site wel vastlegt" title="Eén merk, één bron." /><IconCards items={[{ icon: Users, title: "Merknaam", text: `${siteConfig.name} is bevestigd door gebruiker en merkassets.` },{ icon: Shield, title: "Geen fictief team", text: "Er wordt geen gegenereerde persoon als echte eigenaar of instructeur gepresenteerd." },{ icon: MapPin, title: "17 werkgebieden", text: "Plaatsen zijn servicegebieden, geen zeventien losse vestigingen." },{ icon: Shield, title: "Veilige schema-data", text: "Onbevestigd adres, telefoonnummer en KVK staan niet in structured data." }]} /></div></section>
+      <section className="section"><div className="site-shell info-split"><div><SectionHeading eyebrow="Aangeleverde DriveYOU-uitleg" title="Zelfstandige instructeurs onder de naam DriveYOU." /><p>Volgens het document zijn rijinstructeurs zelfstandige ondernemers die rijden onder de naam DriveYOU. Een leerling doet rechtstreeks zaken met de rijinstructeur. Het garantiefonds is bedoeld om vooruitbetaalde lessen en/of CBR-examens kosteloos bij een andere DriveYOU-instructeur voort te zetten wanneer de eigen instructeur niet kan doorgaan.</p><a className="text-link" href="https://www.driveyou.nl/garantiefonds/" rel="noreferrer" target="_blank">Bekijk de actuele DriveYOU-voorwaarden <ArrowRight width="17" /></a></div><aside className="notice-card"><Shield width="25" /><h3>Needs verification</h3><p>De juridische handelsnaam, exacte franchise-/handelsrelatie en toepasselijkheid van het garantiefonds op iedere Van Dijk-leerling zijn nog niet primair bevestigd.</p></aside></div></section>
+      <SplitCta title="Bekijk de aanpak zonder commerciële aannames." text="Lees de werkwijze of vergelijk de actuele bronpakketten." primaryHref="/werkwijze" primaryLabel="Bekijk werkwijze" />
     </main>
   );
 }

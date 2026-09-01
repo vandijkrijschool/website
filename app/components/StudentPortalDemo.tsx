@@ -74,8 +74,8 @@ export default function StudentPortalDemo() {
               </div>
             </div>
             <div className="portal-stat-grid">
-              <article><Calendar width="21" /><small>Volgende les</small><strong>Dinsdag · 14:30</strong><span>90 minuten</span></article>
-              <article><Car width="21" /><small>Gevolgde lesuren</small><strong>{demoStudent.completedLessons} van 30</strong><span>Demotraject</span></article>
+              <article><Calendar width="21" /><small>Volgende les</small><strong>Dinsdag · 14:30</strong><span>Fictief demomoment</span></article>
+              <article><Car width="21" /><small>Gevolgde demosessies</small><strong>{demoStudent.completedLessons} van 30</strong><span>Geen echte lesduur</span></article>
               <article><RouteIcon width="21" /><small>Volgend leerdoel</small><strong>Invoegen & uitvoegen</strong><span>Gericht oefenen</span></article>
               <article><Check width="21" /><small>Deze periode</small><strong>3 doelen afgerond</strong><span>Voortgang bijgewerkt</span></article>
             </div>
@@ -89,7 +89,7 @@ export default function StudentPortalDemo() {
               {demoStudent.upcoming.map((lesson, index) => (
                 <article key={`${lesson.day}-${lesson.time}`}>
                   <span className="portal-list-number">0{index + 1}</span>
-                  <div><small>{lesson.day}</small><strong>{lesson.time} · {lesson.duration}</strong><p>{lesson.focus}</p></div>
+                  <div><small>{lesson.day}</small><strong>{lesson.time}</strong><p>{lesson.focus}</p></div>
                   <em><Check width="14" /> {lesson.status}</em>
                 </article>
               ))}

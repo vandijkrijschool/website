@@ -1,49 +1,80 @@
 import type { Metadata } from "next";
-import { extraLessonPrice, packages } from "./packages.js";
+import {
+  coreRouteMetadata,
+  formatPrice,
+  getOgImagePath,
+  packages,
+  regions,
+  siteFacts,
+  type CoreRoute,
+} from "./content";
 
-export { extraLessonPrice, packages };
+export { formatPrice, packages, regions };
+
+const intendedOrigin = siteFacts.web.intendedCanonicalOrigin.value;
+const configuredOrigin = process.env.NEXT_PUBLIC_SITE_URL || intendedOrigin;
+
+export const isProductionEnvironment = process.env.APP_ENVIRONMENT === "production";
+export const isIndexingEnabled =
+  isProductionEnvironment && process.env.NEXT_PUBLIC_INDEXING_ENABLED === "true";
+
+export function validateProductionOrigin(origin: string) {
+  let parsed: URL;
+  try {
+    parsed = new URL(origin);
+  } catch {
+    throw new Error("NEXT_PUBLIC_SITE_URL moet een geldige absolute URL zijn.");
+  }
+  if (
+    parsed.protocol !== "https:" ||
+    !parsed.hostname ||
+    /^(?:localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(parsed.hostname) ||
+    /voorbeeld|example/i.test(parsed.hostname)
+  ) {
+    throw new Error(`Ongeldige productie-origin: ${origin}.`);
+  }
+  return parsed.origin;
+}
+
+if (isProductionEnvironment) validateProductionOrigin(configuredOrigin);
 
 export const siteConfig = {
-  name: "Van Dijk - Rijschool",
-  tradeName: "Van Dijk - Rijschool",
+  name: siteFacts.brand.publicName.value,
+  tradeName: siteFacts.brand.publicName.value,
   shortName: "Van Dijk",
-  title: "Van Dijk - Rijschool | Rijschool Den Haag",
-  description:
-    "Persoonlijke autorijlessen en duidelijke lespakketten in Den Haag en omgeving. Stel online jouw rijopleiding samen en plan een vrijblijvende intake.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://voorbeeld.vandijkrijschool.nl",
-  phone: "+31 6 59116366",
-  phoneHref: "tel:+31659116366",
-  chamberOfCommerceNumber: "42130985",
-  chamberOfCommerceUrl: "https://www.kvk.nl/bestellen/#/42130985000066352479?origin=search",
-  address: {
-    street: "Melis Stokelaan 2440",
-    postalCode: "2541 GR",
-    locality: "'s-Gravenhage",
-    countryCode: "NL",
-  },
-  areaLabel: "Den Haag en omgeving",
-  areas: ["Den Haag", "Scheveningen", "Rijswijk", "Voorburg", "Leidschendam"],
+  title: "Van Dijk Rijschool | Rijles in Den Haag en regio",
+  description: coreRouteMetadata["/"].description,
+  url: configuredOrigin.replace(/\/$/, ""),
+  intendedOrigin,
+  organizationId: `${intendedOrigin}/#organization`,
+  websiteId: `${intendedOrigin}/#website`,
+  legalName: siteFacts.brand.legalName,
+  contact: siteFacts.contactFromRepository,
+  areaLabel: "Den Haag, Delft, Pijnacker en Westland",
+  areas: regions.map((region) => region.displayName),
 } as const;
 
-// Prijzen en formulieren zijn nog demodata. Publiceer daarom geen Product-,
-// Offer- of Service-schema totdat commerciële gegevens expliciet zijn bevestigd.
+// Verplichte kosten, btw, geldigheid en ingangsdatum zijn nog niet zakelijk
+// bevestigd. Publiceer daarom nog geen Offer- of Product-schema.
 export const isCommercialStructuredDataEnabled = false;
 
-// The public runtime deliberately hides prototype-only scenario controls.
-export const isProductionSite = true;
+// Houd ontwikkeltools zichtbaar buiten de productieomgeving; de publieke site
+// toont alleen de ondubbelzinnig gelabelde prototypeflow.
+export const isProductionSite = isProductionEnvironment;
 
 export const primaryNavigation = [
   { href: "/rijlessen", label: "Rijlessen" },
   { href: "/lespakketten", label: "Lespakketten" },
+  { href: "/tarieven", label: "Tarieven" },
   { href: "/werkwijze", label: "Werkwijze" },
-  { href: "/rijschool-den-haag", label: "Regio Den Haag" },
-  { href: "/over-ons", label: "Over ons" },
+  { href: "/werkgebied", label: "Werkgebied" },
 ] as const;
 
 export const footerNavigation = [
   { href: "/configurator", label: "Pakketconfigurator" },
   { href: "/proefles", label: "Proefles aanvragen" },
-  { href: "/reviews", label: "Ervaringen" },
+  { href: "/theorie", label: "iTheorie" },
+  { href: "/over-ons", label: "Over ons" },
   { href: "/faq", label: "Veelgestelde vragen" },
   { href: "/contact", label: "Contact" },
 ] as const;
@@ -52,13 +83,18 @@ export function pageMetadata(
   title: string,
   description: string,
   path: string,
+  options: { imageBase?: string; noIndex?: boolean } = {},
 ): Metadata {
   const canonical = new URL(path, siteConfig.url).toString();
+  const imageUrl = new URL(getOgImagePath(options.imageBase), siteConfig.url).toString();
 
   return {
     title,
     description,
     alternates: { canonical },
+    ...(options.noIndex
+      ? { robots: { index: false, follow: isIndexingEnabled } }
+      : {}),
     openGraph: {
       type: "website",
       locale: "nl_NL",
@@ -66,21 +102,18 @@ export function pageMetadata(
       title,
       description,
       url: canonical,
-      images: [{ url: `${siteConfig.url}/og.png`, width: 1200, height: 630, alt: siteConfig.title }],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: `${siteConfig.name} — ${title}` }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [`${siteConfig.url}/og.png`],
+      images: [imageUrl],
     },
   };
 }
 
-export function formatPrice(value: number) {
-  return new Intl.NumberFormat("nl-NL", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 0,
-  }).format(value);
+export function corePageMetadata(path: CoreRoute): Metadata {
+  const route = coreRouteMetadata[path];
+  return pageMetadata(route.title, route.description, path, { imageBase: route.imageBase });
 }

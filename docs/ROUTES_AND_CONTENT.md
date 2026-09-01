@@ -1,40 +1,39 @@
-# Route- en inhoudsinventaris
+# Routes en inhoud
 
-De applicatie bevat 18 inhoudelijke routes, aangevuld met 404-, loading- en errorstates.
+[`data/sitemap.json`](../data/sitemap.json) is het routecontract: 29 beoogde indexroutes en 4 ondersteunende noindexroutes. Zolang de launch gate uit staat, zijn sitewide `noindex,nofollow` en een lege runtime-sitemap bewust van kracht.
 
-| Route | Inhoud | Primaire actie |
+## Kernroutes
+
+| Route | Hoofdfunctie |
+| --- | --- |
+| `/` | merkintro, pakketten, aanpak en werkgebied |
+| `/rijlessen` | lesopbouw en bronbegrenzing |
+| `/lespakketten` | vijf startpakketten vergelijken |
+| `/tarieven` | alle losse, vervolg-, herexamen- en starttarieven |
+| `/configurator` | ervaring, planning, pakket en betaalvoorkeur |
+| `/proefles` | veilige proefles- en slotdemo |
+| `/theorie` | iTheorie-inhoud en bronprijzen |
+| `/werkwijze` | opleiding en NXTDRIVE-prototype |
+| `/over-ons` | merk- en organisatiegrens |
+| `/faq` | bronvragen met verificatiestatus |
+| `/contact` | lokale contactvalidatie zonder verzending |
+| `/werkgebied` | HTML-hub naar alle 17 plaatsen |
+
+## Regioroutes
+
+Den Haag heeft uitsluitend `/rijschool-den-haag`. De overige canonieke routes zijn:
+
+`/regio/den-hoorn`, `/regio/de-lier`, `/regio/delft`, `/regio/honselersdijk`, `/regio/kwintsheul`, `/regio/leidschendam`, `/regio/monster`, `/regio/naaldwijk`, `/regio/nootdorp`, `/regio/pijnacker`, `/regio/poeldijk`, `/regio/rijswijk`, `/regio/scheveningen`, `/regio/s-gravenzande`, `/regio/voorburg` en `/regio/wateringen`.
+
+Iedere pagina heeft eigen titel, beschrijving, H1, lokale tekst, sfeerbeeld, situaties, nabije plaatsen, breadcrumb en canonical. `/regio/den-haag` en onbekende slugs geven 404.
+
+## Ondersteunende routes
+
+| Route | Robots | Reden |
 | --- | --- | --- |
-| `/` | verzorgde homepage, configuratorpreview, pakketten, NXTDRIVE, regio en fotogalerij | pakket samenstellen / intake |
-| `/rijlessen` | lesopbouw, curriculum, planning en digitale ondersteuning | intake / pakketten |
-| `/lespakketten` | drie pakketkaarten, vergelijking en voorwaardenkader | pakket kiezen |
-| `/configurator` | vierstaps interactieve pakketkeuze | route bespreken |
-| `/proefles` | intake-uitleg, NXTDRIVE-slots en formulier | proeflesmoment aanvragen |
-| `/werkwijze` | vijf fasen van kennismaking tot examenvoorbereiding | persoonlijk startplan |
-| `/over-ons` | visie, fotografie, DriveYou/NXTDRIVE en demoprofiel | kennismaken |
-| `/reviews` | zes fictieve, gelabelde voorbeeldreviews en beoordelingscriteria | intake |
-| `/leerlingomgeving` | interactieve NXTDRIVE-demo met vier tabs | hulp bij toegang |
-| `/contact` | demo-contactkanalen en werkend contactformulier | demo-vraag versturen |
-| `/faq` | vier categorieën met achttien vragen | contact / intake |
-| `/rijschool-den-haag` | lokale lescontext, foto, situaties en FAQ | intake Den Haag |
-| `/regio/scheveningen` | kust-, tram- en verkeerscontext | intake Scheveningen |
-| `/regio/rijswijk` | woonwijken, stedelijke routes en verbindingen | intake Rijswijk |
-| `/regio/voorburg` | compacte straten, fietsers en verbindingswegen | intake Voorburg |
-| `/regio/leidschendam` | woonwijken, winkelverkeer en N14-context | intake Leidschendam |
-| `/privacy` | complete, indexeerbare demo-privacytekst | privacywerking bekijken |
-| `/voorwaarden` | complete, indexeerbare mockvoorwaarden | demo-afspraken bekijken |
+| `/reviews` | `noindex,follow` | gelabelde demoreviews |
+| `/leerlingomgeving` | `noindex,follow` | interactieve portaldemo |
+| `/privacy` | `noindex,follow` | nog geen definitieve juridische tekst |
+| `/voorwaarden` | `noindex,follow` | nog geen definitieve juridische tekst |
 
-Aanvullende systeemroutes:
-
-- `sitemap.xml` — bevat alle 18 publieke demoroutes
-- `robots.txt` — staat crawling toe en verwijst naar de sitemap
-- `manifest.webmanifest` — PWA-identiteit en iconen
-- onbekende route — branded 404
-- route-loading en algemene foutstatus — branded fallback
-
-## Interne linklogica
-
-- homepage linkt naar iedere belangrijke commerciële route;
-- lespagina’s verwijzen naar pakketten, configurator en intake;
-- lokale pagina’s verwijzen naar de regiohub en de andere gebieden;
-- iedere conversieroute eindigt bij intake of contact, nooit bij checkout;
-- juridische en secundaire routes zijn vanuit de footer bereikbaar.
+Systeemroutes: `/api/health`, `/robots.txt`, `/sitemap.xml`, `/manifest.webmanifest` en de standaard 404-/error-/loadingstates.

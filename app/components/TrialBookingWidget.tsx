@@ -63,6 +63,7 @@ export default function TrialBookingWidget({
   const [preferredDay, setPreferredDay] = useState<number | null>(null);
   const [selectedParts, setSelectedParts] = useState<DayPart[]>([]);
   const [slots, setSlots] = useState<AvailabilitySlot[]>([]);
+  const [draftSlot, setDraftSlot] = useState("");
   const [loading, setLoading] = useState(false);
   const [preferenceError, setPreferenceError] = useState("");
   const [scenario, setScenario] = useState<DemoAvailabilityScenario>("happy");
@@ -72,6 +73,7 @@ export default function TrialBookingWidget({
   const slotsRef = useRef<HTMLFieldSetElement>(null);
 
   const selectedSlot = useMemo(() => slots.find((slot) => slot.id === value), [slots, value]);
+  const draftSlotData = useMemo(() => slots.find((slot) => slot.id === draftSlot), [draftSlot, slots]);
 
   useEffect(() => () => {
     requestVersion.current += 1;
@@ -81,6 +83,7 @@ export default function TrialBookingWidget({
     requestVersion.current += 1;
     setLoading(false);
     setSlots([]);
+    setDraftSlot("");
     setResultState("idle");
     onChange("");
     setPreferenceError("");
@@ -130,11 +133,13 @@ export default function TrialBookingWidget({
     if (scenario === "slot-conflict" && index === 0 && resultState !== "conflict") {
       setSlots((current) => current.filter((item) => item.id !== slot.id));
       setResultState("conflict");
+      setDraftSlot("");
       onChange("");
       return;
     }
     setResultState("idle");
-    onChange(slot.id);
+    setDraftSlot(slot.id);
+    onChange("");
   }
 
   const resultCopy = {
@@ -192,8 +197,9 @@ export default function TrialBookingWidget({
           <fieldset className="booking-step booking-step--slots" ref={slotsRef} tabIndex={-1}>
             <legend><span>03</span><strong>Kies jouw moment</strong><small>{slots.length} {slots.length === 1 ? "mogelijkheid" : "mogelijkheden"}</small></legend>
             <div className="booking-slots" role="radiogroup" aria-label="Beschikbare proeflesmomenten">
-              {slots.map((slot, index) => <button aria-checked={value === slot.id} className={value === slot.id ? "is-selected" : ""} key={slot.id} onClick={() => selectSlot(slot, index)} onKeyDown={moveRadioFocus} role="radio" style={{ "--slot-index": index } as CSSProperties} tabIndex={value === slot.id || (!value && index === 0) ? 0 : -1} type="button"><span className="slot-number">0{index + 1}</span><Calendar width="18" /><span><small>{slot.partLabel}</small><strong>{slot.dateLabel}</strong></span><em><Clock width="15" /> {slot.time}</em><i>{value === slot.id ? <Check width="16" /> : null}</i></button>)}
+              {slots.map((slot, index) => <button aria-checked={draftSlot === slot.id} className={draftSlot === slot.id ? "is-selected" : ""} key={slot.id} onClick={() => selectSlot(slot, index)} onKeyDown={moveRadioFocus} role="radio" style={{ "--slot-index": index } as CSSProperties} tabIndex={draftSlot === slot.id || (!draftSlot && index === 0) ? 0 : -1} type="button"><span className="slot-number">0{index + 1}</span><Calendar width="18" /><span><small>{slot.partLabel}</small><strong>{slot.dateLabel}</strong></span><em><Clock width="15" /> {slot.time}</em><i>{draftSlot === slot.id ? <Check width="16" /> : null}</i></button>)}
             </div>
+            {draftSlotData ? <div className="booking-slot-confirm"><p>Gekozen: <strong>{draftSlotData.dateLabel} · {draftSlotData.time}</strong></p><button className="button" onClick={() => onChange(draftSlot)} type="button">Bevestig dit demomoment <Check width="16" /></button></div> : null}
           </fieldset>
         ) : null}
       </div>

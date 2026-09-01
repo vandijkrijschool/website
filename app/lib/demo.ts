@@ -3,7 +3,7 @@ export const demoReviews = [
     name: "Noor",
     initials: "NO",
     area: "Den Haag",
-    route: "Meest gekozen",
+    route: "Voorbeeldtraject 30",
     rating: 5,
     quote:
       "Vanaf de eerste les voelde de uitleg rustig en overzichtelijk. We werkten steeds aan één duidelijk aandachtspunt, waardoor ik met meer vertrouwen ging rijden.",
@@ -12,7 +12,7 @@ export const demoReviews = [
     name: "Milan",
     initials: "MI",
     area: "Rijswijk",
-    route: "Instappakket",
+    route: "Voorbeeldtraject 20",
     rating: 5,
     quote:
       "De feedback was eerlijk en opbouwend. Na iedere les wist ik precies wat al goed ging en waar we de volgende keer aan zouden werken.",
@@ -21,7 +21,7 @@ export const demoReviews = [
     name: "Sara",
     initials: "SA",
     area: "Scheveningen",
-    route: "Zeker Slagen",
+    route: "Voorbeeldtraject 40",
     rating: 5,
     quote:
       "Druk stadsverkeer vond ik eerst spannend. Door situaties stap voor stap te oefenen, kreeg ik steeds meer overzicht en rust achter het stuur.",
@@ -30,7 +30,7 @@ export const demoReviews = [
     name: "Yassin",
     initials: "YA",
     area: "Voorburg",
-    route: "Meest gekozen",
+    route: "Voorbeeldtraject 30",
     rating: 5,
     quote:
       "Geen standaardles, maar aandacht voor wat ik nodig had. Het persoonlijke tempo en de duidelijke uitleg maakten voor mij het verschil.",
@@ -39,7 +39,7 @@ export const demoReviews = [
     name: "Lotte",
     initials: "LO",
     area: "Leidschendam",
-    route: "Meest gekozen",
+    route: "Voorbeeldtraject 30",
     rating: 5,
     quote:
       "De lessen waren logisch opgebouwd en ik kon mijn voortgang goed volgen. Dat gaf rust en hielp me gericht voorbereiden.",
@@ -48,35 +48,22 @@ export const demoReviews = [
     name: "Daan",
     initials: "DA",
     area: "Den Haag",
-    route: "Instappakket",
+    route: "Voorbeeldtraject 20",
     rating: 5,
     quote:
       "Ook als iets niet meteen lukte, bleef de sfeer prettig. Ik kreeg concrete aanwijzingen die ik tijdens dezelfde les kon toepassen.",
   },
 ] as const;
 
-export const demoInstructor = {
-  name: "Robin van Dijk",
-  role: "Rijinstructeur · demonstratieprofiel",
-  intro:
-    "Rustig uitleggen, duidelijke verwachtingen afspreken en leerlingen steeds iets meer zelfstandig laten doen: zo laat dit prototype de persoonlijke Van Dijk-aanpak zien.",
-  facts: [
-    ["Lescategorie", "Rijbewijs B"],
-    ["Werkgebied", "Regio Den Haag"],
-    ["Lesauto", "Moderne handgeschakelde lesauto · demo"],
-    ["Bevoegdheid", "Fictieve WRM-demovermelding"],
-  ],
-} as const;
-
 export const demoStudent = {
   name: "Noor",
-  package: "Meest gekozen · 30 lesuren",
+  package: "Voorbeeldtraject · 30 rijlessen",
   progress: 68,
   completedLessons: 12,
   upcoming: [
-    { day: "Dinsdag", time: "14:30", duration: "90 min", focus: "Invoegen & uitvoegen", status: "Bevestigd" },
-    { day: "Vrijdag", time: "16:00", duration: "90 min", focus: "Zelfstandig navigeren", status: "Gepland" },
-    { day: "Volgende week", time: "10:30", duration: "60 min", focus: "Bijzondere verrichtingen", status: "Gepland" },
+    { day: "Dinsdag", time: "14:30", focus: "Invoegen & uitvoegen", status: "Demo" },
+    { day: "Vrijdag", time: "16:00", focus: "Zelfstandig navigeren", status: "Demo" },
+    { day: "Volgende week", time: "10:30", focus: "Bijzondere verrichtingen", status: "Demo" },
   ],
   skills: [
     { name: "Voertuigbediening", score: 86, status: "Zelfstandig" },

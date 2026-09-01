@@ -3,63 +3,69 @@ import test from "node:test";
 
 import {
   calculateConfigurator,
+  restoreConfiguratorSearch,
   restoreConfiguratorState,
+  serializeConfiguratorState,
 } from "../app/lib/configurator.ts";
-import {
-  AMSTERDAM_TIME_ZONE,
-  buildDemoSlots,
-  demoAvailabilityAdapter,
-} from "../app/lib/nxtdrive.ts";
-import { demoLeadAdapter } from "../app/lib/leads.ts";
+import { formatPrice } from "../app/lib/content.ts";
+import { AMSTERDAM_TIME_ZONE, buildDemoSlots, demoAvailabilityAdapter } from "../app/lib/nxtdrive.ts";
+import { buildLeadPayload, demoLeadAdapter } from "../app/lib/leads.ts";
 
-test("configurator restores every persisted field", () => {
-  const stored = {
-    step: 3,
-    experience: "transfer",
-    confidence: "neutral",
-    sessionsPerWeek: 3,
-    sessionMinutes: 120,
-    desiredStart: "Over 1 tot 3 maanden",
-    availability: ["Overdag", "Zaterdag"],
-    selectedId: "instap",
-    manualSelection: true,
-    extraLessons: 7,
-  };
-  assert.deepEqual(restoreConfiguratorState(JSON.stringify(stored)), stored);
+const storedState = {
+  step: 3,
+  experience: "transfer",
+  confidence: "neutral",
+  sessionsPerWeek: 3,
+  desiredStart: "Over 1 tot 3 maanden",
+  availability: ["Overdag", "Zaterdag"],
+  selectedId: "starter-30",
+  manualSelection: true,
+  paymentInstallments: 4,
+};
+
+test("configurator restores every persisted field and rejects corrupt input", () => {
+  assert.deepEqual(restoreConfiguratorState(JSON.stringify(storedState)), storedState);
   assert.equal(restoreConfiguratorState("{corrupt"), null);
   assert.equal(restoreConfiguratorState(JSON.stringify([])), null);
 });
 
-test("configurator clamps untrusted state and calculates appointments, weeks and price", () => {
-  const restored = restoreConfiguratorState(JSON.stringify({
-    step: 99,
-    selectedId: "zeker-slagen",
-    extraLessons: 900,
-    availability: ["Flexibel", "onbekend"],
-  }));
-  assert.equal(restored?.step, 1);
-  assert.equal(restored?.extraLessons, 20);
-  assert.deepEqual(restored?.availability, ["Flexibel"]);
+test("full configurator state survives a shareable query", () => {
+  const query = serializeConfiguratorState(storedState);
+  const restored = restoreConfiguratorSearch(`?${query}`);
+  assert.deepEqual(restored, storedState);
+  assert.match(query, /ervaring=transfer/);
+  assert.match(query, /beschikbaar=Overdag%7CZaterdag/);
+  assert.match(query, /termijnen=4/);
+});
 
-  assert.deepEqual(
-    calculateConfigurator("meest-gekozen", 6, 90, 2),
-    {
-      selectedPackage: {
-        id: "meest-gekozen",
-        name: "Meest gekozen",
-        lessons: 30,
-        price: 1950,
-        description: "De uitgebalanceerde opleiding met extra voorbereiding richting het examen.",
-        featured: true,
-        features: ["30 rijlessen", "Praktijkexamen", "Tussentijdse toets", "Persoonlijk lesplan", "NXTDRIVE-inzicht"],
-      },
-      extraLessons: 6,
-      totalLessons: 36,
-      totalPrice: 2310,
-      appointments: 24,
-      weeks: 12,
+test("configurator calculates only selected confirmed components in integer cents", () => {
+  assert.deepEqual(calculateConfigurator("starter-30", 3), {
+    selectedPackage: {
+      id: "starter-30",
+      name: "Pakket 30",
+      amountCents: 197600,
+      lessonCount: 30,
+      registrationFeeIncluded: false,
+      includes: ["100% gratis proefles", "30 rijlessen", "praktijkexamen", "digitale rijlesmap"],
+      description: "Een startpakket met dertig rijlessen, proefles, praktijkexamen en digitale rijlesmap.",
+      featured: false,
     },
-  );
+    packagePriceCents: 197600,
+    administrationFeeCents: 3900,
+    chosenTotalCents: 201500,
+    possibleAdditionalCosts: [
+      { id: "registration-fee", name: "Eenmalige inschrijfkosten", amountCents: 3950 },
+      { id: "driveyou-guarantee-fund", name: "DriveYOU-garantiefonds", amountCents: 4150 },
+    ],
+  });
+  assert.equal(calculateConfigurator("starter-20", 1).administrationFeeCents, 0);
+});
+
+test("Dutch price formatting preserves half euros and thousands", () => {
+  assert.equal(formatPrice(5900), "€ 59");
+  assert.equal(formatPrice(3950), "€ 39,50");
+  assert.equal(formatPrice(4150), "€ 41,50");
+  assert.equal(formatPrice(110000), "€ 1.100");
 });
 
 test("planner happy flow returns exactly three Amsterdam-time slots", async () => {
@@ -68,9 +74,7 @@ test("planner happy flow returns exactly three Amsterdam-time slots", async () =
   assert.equal(slots.length, 3);
   assert.equal(new Set(slots.map((slot) => slot.id)).size, 3);
   assert.deepEqual(slots.map((slot) => slot.partLabel), ["Ochtend", "Avond", "Ochtend"]);
-  for (const slot of slots) {
-    assert.equal(new Date(`${slot.id.slice(0, 10)}T12:00:00Z`).getUTCDay(), 6);
-  }
+  for (const slot of slots) assert.equal(new Date(`${slot.id.slice(0, 10)}T12:00:00Z`).getUTCDay(), 6);
   const result = await demoAvailabilityAdapter.findSlots(request, "happy");
   assert.equal(result.status, "success");
   if (result.status === "success") assert.equal(result.slots.length, 3);
@@ -84,18 +88,34 @@ test("planner exposes empty, provider-error and timeout states", async () => {
     demoAvailabilityAdapter.findSlots(request, "timeout"),
   ]);
   assert.equal(empty.status, "empty");
-  assert.deepEqual(provider, { status: "error", code: "provider", message: "De demo-agenda is tijdelijk niet bereikbaar." });
-  assert.deepEqual(timeout, { status: "error", code: "timeout", message: "Het ophalen duurde te lang en is veilig afgebroken." });
-});
-
-test("lead adapter covers success, provider error and timeout without persistence", async () => {
-  const payload = { kind: "contact", name: "Demo", contactChannels: ["email"], email: "demo@example.test" };
-  const [success, provider, timeout] = await Promise.all([
-    demoLeadAdapter.submit(payload, "success"),
-    demoLeadAdapter.submit(payload, "provider-error"),
-    demoLeadAdapter.submit(payload, "timeout"),
-  ]);
-  assert.deepEqual(success, { status: "accepted", reference: "DEMO-NXT-2048" });
   assert.equal(provider.status, "error");
   assert.equal(timeout.status, "error");
+});
+
+test("lead payload contains startmoment, planner and configurator context", async () => {
+  const payload = buildLeadPayload({
+    kind: "proefles",
+    name: "Demo",
+    email: "demo@example.test",
+    contactChannels: ["email"],
+    startmoment: "Binnen een maand",
+    preferredDay: "Zaterdag",
+    preferredDayParts: ["Ochtend", "Avond"],
+    selectedSlot: "2026-09-05-09:00",
+    packageInterest: "Pakket 30",
+    configurator: {
+      packageId: "starter-30",
+      experience: "transfer",
+      confidence: "neutral",
+      sessionsPerWeek: 3,
+      availability: ["Overdag", "Zaterdag"],
+      paymentInstallments: 4,
+    },
+  });
+  assert.equal(payload.startmoment, "Binnen een maand");
+  assert.equal(payload.selectedSlot, "2026-09-05-09:00");
+  assert.deepEqual(payload.preferredDayParts, ["Ochtend", "Avond"]);
+  assert.equal(payload.configurator?.paymentInstallments, 4);
+  const result = await demoLeadAdapter.submit(payload);
+  assert.deepEqual(result, { status: "demo-validated", reference: "DEMO-NXT-2048" });
 });

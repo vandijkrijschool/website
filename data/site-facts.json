@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "brand": {
+    "publicName": {
+      "value": "Van Dijk Rijschool",
+      "status": "confirmedByUserAndBrandAssets"
+    },
+    "legalName": {
+      "value": "Van Dijk - Rijschool t.h.o.d.n. DriveYOU",
+      "status": "sourceDocumentHeadingNeedsPrimaryVerification"
+    },
+    "driveYouSpelling": {
+      "value": "DriveYOU",
+      "status": "sourceProvided"
+    }
+  },
+  "web": {
+    "intendedCanonicalOrigin": {
+      "value": "https://vandijkrijschool.nl",
+      "status": "userProvidedNeedsDnsAndRedirectConfirmation"
+    }
+  },
+  "contactFromRepository": {
+    "telephone": {
+      "value": "+31 6 59116366",
+      "status": "needsPrimaryVerification"
+    },
+    "streetAddress": {
+      "value": "Melis Stokelaan 2440",
+      "status": "needsPrimaryVerification"
+    },
+    "postalCode": {
+      "value": "2541 GR",
+      "status": "needsPrimaryVerification"
+    },
+    "locality": {
+      "value": "'s-Gravenhage",
+      "status": "needsPrimaryVerificationAndDisplayDecision"
+    },
+    "kvk": {
+      "value": "42130985",
+      "status": "secondaryPublicMatchNeedsPrimaryVerification"
+    },
+    "email": {
+      "value": null,
+      "status": "missing"
+    },
+    "openingHours": {
+      "value": null,
+      "status": "missing"
+    }
+  },
+  "operationalClaims": {
+    "averageLessonCount": {
+      "value": 45,
+      "qualifier": "around",
+      "status": "timeSensitiveNeedsVerification"
+    },
+    "canStartImmediately": {
+      "value": true,
+      "status": "timeSensitiveNeedsVerification"
+    },
+    "hasWaitingList": {
+      "value": false,
+      "status": "timeSensitiveNeedsVerification"
+    },
+    "theoryValidityMonths": {
+      "value": 18,
+      "status": "sourceProvidedAndExternallyConfirmed"
+    }
+  },
+  "integration": {
+    "nxtdrive": {
+      "status": "prototypeOnlyUntilApiOrWidgetContractProvided",
+      "prohibitedClaims": [
+        "Do not imply a demo slot is booked before provider confirmation",
+        "Do not expose credentials or personal data in client logs"
+      ]
+    }
+  }
+}

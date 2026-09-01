@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Check, MapPin } from "./Icons";
+import { regions, type Region } from "../lib/content";
 
 export function IconCards({ items }: { items: { icon: React.ComponentType<{ width?: string | number }>; title: string; text: string }[] }) {
   return (
@@ -19,13 +20,6 @@ export function SplitCta({ title, text, primaryHref = "/proefles", primaryLabel 
   );
 }
 
-export function AreaLinks() {
-  const areas = [
-    ["Den Haag", "/rijschool-den-haag"],
-    ["Scheveningen", "/regio/scheveningen"],
-    ["Rijswijk", "/regio/rijswijk"],
-    ["Voorburg", "/regio/voorburg"],
-    ["Leidschendam", "/regio/leidschendam"],
-  ];
-  return <div className="area-link-grid">{areas.map(([label, href]) => <Link href={href} key={href}><MapPin width="18" /><span><small>Rijschool</small><strong>{label}</strong></span><ArrowRight width="17" /></Link>)}</div>;
+export function AreaLinks({ items = regions }: { items?: Region[] }) {
+  return <div className="area-link-grid">{items.map((region) => <Link href={region.canonicalPath} key={region.slug}><MapPin width="18" /><span><small>Rijschool</small><strong>{region.displayName}</strong></span><ArrowRight width="17" /></Link>)}</div>;
 }

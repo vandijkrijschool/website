@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "count": 17,
+  "regions": [
+    {
+      "name": "Den Haag",
+      "slug": "den-haag",
+      "canonicalPath": "/rijschool-den-haag",
+      "cluster": "den-haag",
+      "nearbySlugs": ["scheveningen", "rijswijk", "voorburg", "leidschendam"],
+      "imageBase": "den-haag-hofvijver-binnenhof",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto bij de Hofvijver en het Binnenhof in Den Haag",
+      "editorialDirection": "Stadsverkeer, tram- en busverkeer, meerbaanswegen en overgangen tussen 30- en 50-kilometerzones; exacte lesroutes door instructeur laten bevestigen."
+    },
+    {
+      "name": "Den Hoorn",
+      "displayQualifier": "Midden-Delfland",
+      "slug": "den-hoorn",
+      "canonicalPath": "/regio/den-hoorn",
+      "cluster": "delft-pijnacker",
+      "nearbySlugs": ["delft", "de-lier", "rijswijk", "wateringen"],
+      "imageBase": "den-hoorn-lesauto",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto in een groene omgeving bij Den Hoorn in Midden-Delfland",
+      "editorialDirection": "Dorpse wegen, aansluiting richting Delft en polderomgeving; vermijd claims over vaste ophaalpunten zonder bevestiging."
+    },
+    {
+      "name": "De Lier",
+      "slug": "de-lier",
+      "canonicalPath": "/regio/de-lier",
+      "cluster": "westland",
+      "nearbySlugs": ["naaldwijk", "honselersdijk", "kwintsheul", "den-hoorn"],
+      "imageBase": "de-lier-lesauto",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto in een Westlandse omgeving bij De Lier",
+      "editorialDirection": "Dorpscentrum, glastuinbouwverkeer en landelijke verbindingswegen; routes en beschikbaarheid verifiëren."
+    },
+    {
+      "name": "Delft",
+      "slug": "delft",
+      "canonicalPath": "/regio/delft",
+      "cluster": "delft-pijnacker",
+      "nearbySlugs": ["den-hoorn", "rijswijk", "nootdorp", "pijnacker"],
+      "imageBase": "delft-oostpoort-lesauto",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto bij de Oostpoort in Delft",
+      "editorialDirection": "Fietsers, tramverkeer en de overgang tussen historisch centrum en stedelijke hoofdwegen; geen lesroute door autoluwe zones suggereren."
+    },
+    {
+      "name": "Honselersdijk",
+      "slug": "honselersdijk",
+      "canonicalPath": "/regio/honselersdijk",
+      "cluster": "westland",
+      "nearbySlugs": ["naaldwijk", "kwintsheul", "poeldijk", "wateringen"],
+      "imageBase": "honselersdijk-lesauto",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto tussen de kassen bij Honselersdijk",
+      "editorialDirection": "Glastuinbouw, vracht- en bestemmingsverkeer en dorpswegen; feitelijke lescontext door instructeur laten valideren."
+    },
+    {
+      "name": "Kwintsheul",
+      "slug": "kwintsheul",
+      "canonicalPath": "/regio/kwintsheul",
+      "cluster": "westland",
+      "nearbySlugs": ["wateringen", "honselersdijk", "de-lier", "poeldijk"],
+      "imageBase": "kwintsheul-lesauto",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto op een rustige weg bij Kwintsheul",
+      "editorialDirection": "Smalle dorps- en polderwegen en overgangen richting Wateringen en kassen; geen vaste route claimen."
+    },
+    {
+      "name": "Leidschendam",
+      "slug": "leidschendam",
+      "canonicalPath": "/regio/leidschendam",
+      "cluster": "den-haag",
+      "nearbySlugs": ["voorburg", "den-haag", "nootdorp", "rijswijk"],
+      "imageBase": "leidschendam-sluis",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto bij de historische sluis in Leidschendam",
+      "editorialDirection": "Bruggen, kades, stadsverkeer en grotere winkel-/verbindingswegen; exacte beschikbaarheid verifiëren."
+    },
+    {
+      "name": "Monster",
+      "slug": "monster",
+      "canonicalPath": "/regio/monster",
+      "cluster": "westland",
+      "nearbySlugs": ["s-gravenzande", "poeldijk", "naaldwijk", "den-haag"],
+      "imageBase": "monster-lesauto",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto op een kustweg bij Monster",
+      "editorialDirection": "Kust- en duinomgeving, dorpsverkeer en verbindingen door Westland; geen strandlocatie als echt lesmoment presenteren."
+    },
+    {
+      "name": "Naaldwijk",
+      "slug": "naaldwijk",
+      "canonicalPath": "/regio/naaldwijk",
+      "cluster": "westland",
+      "nearbySlugs": ["honselersdijk", "de-lier", "s-gravenzande", "poeldijk"],
+      "imageBase": "naaldwijk-lesauto",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto in een straatbeeld bij Naaldwijk",
+      "editorialDirection": "Centrumverkeer, rotondes en verbindingen binnen Westland; laat concrete lesroutes bevestigen."
+    },
+    {
+      "name": "Nootdorp",
+      "slug": "nootdorp",
+      "canonicalPath": "/regio/nootdorp",
+      "cluster": "delft-pijnacker",
+      "nearbySlugs": ["pijnacker", "delft", "leidschendam", "voorburg"],
+      "imageBase": "nootdorp-woon-polderroute",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto op een weg tussen woongebied en polder bij Nootdorp",
+      "editorialDirection": "Woonwijken, polderwegen en regionale verbindingen; spoor-/OV-context alleen na lokale verificatie benoemen."
+    },
+    {
+      "name": "Pijnacker",
+      "slug": "pijnacker",
+      "canonicalPath": "/regio/pijnacker",
+      "cluster": "delft-pijnacker",
+      "nearbySlugs": ["nootdorp", "delft", "den-hoorn", "leidschendam"],
+      "imageBase": "pijnacker-polderroute",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto op een polderweg bij Pijnacker",
+      "editorialDirection": "Overgang van woongebied naar polder en verschillende snelheidsregimes; routes verifiëren."
+    },
+    {
+      "name": "Poeldijk",
+      "slug": "poeldijk",
+      "canonicalPath": "/regio/poeldijk",
+      "cluster": "westland",
+      "nearbySlugs": ["honselersdijk", "monster", "naaldwijk", "wateringen"],
+      "imageBase": "poeldijk-lesauto",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto op een landelijke weg bij Poeldijk",
+      "editorialDirection": "Dorpswegen, glastuinbouw en verbindingen richting Den Haag en Naaldwijk; ophaalgebied bevestigen."
+    },
+    {
+      "name": "Rijswijk",
+      "slug": "rijswijk",
+      "canonicalPath": "/regio/rijswijk",
+      "cluster": "den-haag",
+      "nearbySlugs": ["den-haag", "voorburg", "delft", "den-hoorn"],
+      "imageBase": "rijswijk-oud-rijswijk",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto in een historische straat in Oud-Rijswijk",
+      "editorialDirection": "Historisch centrum, woonstraten en stedelijke hoofdwegen richting Den Haag en Delft; routes bevestigen."
+    },
+    {
+      "name": "Scheveningen",
+      "slug": "scheveningen",
+      "canonicalPath": "/regio/scheveningen",
+      "cluster": "den-haag",
+      "nearbySlugs": ["den-haag", "rijswijk", "voorburg", "monster"],
+      "imageBase": "scheveningen-kurhaus-boulevard",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto op de boulevard bij het Kurhaus in Scheveningen",
+      "editorialDirection": "Boulevard, tram- en toeristenverkeer en seizoensdrukte; beeld als sfeerimpressie labelen."
+    },
+    {
+      "name": "'s-Gravenzande",
+      "displayName": "’s-Gravenzande",
+      "slug": "s-gravenzande",
+      "canonicalPath": "/regio/s-gravenzande",
+      "cluster": "westland",
+      "nearbySlugs": ["monster", "naaldwijk", "de-lier", "poeldijk"],
+      "imageBase": "s-gravenzande-lesauto",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto in een straatbeeld bij ’s-Gravenzande",
+      "editorialDirection": "Centrum, kustverbindingen en Westlandse wegen; speciale apostrof alleen in weergavenaam, slug zonder apostrof."
+    },
+    {
+      "name": "Voorburg",
+      "slug": "voorburg",
+      "canonicalPath": "/regio/voorburg",
+      "cluster": "den-haag",
+      "nearbySlugs": ["leidschendam", "den-haag", "rijswijk", "nootdorp"],
+      "imageBase": "voorburg-herenstraat-oude-kerk",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto bij de Herenstraat en Oude Kerk in Voorburg",
+      "editorialDirection": "Historische straten, woonverkeer en stedelijke verbindingen; lokale beperkingen en routes bevestigen."
+    },
+    {
+      "name": "Wateringen",
+      "slug": "wateringen",
+      "canonicalPath": "/regio/wateringen",
+      "cluster": "westland",
+      "nearbySlugs": ["kwintsheul", "rijswijk", "den-haag", "poeldijk"],
+      "imageBase": "wateringen-centrum-lesauto",
+      "alt": "Zwarte Van Dijk Rijschool-lesauto in een herkenbaar straatbeeld bij Wateringen",
+      "editorialDirection": "Dorpse kern, glastuinbouw en stedelijke overgangen richting Den Haag en Rijswijk; lesroutes bevestigen."
+    }
+  ]
+}

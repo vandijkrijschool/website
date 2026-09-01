@@ -1,59 +1,27 @@
-# Optionele NXTDRIVE-uitbreiding
+# NXTDRIVE-integratiegrens
 
-De huidige demo is compleet zonder externe integraties. Dit document beschrijft uitsluitend een mogelijke adapterroute als later een afzonderlijk project voor een echte dienst wordt gestart. Endpointnamen zijn illustratief.
+Er is geen bevestigd NXTDRIVE-endpoint, widgetcontract, tenant-ID, authenticatiemethode of slotduur aangeleverd. De huidige implementatie doet daarom geen netwerkcall en claimt nooit een boeking.
 
-## Huidige demosimulatie
+## Huidige demo
 
-`app/lib/nxtdrive.ts` bevat een `AvailabilityAdapter` met vijf lokale scenario’s: `happy`, `empty`, `provider-error`, `timeout` en `slot-conflict`. Alleen de normale flow levert exact drie slots. `app/lib/leads.ts` simuleert daarnaast succes, providerfout en timeout. Geen adapter doet een netwerkcall, boekt een afspraak of bewaart persoonsgegevens.
+`app/lib/nxtdrive.ts` biedt lokale scenario’s voor `happy`, `empty`, `provider-error`, `timeout` en `slot-conflict`. Alleen `happy` levert exact drie momenten. De widget verzamelt:
 
-De widget gebruikt locale `nl-NL`, tijdzone `Europe/Amsterdam`, een gekozen weekdag en één of meer dagdelen. De demodatums worden telkens lokaal opnieuw opgebouwd.
+- één voorkeursdag;
+- één of meer dagdelen;
+- één gekozen moment;
+- een aparte expliciete bevestiging.
 
-## Mogelijk beschikbaarheidscontract
+`app/lib/leads.ts` bouwt daarna een volledige demopayload met contactvelden, startmoment en configuratorcontext. De teruggegeven status is uitsluitend lokaal gevalideerd.
 
-Een toekomstige serveradapter kan bijvoorbeeld dit request vormen:
+## Contract vóór echte aansluiting
 
-```json
-{
-  "tenant_id": "<server-configured>",
-  "appointment_type": "trial_lesson",
-  "preferred_weekday": 2,
-  "day_parts": ["afternoon", "evening"],
-  "timezone": "Europe/Amsterdam",
-  "limit": 3
-}
-```
+Laat NXTDRIVE of DriveYOU eerst schriftelijk bevestigen:
 
-Minimale slotresponse:
+- API-/widget-URL, versie en toegestane client/serverarchitectuur;
+- authenticatie, tenant, rate limits en sandbox;
+- afspraaktype, tijdzone, slotduur, expiratie en conflictgedrag;
+- verplichte velden, toestemming, bewaartermijn en verwerkersrol;
+- atomische reservering, idempotency en bevestigingsstatussen;
+- foutcodes, retrybeleid, webhooks en notificaties.
 
-```json
-{
-  "slot_id": "opaque-id",
-  "starts_at": "2026-09-08T14:30:00+02:00",
-  "duration_minutes": 90,
-  "expires_at": "2026-08-28T05:10:00Z"
-}
-```
-
-De bestaande UI ondersteunt loading, geen beschikbaarheid, timeout, providerfout en een contactfallback al volledig.
-
-## Mogelijke proeflesaanvraag
-
-Een toekomstige serveractie kan een geselecteerd slot samen met genormaliseerde contact- en voorkeursgegevens ontvangen. Clientprijzen en client-side tenant-ID’s horen daarbij niet als gezaghebbende bron te gelden.
-
-```json
-{
-  "slot_id": "opaque-id",
-  "name": "Voorbeeldnaam",
-  "email": "leerling@example.com",
-  "phone": "+31612345678",
-  "postal_code": "2583AB",
-  "package_interest": "meest-gekozen",
-  "preferred_channels": ["whatsapp", "email"]
-}
-```
-
-Bij een echte implementatie zijn servervalidatie, atomische slotreservering, idempotency, foutvertaling, veilige credentials en PII-arme logging logische productiekeuzes. Ze zijn niet nodig voor de huidige demo.
-
-## Mogelijke leerlingomgeving en webhooks
-
-De demotabs tonen de gewenste informatiearchitectuur: overzicht, agenda, voortgang en lesverslagen. Een echte tenantlogin, autorisatie, logout, webhooks en e-mail- of sms-bevestigingen kunnen later achter dezelfde UI worden geplaatst. Dat toekomstige project bepaalt dan zelf tenant, API-versie, bewaartermijnen, beveiligingsbeleid en notificatiekanalen.
+Een echte implementatie moet server-side validatie, veilige credentials, PII-arme logging en een providerbevestiging gebruiken. Clientprijzen en client-side tenantwaarden mogen geen gezaghebbende bron zijn.

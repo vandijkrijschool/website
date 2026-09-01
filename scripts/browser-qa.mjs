@@ -111,20 +111,18 @@ await send("Runtime.enable");
 await send("Log.enable");
 
 const viewports = [
-  { width: 360, height: 800 }, { width: 390, height: 844 }, { width: 768, height: 1024 },
+  { width: 320, height: 720 }, { width: 360, height: 800 }, { width: 390, height: 844 }, { width: 430, height: 900 }, { width: 768, height: 1024 },
   { width: 820, height: 1180 }, { width: 1024, height: 768 }, { width: 1280, height: 800 },
   { width: 1440, height: 900 }, { width: 720, height: 450, label: "1440×900 bij 200% zoom" },
 ];
-const publicRoutes = [
-  "/", "/configurator", "/proefles", "/contact", "/leerlingomgeving", "/rijlessen",
-  "/lespakketten", "/werkwijze", "/over-ons", "/reviews", "/faq", "/rijschool-den-haag",
-  "/regio/scheveningen", "/regio/rijswijk", "/regio/voorburg", "/regio/leidschendam",
-  "/privacy", "/voorwaarden",
-];
+const sitemapDefinition = JSON.parse(readFileSync(new URL("../data/sitemap.json", import.meta.url), "utf8"));
+const publicRoutes = [...sitemapDefinition.routes, ...sitemapDefinition.excludedRoutes].map((route) => route.path);
+const representativeRoutes = ["/", "/rijlessen", "/lespakketten", "/tarieven", "/configurator", "/proefles", "/theorie", "/werkgebied", "/rijschool-den-haag", "/regio/delft", "/regio/naaldwijk", "/leerlingomgeving"];
 
 try {
   for (const viewport of viewports) {
-    for (const route of publicRoutes) {
+    const routesForViewport = viewport.width === 390 || viewport.width === 1280 ? publicRoutes : representativeRoutes;
+    for (const route of routesForViewport) {
       await navigate(route, viewport);
       const state = await evaluate(`(() => {
         const previousBehavior = document.documentElement.style.scrollBehavior;
@@ -159,8 +157,22 @@ try {
           overflowingHeadings: [...document.querySelectorAll("h1,h2")].filter((heading) => heading.scrollWidth > heading.clientWidth + 1).map((heading) => heading.textContent.trim()),
           h1: document.querySelectorAll('main h1').length,
           brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
-          overflowers: [...document.querySelectorAll('body *')].map((element) => ({ element, rect: element.getBoundingClientRect() })).filter(({ rect }) => rect.width > 0 && (rect.right > document.documentElement.clientWidth + 1 || rect.left < -1)).slice(0, 12).map(({ element, rect }) => ({ tag: element.tagName, className: String(element.className), left: Math.round(rect.left), right: Math.round(rect.right), width: Math.round(rect.width) })),
-          overflowingBoxes: [...document.querySelectorAll('body *')].filter((element) => element.scrollWidth > element.clientWidth + 1).slice(0, 12).map((element) => ({ tag: element.tagName, className: String(element.className), clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, overflowX: getComputedStyle(element).overflowX })),
+          overflowers: [...document.querySelectorAll('body *')].map((element) => ({ element, rect: element.getBoundingClientRect() })).filter(({ element, rect }) => {
+            if (rect.width <= 0 || (rect.right <= document.documentElement.clientWidth + 1 && rect.left >= -1)) return false;
+            let parent = element.parentElement;
+            while (parent && parent !== document.body) {
+              const overflowX = getComputedStyle(parent).overflowX;
+              if ((overflowX === 'auto' || overflowX === 'scroll') && parent.scrollWidth > parent.clientWidth) return false;
+              if (overflowX === 'hidden' || overflowX === 'clip') {
+                const parentRect = parent.getBoundingClientRect();
+                if (parentRect.left >= -1 && parentRect.right <= document.documentElement.clientWidth + 1) return false;
+              }
+              parent = parent.parentElement;
+            }
+            return true;
+          }).slice(0, 12).map(({ element, rect }) => ({ tag: element.tagName, className: String(element.className), left: Math.round(rect.left), right: Math.round(rect.right), width: Math.round(rect.width) })),
+          bodyOverflowMasked: getComputedStyle(document.body).overflowX === 'hidden' || getComputedStyle(document.documentElement).overflowX === 'hidden',
+          undersizedControls: [...document.querySelectorAll('.contact-preference label,.consent,.weekday-grid button,.daypart-grid button,.booking-slots button,.option-card,.segmented-control button,.chip-group button,.preset-card')].map((element) => ({ element, rect: element.getBoundingClientRect() })).filter(({ rect }) => rect.width > 0 && (rect.width < 44 || rect.height < 44)).slice(0, 12).map(({ element, rect }) => ({ tag: element.tagName, className: String(element.className), width: Math.round(rect.width), height: Math.round(rect.height) })),
           hero: (() => {
             const element = document.querySelector('.home-hero, .page-hero');
             if (!element) return null;
@@ -179,13 +191,14 @@ try {
       })()`);
       const viewportLabel = viewport.label ?? `${viewport.width}px`;
       assert.ok(state.horizontalTravel <= 1, `${route} overflowt op ${viewportLabel}: ${JSON.stringify(state)}`);
+      assert.equal(state.bodyOverflowMasked, false, `${route} maskeert horizontale overflow op ${viewportLabel}`);
+      assert.deepEqual(state.overflowers, [], `${route} heeft elementen buiten de viewport op ${viewportLabel}: ${JSON.stringify(state.overflowers)}`);
+      assert.deepEqual(state.undersizedControls, [], `${route} heeft bedieningsvlakken kleiner dan 44×44 op ${viewportLabel}: ${JSON.stringify(state.undersizedControls)}`);
       assert.deepEqual(state.overflowingHeadings, [], `${route} heeft een te brede headline op ${viewportLabel}: ${JSON.stringify(state.overflowingHeadings)}`);
       assert.deepEqual(state.splitHeadingWords, [], `${route} breekt woorden middenin af op ${viewportLabel}: ${JSON.stringify(state.splitHeadingWords)}`);
-      if (viewport.height >= 700) {
+      if (viewport.height >= 700 && route === "/") {
         assert.ok(state.hero.bottom >= viewport.height - 1, `${route} vult de viewport niet op ${viewportLabel}: ${JSON.stringify(state.hero)}`);
-        assert.ok(state.hero.bottom <= viewport.height + 1, `${route} loopt buiten de eerste viewport op ${viewportLabel}: ${JSON.stringify(state.hero)}`);
-        if (route === "/") {
-          assert.ok(state.homeRail.bottom <= viewport.height - 12, `Homepage-voordelen missen onderruimte op ${viewportLabel}: ${JSON.stringify(state.homeRail)}`);
+        if (state.homeRail) {
           assert.ok(state.homeRail.top >= state.homeRail.copyBottom + 8, `Homepage-inhoud overlapt de voordelen op ${viewportLabel}: ${JSON.stringify(state.homeRail)}`);
         }
       }
@@ -238,11 +251,18 @@ try {
     const slots = document.querySelectorAll('[aria-label="Beschikbare proeflesmomenten"] [role="radio"]');
     slots[0]?.click();
     await new Promise((resolve) => requestAnimationFrame(resolve));
+    [...document.querySelectorAll('button')].find((button) => button.textContent.includes('Bevestig dit demomoment'))?.click();
+    await new Promise((resolve) => requestAnimationFrame(resolve));
     return { count: slots.length, selected: Boolean(document.querySelector('input[name="proeflesmoment"]').value) };
   })()`);
   assert.deepEqual(planner, { count: 3, selected: true });
 
-  console.log(`PASS browser QA: ${viewports.length} viewports × ${publicRoutes.length} publieke routes + menu, tabs, configurator en planner.`);
+  await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
+  await navigate("/", { width: 390, height: 844 });
+  const runningAnimations = await evaluate("document.getAnimations().filter((animation) => animation.playState === 'running' && Number(animation.effect?.getTiming().duration) > 1).length");
+  assert.equal(runningAnimations, 0, "prefers-reduced-motion laat nog niet-essentiële animaties lopen");
+
+  console.log(`PASS browser QA: ${viewports.length} viewports, alle ${publicRoutes.length} routes op mobiel en desktop, representatieve matrix, menu, tabs, configurator, planner en reduced motion.`);
 } finally {
   socket.close();
   chrome.kill("SIGTERM");

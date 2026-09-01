@@ -8,6 +8,7 @@ export const metadata = pageMetadata(
   "Leerlingomgeving",
   "Bekijk een interactieve demonstratie van hoe leerlingen van Van Dijk Rijschool via NXTDRIVE inzicht krijgen in afspraken, leerdoelen en voortgang.",
   "/leerlingomgeving",
+  { noIndex: true },
 );
 
 export default function StudentPortalPage() {

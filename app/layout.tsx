@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Footer, Header, JsonLd } from "./components/SiteChrome";
-import { siteConfig } from "./lib/site";
+import { isIndexingEnabled, siteConfig } from "./lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -12,26 +12,32 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   applicationName: siteConfig.name,
   category: "education",
-  keywords: ["rijschool Den Haag", "rijlessen Den Haag", "autorijschool", "rijlespakket", "proefles rijschool"],
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
   publisher: siteConfig.name,
-  robots: { index: true, follow: true },
-  alternates: { canonical: siteConfig.url },
+  robots: isIndexingEnabled
+    ? { index: true, follow: true }
+    : { index: false, follow: false, nocache: true },
+  alternates: { canonical: `${siteConfig.url}/` },
   openGraph: {
     type: "website",
     locale: "nl_NL",
     siteName: siteConfig.name,
     title: siteConfig.title,
     description: siteConfig.description,
-    url: siteConfig.url,
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: siteConfig.title }],
+    url: `${siteConfig.url}/`,
+    images: [{
+      url: "/images/og/van-dijk-rijschool-og-1200x630.jpg",
+      width: 1200,
+      height: 630,
+      alt: siteConfig.title,
+    }],
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.title,
     description: siteConfig.description,
-    images: ["/og.png"],
+    images: ["/images/og/van-dijk-rijschool-og-1200x630.jpg"],
   },
 };
 
@@ -42,11 +48,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="nl-NL">
       <head>
@@ -63,34 +65,21 @@ export default function RootLayout({
           data={[
             {
               "@context": "https://schema.org",
-              "@type": ["Organization", "DrivingSchool"],
+              "@type": "Organization",
+              "@id": siteConfig.organizationId,
               name: siteConfig.name,
-              legalName: siteConfig.tradeName,
               url: siteConfig.url,
-              logo: `${siteConfig.url}/images/logo-stacked.jpg`,
-              description: siteConfig.description,
-              telephone: siteConfig.phone,
-              address: {
-                "@type": "PostalAddress",
-                streetAddress: siteConfig.address.street,
-                postalCode: siteConfig.address.postalCode,
-                addressLocality: siteConfig.address.locality,
-                addressCountry: siteConfig.address.countryCode,
-              },
-              identifier: {
-                "@type": "PropertyValue",
-                propertyID: "KVK",
-                value: siteConfig.chamberOfCommerceNumber,
-              },
-              areaServed: siteConfig.areas.map((name) => ({ "@type": "City", name })),
-              sameAs: [siteConfig.chamberOfCommerceUrl],
+              logo: `${siteConfig.url}/icon-512.png`,
+              areaServed: siteConfig.areas.map((name) => ({ "@type": "Place", name })),
             },
             {
               "@context": "https://schema.org",
               "@type": "WebSite",
+              "@id": siteConfig.websiteId,
               name: siteConfig.name,
               url: siteConfig.url,
               inLanguage: "nl-NL",
+              publisher: { "@id": siteConfig.organizationId },
             },
           ]}
         />
