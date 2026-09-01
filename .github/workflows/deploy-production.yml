@@ -14,9 +14,47 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  browser-qa:
+    name: Browser and accessibility gate
+    if: github.ref == 'refs/heads/production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_SITE_URL: https://vandijkrijschool.nl
+      NEXT_PUBLIC_INDEXING_ENABLED: "false"
+      APP_ENVIRONMENT: production
+      APP_REVISION: ${{ github.sha }}
+      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/vandijkrijschool-playwright
+    steps:
+      - name: Check out exact revision
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          ref: ${{ github.sha }}
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Install pinned Chromium and system dependencies
+        run: npx playwright install --with-deps chromium
+
+      - name: Build standalone application for browser QA
+        run: npm run build
+
+      - name: Browser, responsive and accessibility interaction QA
+        run: npm run test:browser
+
   deploy:
     name: Validate and deploy
     if: github.ref == 'refs/heads/production'
+    needs: browser-qa
     environment:
       name: production
       url: https://vandijkrijschool.nl
@@ -33,7 +71,6 @@ jobs:
       NEXT_PUBLIC_INDEXING_ENABLED: "false"
       APP_ENVIRONMENT: production
       APP_REVISION: ${{ github.sha }}
-      PLAYWRIGHT_BROWSERS_PATH: /srv/sites/vandijkrijschool/.cache/ms-playwright
       DG_RUNTIME_ENV_KEYS: >-
         NEXT_PUBLIC_SITE_URL NEXT_PUBLIC_INDEXING_ENABLED APP_ENVIRONMENT APP_REVISION
 
@@ -63,9 +100,6 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
-      - name: Install pinned Chromium for browser QA
-        run: npx playwright install chromium
-
       - name: Audit production dependencies
         run: npm audit --omit=dev --audit-level=high
 
@@ -86,9 +120,6 @@ jobs:
 
       - name: Smoke-test standalone application
         run: npm run test:smoke
-
-      - name: Browser, responsive and accessibility interaction QA
-        run: npm run test:browser
 
       - name: Deploy through the Sites VPS interface
         run: |

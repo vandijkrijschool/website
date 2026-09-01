@@ -145,6 +145,6 @@ De 29 beoogde sitemaproutes zijn:
 - production-env-validatie met echte origin, productieomgeving, volledige SHA en indexering uit — PASS.
 - `git diff --check` — PASS.
 
-De eerste productionworkflow-run `33492823131` stopte veilig vóór deployment doordat de self-hosted runner nog geen Chromium had. De runnerinstallatie is daarop expliciet, gepind en cachebaar aan de workflow toegevoegd; geen gedeeltelijke deployment heeft plaatsgevonden.
+De eerste productionworkflow-run `33492823131` stopte veilig vóór deployment doordat de self-hosted runner nog geen Chromium had. Run `33493263491` bevestigde daarna dat de minimale VPS-runner de Chromium-systeemlibraries bewust niet bevat. De gepinde browsergate draait daarom in een afzonderlijke GitHub-hosted Linux-job met officiële systeemdependencies; de dedicated deploymentjob heeft die job als harde `needs`-voorwaarde. Geen van beide mislukte runs heeft een gedeeltelijke deployment uitgevoerd.
 
 Push- en deploymentresultaten worden na deze lokale, immutable QA-gate aan de uiteindelijke oplevering toegevoegd.
