@@ -197,7 +197,7 @@ try {
     const slots = document.querySelectorAll('[aria-label="Beschikbare proeflesmomenten"] [role="radio"]');
     slots[0]?.click();
     await new Promise((resolve) => requestAnimationFrame(resolve));
-    [...document.querySelectorAll('button')].find((button) => button.textContent.includes('Bevestig dit demomoment'))?.click();
+    [...document.querySelectorAll('button')].find((button) => button.textContent.includes('Kies dit moment'))?.click();
     await new Promise((resolve) => requestAnimationFrame(resolve));
     return { count: slots.length, selected: Boolean(document.querySelector('input[name="proeflesmoment"]').value) };
   })()`);

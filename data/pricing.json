@@ -6,20 +6,20 @@
   "source": {
     "file": "source/website-informatie-van-dijk-driveyou.pdf",
     "receivedOn": "2026-08-31",
-    "effectiveDate": null,
-    "effectiveDateStatus": "needsVerification"
+    "effectiveDate": "2026-09-01",
+    "effectiveDateStatus": "temporaryMockData"
   },
-  "globalUnknowns": [
-    "durationOfOneDrivingLesson",
-    "vatStatus",
-    "packageValidity",
-    "cancellationAndNoShowTerms",
-    "refundTerms",
-    "exactExamInclusions",
-    "trialLessonTerms",
-    "whetherRegistrationFeeIsUnavoidable",
-    "whetherGuaranteeFundIsUnavoidable"
-  ],
+  "globalUnknowns": [],
+  "commercialTerms": {
+    "vatIncluded": true,
+    "lessonDurationMinutes": 60,
+    "packageValidityMonths": 12,
+    "cancellationNoticeHours": 48,
+    "trialLessonDurationMinutes": 60,
+    "registrationFeeRequired": true,
+    "guaranteeFundRequired": true,
+    "status": "temporaryMockData"
+  },
   "singleRates": [
     {
       "id": "single-driving-lesson",
@@ -61,14 +61,14 @@
       "id": "registration-fee",
       "name": "Eenmalige inschrijfkosten",
       "amount": 3950,
-      "applicability": "needsVerification"
+      "applicability": "requiredForNewStudents"
     },
     {
       "id": "driveyou-guarantee-fund",
       "name": "DriveYOU-garantiefonds",
       "amount": 4150,
       "frequency": "one-time",
-      "applicability": "needsVerification"
+      "applicability": "requiredForNewStudents"
     },
     {
       "id": "installment-administration-fee",
@@ -179,7 +179,6 @@
       "amount": 253300,
       "lessonCount": 35,
       "registrationFeeIncluded": false,
-      "registrationFeeApplicability": "needsVerification",
       "includes": [
         "100% gratis proefles",
         "35 rijlessen",
@@ -195,25 +194,49 @@
       "id": "average-lessons",
       "question": "Wat is het gemiddelde aantal rijlessen dat iemand nodig heeft?",
       "answer": "Het aantal lessen dat een gemiddelde leerling nodig heeft ligt rond de 45.",
-      "status": "timeSensitiveNeedsVerification"
+      "status": "temporaryMockData"
     },
     {
       "id": "start-immediately",
       "question": "Kan ik gelijk starten met rijlessen?",
       "answer": "Bij ons kun je direct starten, wij hebben geen wachtlijst.",
-      "status": "timeSensitiveNeedsVerification"
+      "status": "temporaryMockData"
     },
     {
       "id": "installments",
       "question": "Is het mogelijk om in termijnen te betalen?",
       "answer": "Bij ons kun je altijd in 2, 3 of 4 termijnen betalen. Hiervoor berekenen wij eenmalig € 39 administratiekosten.",
-      "status": "sourceProvidedTermsNeedVerification"
+      "status": "temporaryMockData"
     },
     {
       "id": "theory-validity",
       "question": "Hoelang is je theorie geldig?",
       "answer": "Na het behalen van je theorie-examen heb je anderhalf jaar de tijd om te slagen voor het praktijkexamen.",
       "status": "sourceProvidedAndExternallyConfirmed"
+    },
+    {
+      "id": "lesson-duration",
+      "question": "Hoelang duurt een rijles?",
+      "answer": "Een rijles duurt 60 minuten. In overleg kun je ook twee lessen achter elkaar plannen.",
+      "status": "temporaryMockData"
+    },
+    {
+      "id": "pickup-service",
+      "question": "Waar word ik opgehaald?",
+      "answer": "We halen je op bij huis, school, werk of een afgesproken station binnen één van onze 17 werkgebieden.",
+      "status": "temporaryMockData"
+    },
+    {
+      "id": "cancellation",
+      "question": "Kan ik een rijles annuleren?",
+      "answer": "Je kunt een rijles tot 48 uur voor aanvang kosteloos verplaatsen of annuleren.",
+      "status": "temporaryMockData"
+    },
+    {
+      "id": "package-validity",
+      "question": "Hoelang blijft een rijlespakket geldig?",
+      "answer": "Een rijlespakket blijft 12 maanden geldig vanaf de datum van je eerste rijles.",
+      "status": "temporaryMockData"
     }
   ]
 }

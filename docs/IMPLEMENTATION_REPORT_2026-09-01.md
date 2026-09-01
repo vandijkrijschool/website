@@ -24,9 +24,9 @@ De repository, `origin/main` en `origin/production` stonden vóór implementatie
 ### Centrale data en bibliotheken
 
 - `data/assets.json` — responsive beeldcontract en goedkeuringsregels.
-- `data/pricing.json` — alle bronprijzen in eurocenten, pakketten en onzekerheden.
+- `data/pricing.json` — alle prijzen in eurocenten, pakketten en een consistente tijdelijke set commerciële mockvoorwaarden.
 - `data/regions.json` — exact 17 plaatsen met canonical, nabije plaatsen en beeldbasis.
-- `data/site-facts.json` — merk-, web-, contact-, operatie- en integratiestatussen met expliciete tijdelijke voorbeeldhost en uitgestelde apexmigratie.
+- `data/site-facts.json` — merk-, web-, contact-, operatie- en integratiestatussen met expliciete tijdelijke voorbeeldhost, mock-bedrijfsgegevens en uitgestelde apexmigratie.
 - `data/sitemap.json` — exact 29 beoogde indexroutes en 4 ondersteunende routes.
 - `app/lib/content.ts` — getypeerde imports, prijsformattering, regio-editorial en fail-fast datavalidatie.
 - `app/lib/site.ts` — strikte productie-origin, metadata, navigatie en fail-closed indexeringsgate.
@@ -38,13 +38,13 @@ De repository, `origin/main` en `origin/production` stonden vóór implementatie
 ### Gedeelde UI
 
 - `app/components/Configurator.tsx` — ervaring, planning, alle vijf pakketten, handmatige keuze en betaaltermijnen.
-- `app/components/LeadForm.tsx` — volledige querycontext, startmoment en veilige lokale submitstatus.
-- `app/components/Marketing.tsx` — brongetrouwe pakketkaarten zonder gefingeerde aanbeveling.
+- `app/components/LeadForm.tsx` — volledige querycontext, startmoment en klantgerichte mock-submitstatus.
+- `app/components/Marketing.tsx` — pakketkaarten met heldere vaste kosten en commerciële mockvoorwaarden.
 - `app/components/PageSections.tsx` — werkgebiedlinks en consistente CTA’s.
 - `app/components/RegionPage.tsx` — nieuwe gedeelde lokale paginaopbouw, breadcrumb en Service-schema.
 - `app/components/ResponsiveImage.tsx` — nieuwe `next/image`-wrapper voor vier responsive varianten.
-- `app/components/SiteChrome.tsx` — navigatie/footer/breadcrumbs zonder onbevestigde NAP-feiten.
-- `app/components/StudentPortalDemo.tsx` — oude pakketdata verwijderd.
+- `app/components/SiteChrome.tsx` — navigatie/footer/breadcrumbs met consistente tijdelijke contactdata.
+- `app/components/StudentPortalDemo.tsx` — volledig gevulde mock-leerlingomgeving zonder bezoekersgerichte demolabels.
 - `app/components/TrialBookingWidget.tsx` — draftselectie en aparte expliciete slotbevestiging.
 
 ### Routes en globale SEO/UI
@@ -52,12 +52,12 @@ De repository, `origin/main` en `origin/production` stonden vóór implementatie
 - `app/layout.tsx`, `app/robots.ts`, `app/sitemap.ts` — Organization/WebSite-schema, sitewide launch gate en lege sitemap zolang indexering uit staat.
 - `app/globals.css` — responsive grids, prijstabellen, werkgebied, verificatiepanelen, focus/touch targets en echte overflowdetectie zonder bodymasker.
 - `app/page.tsx` — homepage volledig gevoed uit centrale bron en nieuwe beeldset.
-- `app/rijlessen/page.tsx`, `app/lespakketten/page.tsx`, `app/configurator/page.tsx`, `app/proefles/page.tsx`, `app/werkwijze/page.tsx`, `app/over-ons/page.tsx`, `app/faq/page.tsx`, `app/contact/page.tsx` — broncopy, veilige claims en vernieuwde flows.
+- `app/rijlessen/page.tsx`, `app/lespakketten/page.tsx`, `app/configurator/page.tsx`, `app/proefles/page.tsx`, `app/werkwijze/page.tsx`, `app/over-ons/page.tsx`, `app/faq/page.tsx`, `app/contact/page.tsx` — gewone klantgerichte copy, consistente mock-data en vernieuwde flows.
 - `app/tarieven/page.tsx` — nieuwe complete tarievenpagina.
 - `app/theorie/page.tsx` — nieuwe iTheoriepagina.
 - `app/werkgebied/page.tsx` — nieuwe HTML-hub naar alle 17 plaatsen.
 - `app/rijschool-den-haag/page.tsx`, `app/regio/[slug]/page.tsx` — één Den Haag-canonical en exact 16 dynamische regiopaden.
-- `app/reviews/page.tsx`, `app/leerlingomgeving/page.tsx`, `app/privacy/page.tsx`, `app/voorwaarden/page.tsx` — expliciet noindex en inhoudelijk als demo/voorlopig begrensd.
+- `app/reviews/page.tsx`, `app/leerlingomgeving/page.tsx`, `app/privacy/page.tsx`, `app/voorwaarden/page.tsx` — expliciet noindex en volledig gevuld met passende tijdelijke mock-content.
 
 ### Tests, scripts en documentatie
 
@@ -119,9 +119,9 @@ De 29 beoogde sitemaproutes zijn:
 
 `/reviews`, `/leerlingomgeving`, `/privacy` en `/voorwaarden` zijn ondersteunende noindexroutes en blijven buiten de sitemap. Tijdens de launch gate retourneert de runtime-sitemap bewust nul URL’s; de centrale lijst wordt pas gepubliceerd na expliciete indexeringsgoedkeuring.
 
-## Resterende `needsVerification`
+## Tijdelijke mock-data vóór indexering vervangen
 
-- juridische handelsnaam, eigenaar/organisatie en precieze DriveYOU-relatie;
+- juridische handelsnaam, eigenaar/instructeur en precieze DriveYOU-relatie;
 - telefoon, e-mail, adres, plaatsweergave, KVK en openingstijden;
 - DNS, TLS en apex/www-redirectkeuze;
 - privacyverantwoordelijke, grondslagen, verwerkers, bewaartermijnen en rechtenroute;
@@ -136,7 +136,7 @@ De 29 beoogde sitemaproutes zijn:
 ## Uitgevoerde commando’s en resultaten
 
 - `npm ci` — PASS, lockfile-installatie voltooid.
-- `npm run check` — PASS: lint, typecheck, 17/17 tests, Next.js-build, standalone smoke en volledige browser-QA.
+- `npm run check` — PASS: lint, typecheck, 18/18 tests, Next.js-build, standalone smoke en volledige browser-QA.
 - `npm run test:smoke` — PASS: 33 routes, 33 interne links, metadata, noindexgate, lege launch-sitemap, robots en 404s.
 - `npm run test:browser` — PASS: 10 viewports, alle 33 routes mobiel/desktop en alle interactiechecks.
 - `node scripts/capture-screenshots.mjs` — PASS: 16 screenshots.

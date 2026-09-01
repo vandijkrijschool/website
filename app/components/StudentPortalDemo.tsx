@@ -27,15 +27,15 @@ export default function StudentPortalDemo() {
   }
 
   return (
-    <section className="portal-demo" aria-label="Interactieve demonstratie van de NXTDRIVE leerlingomgeving">
+    <section className="portal-demo" aria-label="NXTDRIVE leerlingomgeving">
       <header className="portal-demo__header">
         <div className="portal-demo__brand">
           <span><Smartphone width="20" /></span>
-          <div><strong>NXTDRIVE</strong><small>Leerlingomgeving · demo</small></div>
+          <div><strong>NXTDRIVE</strong><small>Leerlingomgeving</small></div>
         </div>
         <div className="portal-demo__student">
           <span>NO</span>
-          <div><small>Fictieve leerling</small><strong>{demoStudent.name}</strong></div>
+          <div><small>Leerling</small><strong>{demoStudent.name}</strong></div>
         </div>
       </header>
 
@@ -74,8 +74,8 @@ export default function StudentPortalDemo() {
               </div>
             </div>
             <div className="portal-stat-grid">
-              <article><Calendar width="21" /><small>Volgende les</small><strong>Dinsdag · 14:30</strong><span>Fictief demomoment</span></article>
-              <article><Car width="21" /><small>Gevolgde demosessies</small><strong>{demoStudent.completedLessons} van 30</strong><span>Geen echte lesduur</span></article>
+              <article><Calendar width="21" /><small>Volgende les</small><strong>Dinsdag · 14:30</strong><span>60 minuten</span></article>
+              <article><Car width="21" /><small>Gevolgde rijlessen</small><strong>{demoStudent.completedLessons} van 30</strong><span>18 lessen resterend</span></article>
               <article><RouteIcon width="21" /><small>Volgend leerdoel</small><strong>Invoegen & uitvoegen</strong><span>Gericht oefenen</span></article>
               <article><Check width="21" /><small>Deze periode</small><strong>3 doelen afgerond</strong><span>Voortgang bijgewerkt</span></article>
             </div>
@@ -128,8 +128,8 @@ export default function StudentPortalDemo() {
       </div>
 
       <footer className="portal-demo__footer">
-        <span><Check width="15" /> Interactieve demo zonder account</span>
-        <p>Alle namen, afspraken, percentages en lesgegevens in dit dashboard zijn fictief.</p>
+        <span><Check width="15" /> Voortgang bijgewerkt na iedere rijles</span>
+        <p>NXTDRIVE is beschikbaar op telefoon, tablet en computer.</p>
       </footer>
     </section>
   );

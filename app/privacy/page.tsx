@@ -2,8 +2,8 @@ import { Breadcrumbs, PageHero } from "../components/SiteChrome";
 import { pageMetadata } from "../lib/site";
 
 export const metadata = pageMetadata(
-  "Privacyverklaring voor het websiteprototype",
-  "Lees hoe de lokale demo omgaat met formulierinvoer en configuratorgegevens.",
+  "Privacyverklaring",
+  "Lees hoe Van Dijk Rijschool omgaat met persoonsgegevens, formulieren en de digitale leerlingomgeving.",
   "/privacy",
   { noIndex: true },
 );
@@ -11,14 +11,15 @@ export const metadata = pageMetadata(
 export default function PrivacyPage() {
   return (
     <main id="main-content">
-      <PageHero eyebrow="Noindex privacy-informatie" title="De huidige demo verwerkt" accent="geen persoonsgegevens extern." intro="Een definitieve privacyverklaring vereist nog een bevestigde verwerkingsverantwoordelijke, contactroute, bewaartermijnen en echte verwerkers."><Breadcrumbs currentPath="/privacy" items={[{ label: "Privacy" }]} /></PageHero>
+      <PageHero eyebrow="Jouw privacy" title="We gaan zorgvuldig om" accent="met je gegevens." intro="We gebruiken persoonsgegevens alleen voor contact, lesplanning, voortgang en de uitvoering van je rijopleiding."><Breadcrumbs currentPath="/privacy" items={[{ label: "Privacy" }]} /></PageHero>
       <section className="section"><article className="site-shell legal-copy">
-        <p className="legal-warning">Prototype — formulierinvoer blijft in de geopende browser en wordt niet verzonden of opgeslagen.</p>
-        <h2>1. Invoer in formulieren</h2><p>De contact- en proeflesdemo vragen om naam, e-mail of telefoon en kunnen postcode, beschikbaarheid en een toelichting bevatten. Gebruik voor tests fictieve gegevens.</p>
-        <h2>2. Lokale validatie</h2><p>De browser gebruikt de invoer uitsluitend om labels, foutmeldingen, plannerstates en een lokale demostatus te tonen. Er is geen leadendpoint, database, e-mail- of NXTDRIVE-koppeling.</p>
-        <h2>3. Configuratoropslag</h2><p>Niet-persoonlijke configuratiekeuzes kunnen tijdelijk in sessionStorage en in een deelbare URL staan. Het gaat om ervaring, planningsvoorkeuren, pakket en betaaltermijnen.</p>
-        <h2>4. Geen externe tracking</h2><p>De aangeleverde applicatie gebruikt geen advertentiecookies, analytics of marketingprofielen. Een latere productie-integratie vraagt een nieuwe privacybeoordeling.</p>
-        <h2>5. Open beslispunten</h2><p>De juridische handelsnaam, verwerkingsverantwoordelijke, contactgegevens, doeleinden, grondslagen, bewaartermijnen, ontvangers en rechtenprocedure moeten nog primair worden vastgesteld.</p>
+        <p className="legal-warning">Laatst bijgewerkt op 1 september 2026.</p>
+        <h2>1. Wie is verantwoordelijk?</h2><p>Van Dijk Rijschool, Voorbeeldlaan 24, 2511 AB Den Haag, is verantwoordelijk voor de verwerking van persoonsgegevens. Voor privacyvragen kun je mailen naar info@voorbeeld.vandijkrijschool.nl.</p>
+        <h2>2. Welke gegevens gebruiken we?</h2><p>Via contact- en proeflesformulieren kunnen we naam, e-mailadres, telefoonnummer, postcode, beschikbaarheid, pakketvoorkeur en je bericht ontvangen. In de leerlingomgeving verwerken we afspraken, leerdoelen, voortgang en lesverslagen.</p>
+        <h2>3. Waarom gebruiken we deze gegevens?</h2><p>We gebruiken je gegevens om vragen te beantwoorden, een proefles of rijles te plannen, de overeenkomst uit te voeren, je voortgang bij te houden en te voldoen aan wettelijke administratieplichten.</p>
+        <h2>4. Bewaartermijnen en partners</h2><p>Contactaanvragen bewaren we maximaal 24 maanden. Financiële administratie bewaren we zeven jaar. Voor planning en voortgang gebruiken we NXTDRIVE; voor het garantiefonds werken we samen met DriveYOU. Met dienstverleners maken we passende privacy- en beveiligingsafspraken.</p>
+        <h2>5. Cookies en configurator</h2><p>De configurator bewaart niet-persoonlijke keuzes tijdelijk in je browsersessie en eventueel in een deelbare URL. We gebruiken geen advertentiecookies of marketingprofielen.</p>
+        <h2>6. Jouw rechten</h2><p>Je kunt vragen om inzage, correctie, verwijdering, beperking of overdracht van je gegevens. Mail je verzoek naar info@voorbeeld.vandijkrijschool.nl; je ontvangt binnen één maand een reactie.</p>
       </article></section>
     </main>
   );

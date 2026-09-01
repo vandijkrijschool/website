@@ -71,6 +71,11 @@ try {
     const html = await response.text();
     const settledHtml = html.includes('<div hidden id="S:0">') ? html.slice(html.indexOf('<div hidden id="S:0">')) : html;
     assert.match(settledHtml, /Van Dijk Rijschool/i, `${path} did not render the brand`);
+    assert.doesNotMatch(
+      settledHtml,
+      /Needs verification|nog te bevestigen|geen lokale vestiging geclaimd|veilige contactdemo|volgens (?:de|het) bron|aangeleverde bron|sfeerimpressie|releasegate|schijnverzending|websiteprototype|demo-data/i,
+      `${path} exposes internal release or verification language`,
+    );
     assert.equal((settledHtml.match(/<h1\b/gi) ?? []).length, 1, `${path} should render one resolved-page H1`);
     const canonical = htmlAttribute(html, /<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i)
       || htmlAttribute(html, /<link[^>]+href=["']([^"']+)["'][^>]+rel=["']canonical["']/i);

@@ -84,7 +84,7 @@ test("every manifested region image has four web variants and an OG crop", async
   await access("public/images/og/van-dijk-rijschool-og-1200x630.jpg");
 });
 
-test("demo identities and legal support pages stay noindex and out of schema", async () => {
+test("support pages stay noindex and mock identities stay out of schema", async () => {
   for (const file of ["app/reviews/page.tsx", "app/leerlingomgeving/page.tsx", "app/privacy/page.tsx", "app/voorwaarden/page.tsx"]) {
     assert.match(await readFile(file, "utf8"), /noIndex: true/);
   }
@@ -111,14 +111,27 @@ test("interactive flows preserve full state, cent costs and startmoment", async 
   const booking = await readFile("app/components/TrialBookingWidget.tsx", "utf8");
   const form = await readFile("app/components/LeadForm.tsx", "utf8");
   assert.match(configurator, /serializeConfiguratorState/);
-  assert.match(configurator, /possibleAdditionalCosts/);
+  assert.match(configurator, /oneTimeCosts/);
   assert.doesNotMatch(configurator, /sessionMinutes|appointments|weeks/);
-  assert.match(booking, /Bevestig dit demomoment/);
+  assert.match(booking, /Kies dit moment/);
   assert.match(booking, /slot-conflict/);
   assert.match(form, /startmoment/);
   assert.match(form, /preferredDayParts/);
   assert.match(form, /selectedSlot/);
   assert.match(form, /configurator/);
+});
+
+test("customer-facing copy contains complete mock data without internal release language", async () => {
+  const files = [
+    ...contentRouteFiles,
+    "app/components/Marketing.tsx", "app/components/Configurator.tsx", "app/components/RegionPage.tsx",
+    "app/components/SiteChrome.tsx", "app/components/LeadForm.tsx", "app/components/StudentPortalDemo.tsx",
+  ];
+  const source = (await Promise.all(files.map((file) => readFile(file, "utf8")))).join("\n");
+  assert.doesNotMatch(source, /Needs verification|nog te bevestigen|geen lokale vestiging geclaimd|veilige contactdemo|volgens (?:de|het) bron|aangeleverde bron|sfeerimpressie|releasegate|schijnverzending/i);
+  for (const value of ["60 minuten", "12 maanden", "48 uur", "binnen één werkdag", "info@voorbeeld.vandijkrijschool.nl"]) {
+    assert.match(source, new RegExp(value, "i"));
+  }
 });
 
 test("source and runtime code use only the approved temporary host and contain no old packages or wrong image references", async () => {

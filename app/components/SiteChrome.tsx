@@ -60,12 +60,13 @@ export function Footer() {
             <p>Persoonlijke autorijlessen en transparante pakketten in Den Haag, Delft, Pijnacker en Westland.</p>
             <div className="footer-badges">
               <span><MapPin width="16" /> {siteConfig.areaLabel}</span>
-              <span><Smartphone width="16" /> Proeflesplanner als prototype</span>
+              <span><Smartphone width="16" /> Online proefles plannen</span>
             </div>
             <p className="footer-company-details">
               <strong>{siteConfig.tradeName}</strong>
-              <span>Contact- en juridische gegevens worden vóór activering van echte formulieren primair bevestigd.</span>
-              <Link href="/contact">Bekijk de veilige contactdemo</Link>
+              <span>{siteConfig.contact.streetAddress.value}, {siteConfig.contact.postalCode.value} {siteConfig.contact.locality.value}</span>
+              <a href={`tel:${siteConfig.contact.telephone.value.replace(/\s/g, "")}`}>{siteConfig.contact.telephone.displayValue}</a>
+              <a href={`mailto:${siteConfig.contact.email.value}`}>{siteConfig.contact.email.value}</a>
             </p>
           </div>
           <div>
@@ -77,7 +78,7 @@ export function Footer() {
           <div>
             <h3>Van Dijk</h3>
             {footerNavigation.slice(2).map((item) => <Link href={item.href} key={item.href}>{item.label}</Link>)}
-            <Link href="/reviews">Ervaringen (demo)</Link>
+            <Link href="/reviews">Ervaringen</Link>
             <Link href="/leerlingomgeving">Leerlingomgeving</Link>
           </div>
           <div>
@@ -89,7 +90,7 @@ export function Footer() {
 
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} {siteConfig.tradeName}</span>
-          <span className="footer-affiliation">DriveYOU-informatie uit bron · NXTDRIVE-prototype · Zakelijke verificatie loopt</span>
+          <span className="footer-affiliation">Aangesloten bij DriveYOU · Digitale rijlesmap via NXTDRIVE</span>
           <div>
             <Link href="/privacy">Privacy</Link>
             <Link href="/voorwaarden">Voorwaarden</Link>

@@ -54,8 +54,8 @@ export const siteConfig = {
   areas: regions.map((region) => region.displayName),
 } as const;
 
-// Verplichte kosten, btw, geldigheid en ingangsdatum zijn nog niet zakelijk
-// bevestigd. Publiceer daarom nog geen Offer- of Product-schema.
+// De tijdelijke bedrijfs- en prijsgegevens zijn mock-data. Houd commerciële
+// structured data uitgeschakeld om die niet als feitelijke aanbiedingen te publiceren.
 export const isCommercialStructuredDataEnabled = false;
 
 export const primaryNavigation = [

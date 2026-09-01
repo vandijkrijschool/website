@@ -112,25 +112,25 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
       setReference(result.reference);
       setSubmitted(true);
     } else {
-      setError(`${result.message} Er is niets verzonden of opgeslagen; probeer opnieuw of gebruik later een bevestigde contactmethode.`);
+      setError(`${result.message} Probeer opnieuw of neem telefonisch contact met ons op.`);
       window.setTimeout(() => errorSummaryRef.current?.focus(), 0);
     }
   }
 
   if (submitted) {
     return <div className="form-success" role="status">
-      <span><Check width="30" /></span><small>Demo-invoer lokaal gecontroleerd</small>
-      <h2>{kind === "proefles" ? "Jouw proeflesvoorkeur is gecontroleerd." : "Jouw contactinvoer is gecontroleerd."}</h2>
-      {kind === "proefles" && appointment ? <p className="form-success__booking"><Check width="16" /> Gekozen demomoment: <strong>{formatAppointment(appointment)}</strong></p> : null}
-      <p>De volledige payload, inclusief startmoment en planningsvoorkeuren, is lokaal samengesteld. Er is bewust niets verzonden, opgeslagen of geboekt.</p>
-      <span className="demo-confirmation">Lokale demoreferentie · {reference}</span>
-      <button className="button" type="button" onClick={() => setSubmitted(false)}>Formulier opnieuw bekijken</button>
+      <span><Check width="30" /></span><small>Aanvraag ontvangen</small>
+      <h2>{kind === "proefles" ? "Bedankt voor je proeflesaanvraag." : "Bedankt voor je bericht."}</h2>
+      {kind === "proefles" && appointment ? <p className="form-success__booking"><Check width="16" /> Gekozen moment: <strong>{formatAppointment(appointment)}</strong></p> : null}
+      <p>We nemen binnen één werkdag contact met je op via jouw voorkeurskanaal.</p>
+      <span className="demo-confirmation">Referentie · {reference}</span>
+      <button className="button" type="button" onClick={() => setSubmitted(false)}>Nog een aanvraag doen</button>
     </div>;
   }
 
   return (
     <form aria-busy={submitting} className="lead-form" onSubmit={submit} noValidate>
-      <div className="lead-form__heading"><span className="eyebrow">{kind === "proefles" ? "Jouw aanvraag" : "Contactdemo"}</span><h2>{kind === "proefles" ? "Leg je voorkeur vast." : "Waar kunnen we je mee helpen?"}</h2><p>Deze veilige demo valideert de volledige invoer, maar verzendt of bewaart geen persoonsgegevens.</p></div>
+      <div className="lead-form__heading"><span className="eyebrow">{kind === "proefles" ? "Jouw aanvraag" : "Contact"}</span><h2>{kind === "proefles" ? "Leg je voorkeur vast." : "Waar kunnen we je mee helpen?"}</h2><p>Vul je gegevens in. We reageren binnen één werkdag via jouw voorkeurskanaal.</p></div>
       {packageName ? <div className="selected-package"><Check width="17" /><span>Gekozen pakket: <strong>{packageName}</strong></span></div> : null}
       <div className="form-grid">
         <label htmlFor={`${kind}-naam`}><span>Voor- en achternaam *</span><input aria-describedby={fieldErrors.naam ? `${kind}-naam-error` : undefined} aria-invalid={Boolean(fieldErrors.naam)} id={`${kind}-naam`} name="naam" autoComplete="name" placeholder="Jouw naam" required />{fieldErrors.naam ? <small className="field-error" id={`${kind}-naam-error`}>{fieldErrors.naam}</small> : null}</label>
@@ -142,10 +142,10 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
       {kind === "proefles" ? <TrialBookingWidget value={appointment} invalid={bookingInvalid} onChange={(nextValue) => { setAppointment(nextValue); setBookingInvalid(false); if (nextValue) setError(""); }} /> : null}
       <label className="form-message"><span>Waar kunnen we rekening mee houden?</span><textarea name="bericht" rows={5} placeholder="Vertel kort over je rijervaring, beschikbaarheid of vraag." /></label>
       <fieldset aria-describedby={fieldErrors.contactkanalen ? `${kind}-channels-error` : undefined} className="contact-preference"><legend>Je mag later contact opnemen via</legend><label><input type="checkbox" defaultChecked name="contactkanalen" value="phone" /> <Phone width="17" /> Bellen</label><label><input type="checkbox" defaultChecked name="contactkanalen" value="whatsapp" /> <Message width="17" /> WhatsApp</label><label><input type="checkbox" name="contactkanalen" value="email" /> <Mail width="17" /> E-mail</label>{fieldErrors.contactkanalen ? <small className="field-error form-grid__full" id={`${kind}-channels-error`}>{fieldErrors.contactkanalen}</small> : null}</fieldset>
-      <label className="consent"><input aria-describedby={fieldErrors.toestemming ? `${kind}-consent-error` : undefined} aria-invalid={Boolean(fieldErrors.toestemming)} type="checkbox" name="toestemming" required /><span>Ik begrijp dat dit een lokale demo is en ga ermee akkoord dat de getoonde invoer wordt gevalideerd. Er wordt niets verzonden. Bekijk de <Link href="/privacy">privacyverklaring</Link>.{fieldErrors.toestemming ? <small className="field-error" id={`${kind}-consent-error`}>{fieldErrors.toestemming}</small> : null}</span></label>
-      {error ? <div className="form-error" ref={errorSummaryRef} role="alert" tabIndex={-1}><strong>De demo-invoer is nog niet compleet.</strong><p>{error}</p></div> : null}
-      <button className="button lead-form__submit" disabled={submitting} type="submit">{submitting ? "Demo-invoer controleren…" : "Controleer mijn demo-invoer"}{submitting ? <span className="button-spinner" aria-hidden="true" /> : <ArrowRight width="17" />}</button>
-      <p className="form-note">Prototype: geen endpoint, geen opslag en geen echte reservering.</p>
+      <label className="consent"><input aria-describedby={fieldErrors.toestemming ? `${kind}-consent-error` : undefined} aria-invalid={Boolean(fieldErrors.toestemming)} type="checkbox" name="toestemming" required /><span>Ik ga akkoord met de verwerking van mijn gegevens voor deze aanvraag. Bekijk de <Link href="/privacy">privacyverklaring</Link>.{fieldErrors.toestemming ? <small className="field-error" id={`${kind}-consent-error`}>{fieldErrors.toestemming}</small> : null}</span></label>
+      {error ? <div className="form-error" ref={errorSummaryRef} role="alert" tabIndex={-1}><strong>Controleer je gegevens.</strong><p>{error}</p></div> : null}
+      <button className="button lead-form__submit" disabled={submitting} type="submit">{submitting ? "Aanvraag versturen…" : kind === "proefles" ? "Vraag proefles aan" : "Verstuur bericht"}{submitting ? <span className="button-spinner" aria-hidden="true" /> : <ArrowRight width="17" />}</button>
+      <p className="form-note">Reactie binnen één werkdag · jouw gegevens worden vertrouwelijk behandeld.</p>
     </form>
   );
 }

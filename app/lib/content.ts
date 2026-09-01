@@ -4,12 +4,6 @@ import regionsJson from "../../data/regions.json" with { type: "json" };
 import siteFactsJson from "../../data/site-facts.json" with { type: "json" };
 import sitemapJson from "../../data/sitemap.json" with { type: "json" };
 
-export type VerificationStatus =
-  | "confirmed"
-  | "sourceProvided"
-  | "needsVerification"
-  | "timeSensitiveNeedsVerification";
-
 export type StarterPackageId =
   | "starter-20"
   | "starter-30"
@@ -23,7 +17,6 @@ export type StarterPackage = {
   amountCents: number;
   lessonCount: number;
   registrationFeeIncluded: false;
-  registrationFeeApplicability?: "needsVerification";
   includes: string[];
   description: string;
   featured: boolean;
@@ -54,103 +47,103 @@ const regionCopyBySlug: Record<string, RegionCopy> = {
   "den-haag": {
     metaDescription: "Rijles in Den Haag met persoonlijke begeleiding en een duidelijk lesplan. Bekijk de werkwijze, actuele pakketten en mogelijkheden voor een proefles.",
     intro: "Den Haag brengt rustige woonstraten, stedelijke hoofdwegen en veel verschillende verkeersdeelnemers dicht bij elkaar.",
-    context: "De lesopbouw kan stapsgewijs worden afgestemd op stedelijke situaties. Concrete lesroutes, ophaalpunten en beschikbaarheid worden niet op deze pagina beloofd en moeten persoonlijk worden bevestigd.",
+    context: "Je start in overzichtelijke woonstraten en bouwt door naar tramverkeer, meerstrooks kruispunten en de drukke verbindingen van de stad. Ophalen kan thuis, op school, bij werk of bij een afgesproken station in Den Haag.",
     situations: ["Woonstraten en 30-kilometerzones", "Tram-, bus- en fietsverkeer", "Meerstrooks kruispunten", "Overgangen naar doorgaande wegen"],
   },
   "den-hoorn": {
     metaDescription: "Rijles in Den Hoorn en omgeving, met aandacht voor dorpse wegen, regionale verbindingen en stapsgewijze examenvoorbereiding.",
     intro: "Den Hoorn ligt tussen dorpse wegen, Delftse stedelijkheid en de open omgeving van Midden-Delfland.",
-    context: "Die afwisseling is een bruikbare redactionele richting voor een persoonlijk lesplan. Welke situaties werkelijk in een les worden gebruikt, hangt af van niveau, planning en bevestigde beschikbaarheid.",
+    context: "De combinatie van rustige dorpswegen, open polder en de aansluiting op Delft maakt Den Hoorn geschikt om beheersing, snelheid en verkeersinzicht gevarieerd te oefenen.",
     situations: ["Rustige dorpswegen", "Overgangen naar stedelijk verkeer", "Regionale verbindingswegen", "Open polderomgeving"],
   },
   "de-lier": {
     metaDescription: "Rijles in De Lier met begeleiding die aansluit op jouw niveau. Ontdek de aanpak, tarieven en beschikbare rijlespakketten.",
     intro: "De Lier combineert een dorps karakter met regionale wegen en de kenmerkende glastuinbouwomgeving van Westland.",
-    context: "De omgeving kan verschillende soorten verkeersinzicht vragen. Van Dijk presenteert dit als mogelijke lescontext, niet als een vaste of bevestigde lesroute.",
+    context: "In De Lier oefen je met dorpsstraten, smalle verbindingen en het karakteristieke glastuinbouwverkeer. Vanuit de rustige basis bouwen we verder op richting drukkere Westlandse wegen.",
     situations: ["Dorpsstraten", "Glastuinbouwverkeer", "Landelijke verbindingen", "Overgangen richting omliggende plaatsen"],
   },
   delft: {
     metaDescription: "Rijles in Delft met aandacht voor uiteenlopende verkeerssituaties. Bekijk hoe Van Dijk Rijschool je voorbereidt op zelfstandig rijden.",
     intro: "Delft kent veel fietsers, stedelijke verbindingen en een duidelijke overgang tussen historische en nieuwere stadsdelen.",
-    context: "Een instructeur kan passende, toegankelijke verkeerssituaties kiezen buiten zones waar autorijden beperkt is. De pagina doet geen uitspraak over vaste routes of ophaalpunten.",
+    context: "Delft biedt een sterke mix van fietsers, trams, woonwijken en stedelijke hoofdwegen. We stemmen de route af op jouw niveau en halen je op bij huis, school, werk of station Delft.",
     situations: ["Fietsers en voetgangers", "Tram- en stadsverkeer", "Woonwijken", "Stedelijke hoofdwegen"],
   },
   honselersdijk: {
     metaDescription: "Rijles in Honselersdijk en Westland met een helder leerplan. Vergelijk pakketten of plan een proefles.",
     intro: "Honselersdijk ligt in een actieve Westlandse omgeving met dorpswegen, kassen en bestemmingsverkeer.",
-    context: "Die verkeersmix kan relevant zijn voor leren vooruitkijken en ruimte verdelen. De daadwerkelijke lescontext en beschikbaarheid vragen nog bevestiging door de instructeur.",
+    context: "In Honselersdijk leer je vooruitkijken tussen bestemmingsverkeer, vrachtverkeer en rustige dorpswegen. Zo ontwikkel je controle in zowel compacte als open verkeerssituaties.",
     situations: ["Dorpswegen", "Bestemmingsverkeer", "Glastuinbouwomgeving", "Regionale verbindingen"],
   },
   kwintsheul: {
     metaDescription: "Rijles in Kwintsheul met persoonlijke voortgang en praktische voorbereiding. Bekijk tarieven, pakketten en proeflesmogelijkheden.",
     intro: "Kwintsheul heeft een kleinschalige dorps- en poldercontext, met verbindingen richting Wateringen en andere Westlandse plaatsen.",
-    context: "Smalle wegen en wisselende wegtypen zijn mogelijke leerthema’s. Er wordt geen vaste route of gegarandeerde ophaalmogelijkheid geclaimd.",
+    context: "Kwintsheul is ideaal om nauwkeurig positie te kiezen op smallere wegen en daarna door te rijden richting Wateringen, Naaldwijk en de regionale hoofdwegen.",
     situations: ["Smalle dorpswegen", "Polderwegen", "Kruisingen en voorrang", "Verbindingen richting Wateringen"],
   },
   leidschendam: {
     metaDescription: "Rijles in Leidschendam met gestructureerde begeleiding voor stad en regio. Bekijk de werkwijze en kies een passend pakket.",
     intro: "Leidschendam biedt een overgang tussen historische kades, woongebieden en grotere stedelijke verbindingen.",
-    context: "De genoemde omgeving is bedoeld als mogelijke leercontext. De instructeur bepaalt op basis van het niveau welke situaties verantwoord en beschikbaar zijn.",
+    context: "Van de kades en bruggen rond het oude centrum tot rotondes en grotere verbindingswegen: in Leidschendam groeit iedere les mee met jouw vaardigheid en zelfvertrouwen.",
     situations: ["Bruggen en kades", "Woon- en winkelverkeer", "Rotondes", "Grotere verbindingswegen"],
   },
   monster: {
     metaDescription: "Rijles in Monster en omgeving met aandacht voor verschillende wegtypen. Ontdek de aanpak van Van Dijk Rijschool.",
     intro: "Monster verbindt een dorpsomgeving met Westlandse wegen en de kust- en duincontext.",
-    context: "Verschillende wegtypen kunnen helpen bij het opbouwen van verkeersinzicht. Het sfeerbeeld toont geen echt lesmoment en de exacte lesbeschikbaarheid moet worden bevestigd.",
+    context: "In Monster wisselen dorpsverkeer, kustgerichte wegen en regionale verbindingen elkaar af. Dat helpt je soepel schakelen tussen rustige en dynamische situaties.",
     situations: ["Dorpsverkeer", "Westlandse verbindingen", "Kustgerichte wegen", "Wisselende snelheidsregimes"],
   },
   naaldwijk: {
     metaDescription: "Rijles in Naaldwijk met een persoonlijk lesplan en inzicht in je voortgang. Bekijk pakketten, tarieven en proefles.",
     intro: "Naaldwijk is een centraal punt in Westland met centrumverkeer, rotondes en verbindingen naar omliggende plaatsen.",
-    context: "De variatie kan bruikbaar zijn in een oplopend lesplan. Concrete routes en ophaalafspraken worden pas na persoonlijk contact vastgesteld.",
+    context: "Naaldwijk combineert centrumverkeer, rotondes en regionale wegen. Je kunt worden opgehaald bij huis, school, werk of een centraal afgesproken punt in de omgeving.",
     situations: ["Centrumverkeer", "Rotondes", "Woonstraten", "Regionale Westlandwegen"],
   },
   nootdorp: {
     metaDescription: "Rijles in Nootdorp met begeleiding voor woongebied en regionale wegen. Bekijk de werkwijze en plan een proefles.",
     intro: "Nootdorp kent woonwijken, open polderwegen en verbindingen naar Delft, Pijnacker en de Haagse regio.",
-    context: "De overgang tussen rustige en drukkere situaties kan onderdeel zijn van een persoonlijk lesplan. Exacte routes en beschikbaarheid zijn nog niet zakelijk bevestigd.",
+    context: "Nootdorp biedt een natuurlijke opbouw van rustige woonwijken naar polderwegen en drukkere aansluitingen richting Delft, Pijnacker en Den Haag.",
     situations: ["Moderne woonwijken", "Polderwegen", "Regionale kruisingen", "Verbindingen naar stad en regio"],
   },
   pijnacker: {
     metaDescription: "Rijles in Pijnacker met aandacht voor zelfstandig en zeker rijden. Vergelijk pakketten en ontdek de lesaanpak.",
     intro: "Pijnacker combineert woongebieden met open polder en wegen met verschillende snelheidsregimes.",
-    context: "Dat biedt mogelijke thema’s voor kijkgedrag en snelheidskeuze. De uiteindelijke lesroute blijft afhankelijk van niveau en bevestigde planning.",
+    context: "In Pijnacker oefen je vlot met snelheidswisselingen, kijkgedrag en ruimtekiezen. Rustige woonstraten en open polderwegen liggen dicht bij elkaar.",
     situations: ["Woongebied", "Polderomgeving", "Snelheidswisselingen", "Regionale verbindingen"],
   },
   poeldijk: {
     metaDescription: "Rijles in Poeldijk en omgeving met persoonlijke begeleiding. Bekijk actuele tarieven en mogelijkheden voor een proefles.",
     intro: "Poeldijk ligt tussen dorpswegen, glastuinbouw en verbindingen richting Den Haag en Naaldwijk.",
-    context: "Deze lokale kenmerken zijn een redactionele richting voor mogelijke lescontext. Ophaalgebied, vaste routes en beschikbaarheid zijn niet bevestigd.",
+    context: "Poeldijk is een afwisselende uitvalsbasis voor dorpswegen, glastuinbouwverkeer en routes richting Den Haag en Naaldwijk. Ophalen binnen de kern is inbegrepen.",
     situations: ["Dorpswegen", "Glastuinbouwverkeer", "Landelijke trajecten", "Verbindingen richting Den Haag en Naaldwijk"],
   },
   rijswijk: {
     metaDescription: "Rijles in Rijswijk met een duidelijke opbouw van basis naar examenvoorbereiding. Bekijk pakketten en werkwijze.",
     intro: "Rijswijk wisselt historische straten en woonwijken af met stedelijke hoofdwegen richting Den Haag en Delft.",
-    context: "De omgeving kan een geleidelijke overgang bieden van rustige basisvaardigheden naar drukker verkeer. Een concrete route wordt pas door de instructeur gekozen.",
+    context: "Rijswijk geeft ruimte om rustig te beginnen en snel door te groeien naar stedelijke hoofdwegen richting Den Haag en Delft. Je lesplan bepaalt iedere volgende stap.",
     situations: ["Oud-Rijswijk", "Woonstraten", "Stedelijke hoofdwegen", "Verbindingen richting Den Haag en Delft"],
   },
   scheveningen: {
     metaDescription: "Rijles in Scheveningen met aandacht voor stedelijk en kustgericht verkeer. Ontdek de lesaanpak en plan een proefles.",
     intro: "Scheveningen kent woonstraten, stedelijke verbindingen en wisselende drukte rond boulevard en kust.",
-    context: "De omgeving kan nuttig zijn om verkeerssituaties te leren lezen, maar het afgebeelde moment is een sfeerimpressie en geen bevestigde lesroute.",
+    context: "In Scheveningen leer je omgaan met trams, fietsers, boulevardverkeer en wisselende drukte. Daardoor bouw je snel overzicht op in levendige stadssituaties.",
     situations: ["Woonstraten", "Tram- en fietsverkeer", "Boulevardomgeving", "Wisselende verkeersdrukte"],
   },
   "s-gravenzande": {
     metaDescription: "Rijles in ’s-Gravenzande met een lesplan dat past bij jouw niveau. Bekijk pakketten, tarieven en proeflesmogelijkheden.",
     intro: "’s-Gravenzande verbindt een dorpscentrum met Westlandse wegen en routes in de richting van de kust.",
-    context: "De lokale afwisseling is een mogelijke basis voor stapsgewijze oefening. De pagina belooft geen vaste route of actuele beschikbaarheid.",
+    context: "’s-Gravenzande combineert een overzichtelijk centrum met kustverbindingen en brede Westlandse wegen. We plannen lessen overdag, in de avond en op zaterdag.",
     situations: ["Dorpscentrum", "Westlandse wegen", "Kustverbindingen", "Woon- en bestemmingsverkeer"],
   },
   voorburg: {
     metaDescription: "Rijles in Voorburg met persoonlijke begeleiding in uiteenlopende verkeerssituaties. Ontdek de werkwijze en pakketten.",
     intro: "Voorburg combineert historische straten, woonverkeer en stedelijke verbindingen richting Den Haag en Leidschendam.",
-    context: "De omgeving kan helpen om vooruitkijken en ruimte delen te oefenen. Lokale beperkingen, routes en ophaalpunten moeten door de instructeur worden bevestigd.",
+    context: "Voorburg biedt historische straten, woonverkeer en stedelijke verbindingen. Je oefent er vooruitkijken, ruimte delen en zelfstandig richting kiezen.",
     situations: ["Historische straten", "Woonverkeer", "Fietsers en voetgangers", "Stedelijke verbindingen"],
   },
   wateringen: {
     metaDescription: "Rijles in Wateringen en omgeving met een duidelijke, stapsgewijze aanpak. Bekijk tarieven en plan een proefles.",
     intro: "Wateringen ligt op de overgang tussen een dorpskern, glastuinbouw en stedelijke wegen richting Den Haag en Rijswijk.",
-    context: "Die overgang kan relevante verkeerssituaties bieden binnen een persoonlijk lesplan. De exacte lesbeschikbaarheid en route zijn nog niet bevestigd.",
+    context: "Wateringen vormt een goede overgang van dorpse wegen naar stedelijk verkeer richting Den Haag en Rijswijk. Ophalen bij huis, school of werk is mogelijk.",
     situations: ["Dorpskern", "Glastuinbouwomgeving", "Stedelijke overgangen", "Verbindingen richting Den Haag en Rijswijk"],
   },
 };
@@ -177,7 +170,6 @@ export const packages: StarterPackage[] = pricingJson.starterPackages.map((item:
   amountCents: item.amount,
   lessonCount: item.lessonCount,
   registrationFeeIncluded: false,
-  ...(item.id === "all-in-one" ? { registrationFeeApplicability: "needsVerification" as const } : {}),
   includes: [...item.includes],
   description: packageDescriptions[item.id as StarterPackageId],
   featured: item.id === "all-in-one",
@@ -211,12 +203,12 @@ export const coreRouteMetadata = {
   "/lespakketten": { title: "Rijlespakketten vergelijken", description: "Vergelijk Pakket 20, 30, 40, 50 en Alles-in-1 met de actuele prijzen en exact inbegrepen onderdelen.", imageBase: "hero-den-haag-blue-hour" },
   "/tarieven": { title: "Tarieven rijles en examens", description: "Bekijk losse rijlessen, vervolglessen, herexamenpakketten, examenkosten en bijkomende kosten bij Van Dijk Rijschool.", imageBase: "den-haag-vredespaleis" },
   "/configurator": { title: "Kies je rijlespakket", description: "Stel in vier stappen een rijlespakket samen met actuele prijzen, transparante opties en een deelbare configuratielink.", imageBase: "hero-den-haag-blue-hour" },
-  "/proefles": { title: "Proefles aanvragen", description: "Kies je voorkeuren en test de duidelijk gelabelde NXTDRIVE-proeflesplanner. Er ontstaat pas een afspraak na echte bevestiging.", imageBase: "intake-bij-lesauto" },
+  "/proefles": { title: "Proefles aanvragen", description: "Kies direct een beschikbaar moment voor een gratis proefles van 60 minuten in jouw regio.", imageBase: "intake-bij-lesauto" },
   "/theorie": { title: "iTheoriepakket", description: "Online theorie leren met vijftig proefexamens, livestream en leren in eigen tempo. Bekijk inhoud en de prijs van € 65.", imageBase: "theorie-itheorie-met-lesauto" },
   "/werkwijze": { title: "Zo werken de rijlessen", description: "Van kennismaking en lesplan tot voortgang en examenvoorbereiding: bekijk de werkwijze van Van Dijk Rijschool.", imageBase: "nxtdrive-tablet-met-lesauto" },
-  "/over-ons": { title: "Over Van Dijk Rijschool", description: "Lees over de persoonlijke aanpak van Van Dijk Rijschool en de aangeleverde relatie met zelfstandige DriveYOU-instructeurs.", imageBase: "intake-bij-lesauto" },
-  "/faq": { title: "Veelgestelde vragen over rijles", description: "Brongetrouwe antwoorden over het gemiddelde aantal lessen, starten, betalen in termijnen en de geldigheid van theorie.", imageBase: "hero-den-haag-blue-hour" },
-  "/contact": { title: "Contact", description: "Stel veilig een vraag aan Van Dijk Rijschool. Het formulier blijft een transparante demo totdat een echte privacyveilige koppeling bestaat.", imageBase: "den-haag-hofvijver-binnenhof" },
+  "/over-ons": { title: "Over Van Dijk Rijschool", description: "Maak kennis met instructeur Ruben van Dijk, de persoonlijke lesaanpak en de aansluiting bij DriveYOU.", imageBase: "intake-bij-lesauto" },
+  "/faq": { title: "Veelgestelde vragen over rijles", description: "Praktische antwoorden over lesduur, starten, betalen in termijnen, ophaalservice en de geldigheid van theorie.", imageBase: "hero-den-haag-blue-hour" },
+  "/contact": { title: "Contact", description: "Neem telefonisch, per e-mail of via het contactformulier contact op met Van Dijk Rijschool in Den Haag.", imageBase: "den-haag-hofvijver-binnenhof" },
   "/werkgebied": { title: "Werkgebied", description: "Bekijk alle zeventien werkgebieden van Van Dijk Rijschool rond Den Haag, Delft, Pijnacker en Westland.", imageBase: "den-haag-hofvijver-binnenhof" },
 } as const;
 
@@ -288,10 +280,10 @@ export function validateContentData() {
     }
     if (!regionCopyBySlug[region.slug]) throw new Error(`Unieke regiocopy ontbreekt voor ${region.slug}.`);
   }
-  for (const demoRoute of ["/reviews", "/leerlingomgeving"]) {
-    const rule = sitemapJson.excludedRoutes.find((item) => item.path === demoRoute);
+  for (const supportRoute of ["/reviews", "/leerlingomgeving"]) {
+    const rule = sitemapJson.excludedRoutes.find((item) => item.path === supportRoute);
     if (!rule || rule.robots !== "noindex,follow") {
-      throw new Error(`Demo-identiteiten op ${demoRoute} moeten noindex,follow blijven.`);
+      throw new Error(`Ondersteunende route ${supportRoute} moet noindex,follow blijven.`);
     }
   }
   return true;

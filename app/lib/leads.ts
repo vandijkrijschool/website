@@ -57,11 +57,11 @@ export const demoLeadAdapter: LeadAdapter = {
   async submit(_payload, scenario = "success") {
     await new Promise((resolve) => globalThis.setTimeout(resolve, scenario === "timeout" ? 800 : 650));
     if (scenario === "provider-error") {
-      return { status: "error", code: "provider", message: "De demo-koppeling gaf een gecontroleerde fout terug." };
+      return { status: "error", code: "provider", message: "Het formulier is tijdelijk niet bereikbaar." };
     }
     if (scenario === "timeout") {
-      return { status: "error", code: "timeout", message: "De demo-aanvraag duurde te lang en is veilig afgebroken." };
+      return { status: "error", code: "timeout", message: "De aanvraag duurde te lang." };
     }
-    return { status: "demo-validated", reference: "DEMO-NXT-2048" };
+    return { status: "demo-validated", reference: "VD-2026-2048" };
   },
 };

@@ -38,7 +38,7 @@ test("full configurator state survives a shareable query", () => {
   assert.match(query, /termijnen=4/);
 });
 
-test("configurator calculates only selected confirmed components in integer cents", () => {
+test("configurator includes every fixed and selected component in integer cents", () => {
   assert.deepEqual(calculateConfigurator("starter-30", 3), {
     selectedPackage: {
       id: "starter-30",
@@ -52,11 +52,12 @@ test("configurator calculates only selected confirmed components in integer cent
     },
     packagePriceCents: 197600,
     administrationFeeCents: 3900,
-    chosenTotalCents: 201500,
-    possibleAdditionalCosts: [
+    oneTimeCosts: [
       { id: "registration-fee", name: "Eenmalige inschrijfkosten", amountCents: 3950 },
       { id: "driveyou-guarantee-fund", name: "DriveYOU-garantiefonds", amountCents: 4150 },
     ],
+    oneTimeCostCents: 8100,
+    chosenTotalCents: 209600,
   });
   assert.equal(calculateConfigurator("starter-20", 1).administrationFeeCents, 0);
 });
@@ -117,5 +118,5 @@ test("lead payload contains startmoment, planner and configurator context", asyn
   assert.deepEqual(payload.preferredDayParts, ["Ochtend", "Avond"]);
   assert.equal(payload.configurator?.paymentInstallments, 4);
   const result = await demoLeadAdapter.submit(payload);
-  assert.deepEqual(result, { status: "demo-validated", reference: "DEMO-NXT-2048" });
+  assert.deepEqual(result, { status: "demo-validated", reference: "VD-2026-2048" });
 });

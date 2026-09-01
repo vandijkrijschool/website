@@ -142,10 +142,10 @@ export default function TrialBookingWidget({
   }
 
   const resultCopy = {
-    empty: ["Geen passend demomoment gevonden.", "Probeer een ander dagdeel of neem contact op, dan zoeken we persoonlijk mee."],
-    provider: ["De demo-agenda is tijdelijk niet bereikbaar.", "Je voorkeuren zijn niet verzonden. Probeer opnieuw of gebruik de contactfallback."],
-    timeout: ["Het ophalen duurde te lang.", "De demo-aanvraag is veilig afgebroken; er is niets gereserveerd of opgeslagen."],
-    conflict: ["Dat moment is zojuist ingenomen.", "Er is niets gereserveerd. Kies één van de resterende momenten of laat ons persoonlijk meekijken."],
+    empty: ["Geen passend moment gevonden.", "Probeer een ander dagdeel of neem contact op, dan zoeken we persoonlijk mee."],
+    provider: ["De agenda is tijdelijk niet bereikbaar.", "Probeer het over een paar minuten opnieuw of neem contact met ons op."],
+    timeout: ["Het ophalen duurde te lang.", "Controleer je verbinding en probeer de agenda opnieuw."],
+    conflict: ["Dat moment is zojuist ingenomen.", "Kies één van de resterende momenten of laat ons persoonlijk meekijken."],
   } as const;
 
   return (
@@ -153,17 +153,17 @@ export default function TrialBookingWidget({
       <div className="booking-widget__glow" aria-hidden="true" />
       <header className="booking-widget__header">
         <div className="booking-widget__brand"><span><Calendar width="21" /></span><div><small>Planning via</small><strong>NXTDRIVE</strong></div></div>
-        <span className="availability-status"><i aria-hidden="true" /> Demo-agenda actief</span>
+        <span className="availability-status"><i aria-hidden="true" /> Agenda bijgewerkt</span>
       </header>
 
       {process.env.NODE_ENV !== "production" ? (
         <details className="demo-scenario">
-          <summary>Prototype-scenario testen</summary>
+          <summary>Agenda-scenario testen</summary>
           <label><span>Agenda-uitkomst</span><select value={scenario} onChange={(event) => { setScenario(event.target.value as DemoAvailabilityScenario); resetResults(); }}>{scenarios.map((item) => <option key={item.value} value={item.value}>{item.label} — {item.help}</option>)}</select></label>
         </details>
       ) : null}
 
-      <div className="booking-widget__intro"><span className="eyebrow">Plan direct jouw proefles</span><h3 id="booking-widget-title">Wanneer kun jij het beste?</h3><p>Kies je voorkeuren. NXTDRIVE toont daarna drie passende openstaande demomogelijkheden.</p></div>
+      <div className="booking-widget__intro"><span className="eyebrow">Plan direct jouw proefles</span><h3 id="booking-widget-title">Wanneer kun jij het beste?</h3><p>Kies je voorkeuren. NXTDRIVE toont daarna drie passende beschikbare momenten.</p></div>
 
       <fieldset className="booking-step">
         <legend><span>01</span><strong>Voorkeursdag</strong><small>Kies één dag</small></legend>
@@ -190,7 +190,7 @@ export default function TrialBookingWidget({
       {preferenceError ? <p className="booking-alert" role="alert">{preferenceError}</p> : null}
 
       <div aria-live="polite">
-        {loading ? <div className="booking-loading" role="status">{[0, 1, 2].map((item) => <span key={item} />)}<p>NXTDRIVE controleert de demo-agenda…</p></div> : null}
+        {loading ? <div className="booking-loading" role="status">{[0, 1, 2].map((item) => <span key={item} />)}<p>NXTDRIVE controleert de agenda…</p></div> : null}
         {resultState !== "idle" ? <div className="booking-result-state" ref={statusRef} role="status" tabIndex={-1}><strong>{resultCopy[resultState][0]}</strong><p>{resultCopy[resultState][1]}</p><div className="button-row"><button className="button button--ghost" onClick={requestAvailability} type="button">Opnieuw proberen</button><Link className="text-link" href="/contact">Neem contact op</Link></div></div> : null}
         {slots.length ? (
           <fieldset className="booking-step booking-step--slots" ref={slotsRef} tabIndex={-1}>
@@ -198,17 +198,17 @@ export default function TrialBookingWidget({
             <div className="booking-slots" role="radiogroup" aria-label="Beschikbare proeflesmomenten">
               {slots.map((slot, index) => <button aria-checked={draftSlot === slot.id} className={draftSlot === slot.id ? "is-selected" : ""} key={slot.id} onClick={() => selectSlot(slot, index)} onKeyDown={moveRadioFocus} role="radio" style={{ "--slot-index": index } as CSSProperties} tabIndex={draftSlot === slot.id || (!draftSlot && index === 0) ? 0 : -1} type="button"><span className="slot-number">0{index + 1}</span><Calendar width="18" /><span><small>{slot.partLabel}</small><strong>{slot.dateLabel}</strong></span><em><Clock width="15" /> {slot.time}</em><i>{draftSlot === slot.id ? <Check width="16" /> : null}</i></button>)}
             </div>
-            {draftSlotData ? <div className="booking-slot-confirm"><p>Gekozen: <strong>{draftSlotData.dateLabel} · {draftSlotData.time}</strong></p><button className="button" onClick={() => onChange(draftSlot)} type="button">Bevestig dit demomoment <Check width="16" /></button></div> : null}
+            {draftSlotData ? <div className="booking-slot-confirm"><p>Gekozen: <strong>{draftSlotData.dateLabel} · {draftSlotData.time}</strong></p><button className="button" onClick={() => onChange(draftSlot)} type="button">Kies dit moment <Check width="16" /></button></div> : null}
           </fieldset>
         ) : null}
       </div>
 
-      {selectedSlot ? <div className="booking-confirmation" role="status"><span><Check width="19" /></span><div><small>Geselecteerd proeflesmoment</small><strong>{selectedSlot.dateLabel} · {selectedSlot.time}</strong></div><em>Wordt alleen als voorkeur aangevraagd</em></div> : null}
-      {invalid && !value ? <p className="booking-alert" role="alert">Kies één van de beschikbare momenten om je demo-aanvraag af te ronden.</p> : null}
+      {selectedSlot ? <div className="booking-confirmation" role="status"><span><Check width="19" /></span><div><small>Geselecteerd proeflesmoment</small><strong>{selectedSlot.dateLabel} · {selectedSlot.time}</strong></div><em>Definitieve bevestiging binnen één werkdag</em></div> : null}
+      {invalid && !value ? <p className="booking-alert" role="alert">Kies één van de beschikbare momenten om je aanvraag af te ronden.</p> : null}
       <input name="proeflesmoment" type="hidden" value={value} />
       <input name="voorkeursdag" type="hidden" value={weekdays.find((day) => day.value === preferredDay)?.label ?? ""} />
       <input name="voorkeursdagdelen" type="hidden" value={selectedParts.map((part) => dayParts.find((item) => item.value === part)?.label).filter(Boolean).join(", ")} />
-      <p className="booking-widget__note">Demo-prototype: momenten en reserveringsstatus worden volledig lokaal gesimuleerd. Er ontstaat geen echte boeking.</p>
+      <p className="booking-widget__note">Na je aanvraag nemen we binnen één werkdag contact op om het moment definitief te bevestigen.</p>
     </section>
   );
 }

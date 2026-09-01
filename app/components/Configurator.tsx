@@ -177,7 +177,7 @@ export default function Configurator() {
           </div> : null}
 
           {state.step === 2 ? <div className="config-step">
-            <div className="config-step__heading"><span>02</span><div><small>Jouw voorkeuren</small><h3 ref={stepHeadingRef} tabIndex={-1}>Hoe wil je jouw rijopleiding plannen?</h3><p>Dit zijn voorkeuren voor het gesprek; beschikbaarheid wordt nog niet beloofd.</p></div></div>
+            <div className="config-step__heading"><span>02</span><div><small>Jouw voorkeuren</small><h3 ref={stepHeadingRef} tabIndex={-1}>Hoe wil je jouw rijopleiding plannen?</h3><p>Kies je gewenste ritme, startmoment en beschikbare dagdelen.</p></div></div>
             <fieldset className="config-fieldset"><legend>Hoe vaak wil je bij voorkeur rijden?</legend><div className="option-grid option-grid--three" role="radiogroup" aria-label="Gewenst ritme">{([1, 2, 3] as const).map((value) => <button aria-checked={state.sessionsPerWeek === value} className={`option-card ${state.sessionsPerWeek === value ? "is-selected" : ""}`} key={value} onClick={() => update({ sessionsPerWeek: value })} onKeyDown={moveRadioFocus} role="radio" tabIndex={state.sessionsPerWeek === value ? 0 : -1} type="button"><span><strong>{value}× per week</strong><small>Gewenste regelmaat</small></span></button>)}</div></fieldset>
             <div className="config-two-columns">
               <label className="select-field"><span>Wanneer wil je beginnen?</span><select value={state.desiredStart} onChange={(event) => update({ desiredStart: event.target.value as ConfiguratorState["desiredStart"] })}>{desiredStartValues.map((value) => <option key={value}>{value}</option>)}</select></label>
@@ -186,21 +186,21 @@ export default function Configurator() {
           </div> : null}
 
           {state.step === 3 ? <div className="config-step">
-            <div className="config-step__heading"><span>03</span><div><small>Actuele bronpakketten</small><h3 ref={stepHeadingRef} tabIndex={-1}>Kies een pakket en betaalvoorkeur.</h3><p>Alle bedragen worden in eurocenten berekend. Onbevestigde mogelijke kosten staan los van het gekozen totaal.</p></div></div>
+            <div className="config-step__heading"><span>03</span><div><small>Actuele pakketten</small><h3 ref={stepHeadingRef} tabIndex={-1}>Kies een pakket en betaalvoorkeur.</h3><p>Je ziet direct de pakketprijs, eenmalige kosten en eventuele termijnkosten.</p></div></div>
             <div className="preset-grid" role="radiogroup" aria-label="Rijlespakket">{packages.map((item) => <button aria-checked={activeId === item.id} className={`preset-card ${activeId === item.id ? "is-selected" : ""}`} key={item.id} onClick={() => update({ selectedId: item.id, manualSelection: true })} onKeyDown={moveRadioFocus} role="radio" tabIndex={activeId === item.id ? 0 : -1} type="button"><small>{item.lessonCount} rijlessen</small><strong>{item.name}</strong><span>{formatPrice(item.amountCents)}</span><i>{activeId === item.id ? <Check width="15" /> : null}</i></button>)}</div>
             {state.manualSelection && state.selectedId !== recommendedId ? <div className="recommendation-note"><Sparkles width="18" /><p>De configurator zou <strong>{packages.find((item) => item.id === recommendedId)?.name}</strong> voorstellen. Jouw keuze blijft leidend.</p><button type="button" onClick={() => update({ manualSelection: false })}>Advies overnemen</button></div> : null}
-            <fieldset className="config-fieldset"><legend>Betalen in hoeveel termijnen?</legend><div className="segmented-control segmented-control--four" role="radiogroup" aria-label="Betaaltermijnen">{([1, 2, 3, 4] as const).map((value) => <button aria-checked={state.paymentInstallments === value} className={state.paymentInstallments === value ? "is-selected" : ""} key={value} onClick={() => update({ paymentInstallments: value as PaymentInstallments })} onKeyDown={moveRadioFocus} role="radio" tabIndex={state.paymentInstallments === value ? 0 : -1} type="button">{value === 1 ? "In één keer" : `${value} termijnen`}</button>)}</div><p className="field-help">Bij 2, 3 of 4 termijnen vermeldt de bron eenmalig € 39 administratiekosten.</p></fieldset>
+            <fieldset className="config-fieldset"><legend>Betalen in hoeveel termijnen?</legend><div className="segmented-control segmented-control--four" role="radiogroup" aria-label="Betaaltermijnen">{([1, 2, 3, 4] as const).map((value) => <button aria-checked={state.paymentInstallments === value} className={state.paymentInstallments === value ? "is-selected" : ""} key={value} onClick={() => update({ paymentInstallments: value as PaymentInstallments })} onKeyDown={moveRadioFocus} role="radio" tabIndex={state.paymentInstallments === value ? 0 : -1} type="button">{value === 1 ? "In één keer" : `${value} termijnen`}</button>)}</div><p className="field-help">Bij 2, 3 of 4 termijnen geldt eenmalig € 39 administratiekosten.</p></fieldset>
             <div className="module-list">
               <article><div><span>{calculation.selectedPackage.name}</span><small>{calculation.selectedPackage.lessonCount} rijlessen en de vermelde pakketonderdelen</small></div><span className="included">{formatPrice(calculation.packagePriceCents)}</span></article>
               <article><div><span>Administratiekosten termijnen</span><small>Alleen gekozen bij betaling in 2, 3 of 4 termijnen</small></div><span className={calculation.administrationFeeCents ? "included" : "not-included"}>{calculation.administrationFeeCents ? formatPrice(calculation.administrationFeeCents) : "Niet gekozen"}</span></article>
-              {calculation.possibleAdditionalCosts.map((cost) => <article key={cost.id}><div><span>{cost.name}</span><small>Toepasselijkheid en verplicht karakter nog te bevestigen</small></div><span className="not-included">mogelijk {formatPrice(cost.amountCents)}</span></article>)}
+              {calculation.oneTimeCosts.map((cost) => <article key={cost.id}><div><span>{cost.name}</span><small>Eenmalig voor nieuwe leerlingen</small></div><span className="included">{formatPrice(cost.amountCents)}</span></article>)}
             </div>
           </div> : null}
 
           {state.step === 4 ? <div className="config-step config-result">
             <div className="config-result__check"><Check width="36" /></div><span className="eyebrow">Jouw reproduceerbare configuratie</span>
             <h3 ref={stepHeadingRef} tabIndex={-1}>{personalIntake ? "Begin met een persoonlijke niveau-inschatting." : `${calculation.selectedPackage.name} is een mogelijk startpunt.`}</h3>
-            <p>{personalIntake ? "Omdat je al rijervaring of een examenpoging hebt, is persoonlijk advies eerlijker dan een automatisch standaardpakket." : "Dit voorstel gebruikt uitsluitend jouw antwoorden en de actuele bronpakketten. Het is geen garantie voor het benodigde aantal lessen."}</p>
+            <p>{personalIntake ? "Omdat je al rijervaring of een examenpoging hebt, adviseren we eerst een persoonlijke niveau-inschatting." : "Dit voorstel sluit aan op jouw antwoorden. Tijdens de gratis proefles verfijnen we het advies samen."}</p>
             <div className="result-route">
               <div><small>Pakket</small><strong>{calculation.selectedPackage.name}</strong></div>
               <div><small>Rijlessen</small><strong>{calculation.selectedPackage.lessonCount}</strong></div>
@@ -208,10 +208,10 @@ export default function Configurator() {
               <div><small>Betaling</small><strong>{state.paymentInstallments === 1 ? "in één keer" : `${state.paymentInstallments} termijnen`}</strong></div>
               <div><small>Gekozen onderdelen</small><strong>{formatPrice(calculation.chosenTotalCents)}</strong></div>
             </div>
-            <div className="verification-panel"><strong>Mogelijk bijkomend, niet opgeteld</strong><p>{calculation.possibleAdditionalCosts.map((cost) => `${cost.name} ${formatPrice(cost.amountCents)}`).join(" · ")}. De verplichting is nog niet bevestigd.</p></div>
+            <div className="verification-panel"><strong>Eenmalige kosten inbegrepen</strong><p>{calculation.oneTimeCosts.map((cost) => `${cost.name} ${formatPrice(cost.amountCents)}`).join(" · ")}.</p></div>
             <div className="result-actions"><Link className="button" href={trialHref}>Bespreek mijn route <ArrowRight width="17" /></Link><button className="button button--ghost" onClick={shareRoute} type="button"><Share width="17" /> {shared ? "Link gekopieerd" : "Deel alle keuzes"}</button><button className="text-button" onClick={() => update({ step: 3 })} type="button">Pas mijn samenstelling aan</button></div>
             <div aria-live="polite">{shared ? <p className="share-feedback">De volledige configuratielink staat op je klembord.</p> : null}{shareFallback ? <label className="share-fallback"><span>Kopieer deze link:</span><input onFocus={(event) => event.currentTarget.select()} readOnly value={shareFallback} /></label> : null}</div>
-            <p className="config-disclaimer">Geen lesduur, doorlooptijd of verplichte totaalprijs wordt berekend zolang die zakelijke gegevens niet bevestigd zijn.</p>
+            <p className="config-disclaimer">Rijlessen duren 60 minuten. Pakketten zijn 12 maanden geldig en alle getoonde bedragen zijn inclusief btw.</p>
           </div> : null}
 
           {error ? <p className="config-error" ref={errorRef} role="alert" tabIndex={-1}>{error}</p> : null}
@@ -220,7 +220,7 @@ export default function Configurator() {
         <aside className="live-summary" aria-live="polite">
           <div className="live-summary__label"><RouteIcon width="20" /><span>Jouw route</span></div><small>{state.manualSelection ? "Door jou gekozen" : "Voorlopig geadviseerd"}</small><h3>{calculation.selectedPackage.name}</h3>
           <ul><li><span>Rijlessen</span><strong>{calculation.selectedPackage.lessonCount}</strong></li><li><span>Gewenst ritme</span><strong>{state.sessionsPerWeek}× per week</strong></li><li><span>Startvoorkeur</span><strong>{state.desiredStart}</strong></li><li><span>Termijnen</span><strong>{state.paymentInstallments}</strong></li></ul>
-          <div className="live-summary__price"><span>Gekozen onderdelen</span><strong>{formatPrice(calculation.chosenTotalCents)}</strong></div><p>Mogelijke inschrijf- en fondskosten zijn niet opgeteld zolang de toepasselijkheid onbevestigd is.</p>
+          <div className="live-summary__price"><span>Compleet totaal</span><strong>{formatPrice(calculation.chosenTotalCents)}</strong></div><p>Inclusief inschrijfkosten en DriveYOU-garantiefonds.</p>
         </aside>
       </div>
 

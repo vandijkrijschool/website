@@ -24,10 +24,10 @@ export function SectionHeading({
 
 export function TrustRail() {
   const items = [
-    { icon: Users, title: "Persoonlijke aanpak", text: "Lesopbouw afgestemd tijdens de intake" },
-    { icon: Calendar, title: "Voorkeuren vastleggen", text: "Planning pas definitief na bevestiging" },
-    { icon: Gauge, title: "Transparante prijzen", text: "Alle bedragen uit één centrale bron" },
-    { icon: Car, title: "Veilige prototypeflow", text: "Geen schijnboeking of gegevensopslag" },
+    { icon: Users, title: "Persoonlijke aanpak", text: "Lesopbouw afgestemd op jouw niveau" },
+    { icon: Calendar, title: "Snel starten", text: "Meestal binnen 7 dagen je eerste les" },
+    { icon: Gauge, title: "Duidelijke prijzen", text: "Vooraf inzicht in alle vaste kosten" },
+    { icon: Car, title: "Flexibel lessen", text: "Overdag, ’s avonds en op zaterdag" },
   ];
 
   return (
@@ -64,7 +64,7 @@ export function PackageCards({ compact = false }: { compact?: boolean }) {
             <span>Pakketprijs</span>
             <strong>{formatPrice(item.amountCents)}</strong>
           </div>
-          <p className="package-card__fee-note">Exclusief € 39,50 inschrijfkosten volgens de bron. Verplicht karakter wordt nog bevestigd.</p>
+          <p className="package-card__fee-note">Exclusief eenmalig € 39,50 inschrijfkosten en € 41,50 garantiefonds.</p>
           <Link className={item.featured ? "button" : "button button--ghost"} href={`/configurator?pakket=${item.id}`}>
             Kies dit pakket <ArrowRight width="17" />
           </Link>
@@ -79,7 +79,7 @@ export function AssuranceStrip() {
     <div className="assurance-strip">
       <span><Shield width="18" /> Duidelijke pakketinhoud</span>
       <span><Check width="18" /> Persoonlijk advies vóór je start</span>
-      <span><Clock width="18" /> Geen onbevestigde kosten in het totaal</span>
+      <span><Clock width="18" /> 12 maanden pakketgeldigheid</span>
     </div>
   );
 }

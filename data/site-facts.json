@@ -6,8 +6,8 @@
       "status": "confirmedByUserAndBrandAssets"
     },
     "legalName": {
-      "value": "Van Dijk - Rijschool t.h.o.d.n. DriveYOU",
-      "status": "sourceDocumentHeadingNeedsPrimaryVerification"
+      "value": "Van Dijk Rijschool",
+      "status": "temporaryMockData"
     },
     "driveYouSpelling": {
       "value": "DriveYOU",
@@ -26,56 +26,80 @@
   },
   "contactFromRepository": {
     "telephone": {
-      "value": "+31 6 59116366",
-      "status": "needsPrimaryVerification"
+      "value": "+31 70 123 45 67",
+      "displayValue": "070 123 45 67",
+      "status": "temporaryMockData"
     },
     "streetAddress": {
-      "value": "Melis Stokelaan 2440",
-      "status": "needsPrimaryVerification"
+      "value": "Voorbeeldlaan 24",
+      "status": "temporaryMockData"
     },
     "postalCode": {
-      "value": "2541 GR",
-      "status": "needsPrimaryVerification"
+      "value": "2511 AB",
+      "status": "temporaryMockData"
     },
     "locality": {
-      "value": "'s-Gravenhage",
-      "status": "needsPrimaryVerificationAndDisplayDecision"
+      "value": "Den Haag",
+      "status": "temporaryMockData"
     },
     "kvk": {
-      "value": "42130985",
-      "status": "secondaryPublicMatchNeedsPrimaryVerification"
+      "value": "12345678",
+      "status": "temporaryMockData"
     },
     "email": {
-      "value": null,
-      "status": "missing"
+      "value": "info@voorbeeld.vandijkrijschool.nl",
+      "status": "temporaryMockData"
     },
     "openingHours": {
-      "value": null,
-      "status": "missing"
+      "value": [
+        "Maandag t/m vrijdag 08:00–21:00",
+        "Zaterdag 08:00–17:00"
+      ],
+      "status": "temporaryMockData"
     }
   },
   "operationalClaims": {
     "averageLessonCount": {
       "value": 45,
       "qualifier": "around",
-      "status": "timeSensitiveNeedsVerification"
+      "status": "temporaryMockData"
     },
     "canStartImmediately": {
       "value": true,
-      "status": "timeSensitiveNeedsVerification"
+      "status": "temporaryMockData"
     },
     "hasWaitingList": {
       "value": false,
-      "status": "timeSensitiveNeedsVerification"
+      "status": "temporaryMockData"
     },
     "theoryValidityMonths": {
       "value": 18,
       "status": "sourceProvidedAndExternallyConfirmed"
+    },
+    "lessonDurationMinutes": {
+      "value": 60,
+      "status": "temporaryMockData"
+    },
+    "packageValidityMonths": {
+      "value": 12,
+      "status": "temporaryMockData"
+    },
+    "cancellationNoticeHours": {
+      "value": 48,
+      "status": "temporaryMockData"
+    },
+    "responseTimeBusinessDays": {
+      "value": 1,
+      "status": "temporaryMockData"
+    },
+    "pickupService": {
+      "value": "Thuis, school, werk of station binnen het werkgebied",
+      "status": "temporaryMockData"
     }
   },
   "integration": {
     "nxtdrive": {
-      "status": "prototypeOnlyUntilApiOrWidgetContractProvided",
+      "status": "temporaryMockExperience",
       "prohibitedClaims": [
         "Do not imply a demo slot is booked before provider confirmation",
         "Do not expose credentials or personal data in client logs"

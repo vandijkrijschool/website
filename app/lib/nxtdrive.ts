@@ -85,7 +85,7 @@ export const demoAvailabilityAdapter: AvailabilityAdapter = {
     await new Promise((resolve) => globalThis.setTimeout(resolve, scenario === "timeout" ? 760 : 520));
     if (scenario === "empty") return { status: "empty", slots: [] };
     if (scenario === "provider-error") {
-      return { status: "error", code: "provider", message: "De demo-agenda is tijdelijk niet bereikbaar." };
+      return { status: "error", code: "provider", message: "De agenda is tijdelijk niet bereikbaar." };
     }
     if (scenario === "timeout") {
       return { status: "error", code: "timeout", message: "Het ophalen duurde te lang en is veilig afgebroken." };

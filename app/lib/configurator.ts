@@ -173,14 +173,17 @@ export function calculateConfigurator(
   const administrationFeeCents = paymentInstallments > 1
     ? installmentAdministrationFee.amount
     : 0;
+  const oneTimeCosts = [
+    { id: registrationFee.id, name: registrationFee.name, amountCents: registrationFee.amount },
+    { id: guaranteeFundFee.id, name: guaranteeFundFee.name, amountCents: guaranteeFundFee.amount },
+  ];
+  const oneTimeCostCents = oneTimeCosts.reduce((total, item) => total + item.amountCents, 0);
   return {
     selectedPackage,
     packagePriceCents: selectedPackage.amountCents,
     administrationFeeCents,
-    chosenTotalCents: selectedPackage.amountCents + administrationFeeCents,
-    possibleAdditionalCosts: [
-      { id: registrationFee.id, name: registrationFee.name, amountCents: registrationFee.amount },
-      { id: guaranteeFundFee.id, name: guaranteeFundFee.name, amountCents: guaranteeFundFee.amount },
-    ],
+    oneTimeCosts,
+    oneTimeCostCents,
+    chosenTotalCents: selectedPackage.amountCents + administrationFeeCents + oneTimeCostCents,
   };
 }
