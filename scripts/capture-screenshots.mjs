@@ -1,13 +1,14 @@
 import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { homedir, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 
 function findBrowser() {
   const candidates = [process.env.BROWSER_BIN, "/usr/bin/chromium", "/usr/bin/google-chrome"];
-  const cache = "/home/codex/.cache/ms-playwright";
-  if (existsSync(cache)) {
+  const caches = [process.env.PLAYWRIGHT_BROWSERS_PATH, join(homedir(), ".cache", "ms-playwright"), "/home/codex/.cache/ms-playwright"];
+  for (const cache of caches.filter(Boolean)) {
+    if (!existsSync(cache)) continue;
     for (const entry of readdirSync(cache).sort().reverse()) {
       candidates.push(join(cache, entry, "chrome-linux64", "chrome"), join(cache, entry, "chrome-linux", "chrome"));
     }

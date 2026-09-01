@@ -15,9 +15,9 @@ De repository, `origin/main` en `origin/production` stonden vóór implementatie
 ### Configuratie en release
 
 - `.env.example` — expliciete indexeringsgate toegevoegd.
-- `.github/workflows/deploy-production.yml` — echte origin, veilige noindexstand, productievalidatie, smoke/routecrawl en browser-QA vóór deployment.
+- `.github/workflows/deploy-production.yml` — echte origin, veilige noindexstand, productievalidatie, pinned Chromium-installatie, smoke/routecrawl en browser-QA vóór deployment.
 - `next.config.ts` — AVIF/WebP geconfigureerd.
-- `package.json` — browser-QA opgenomen in `npm run check`.
+- `package.json`, `package-lock.json` — browser-QA opgenomen in `npm run check` en Playwright 1.62.1 exact vastgezet voor reproduceerbare runner-Chromium.
 - `tsconfig.json` — directe getypeerde TS-module-import voor contracttests toegestaan.
 - `README.md` — architectuur, routes, launch gate, commando’s en deployprocedure geactualiseerd.
 
@@ -144,5 +144,7 @@ De 29 beoogde sitemaproutes zijn:
 - `npm audit --omit=dev --audit-level=high` — PASS: 0 kwetsbaarheden.
 - production-env-validatie met echte origin, productieomgeving, volledige SHA en indexering uit — PASS.
 - `git diff --check` — PASS.
+
+De eerste productionworkflow-run `33492823131` stopte veilig vóór deployment doordat de self-hosted runner nog geen Chromium had. De runnerinstallatie is daarop expliciet, gepind en cachebaar aan de workflow toegevoegd; geen gedeeltelijke deployment heeft plaatsgevonden.
 
 Push- en deploymentresultaten worden na deze lokale, immutable QA-gate aan de uiteindelijke oplevering toegevoegd.

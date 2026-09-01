@@ -1,15 +1,16 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
 
 const baseUrl = process.env.BROWSER_QA_URL ?? "http://localhost:3000";
 
 function findBrowser() {
   const candidates = [process.env.BROWSER_BIN, "/usr/bin/chromium", "/usr/bin/google-chrome"];
-  const cache = "/home/codex/.cache/ms-playwright";
-  if (existsSync(cache)) {
+  const caches = [process.env.PLAYWRIGHT_BROWSERS_PATH, join(homedir(), ".cache", "ms-playwright"), "/home/codex/.cache/ms-playwright"];
+  for (const cache of caches.filter(Boolean)) {
+    if (!existsSync(cache)) continue;
     for (const entry of readdirSync(cache).sort().reverse()) {
       candidates.push(join(cache, entry, "chrome-linux64", "chrome"), join(cache, entry, "chrome-linux", "chrome"));
     }

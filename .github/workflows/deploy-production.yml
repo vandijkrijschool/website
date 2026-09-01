@@ -33,6 +33,7 @@ jobs:
       NEXT_PUBLIC_INDEXING_ENABLED: "false"
       APP_ENVIRONMENT: production
       APP_REVISION: ${{ github.sha }}
+      PLAYWRIGHT_BROWSERS_PATH: /srv/sites/vandijkrijschool/.cache/ms-playwright
       DG_RUNTIME_ENV_KEYS: >-
         NEXT_PUBLIC_SITE_URL NEXT_PUBLIC_INDEXING_ENABLED APP_ENVIRONMENT APP_REVISION
 
@@ -61,6 +62,9 @@ jobs:
 
       - name: Install locked dependencies
         run: npm ci
+
+      - name: Install pinned Chromium for browser QA
+        run: npx playwright install chromium
 
       - name: Audit production dependencies
         run: npm audit --omit=dev --audit-level=high
