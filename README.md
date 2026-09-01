@@ -27,7 +27,7 @@ Formulieren en NXTDRIVE-schermen verzenden, reserveren of bewaren niets. Gegener
 
 ## Snel starten
 
-Vereisten: Node.js 24, npm en Chromium (voor `test:browser`; eventueel via `BROWSER_BIN`).
+Vereisten: Node.js 24, npm en de gepinde Playwright-Chromium (`npx playwright install chromium`) voor `test:browser`.
 
 ```bash
 cp .env.example .env.local

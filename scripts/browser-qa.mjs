@@ -1,87 +1,32 @@
 import assert from "node:assert/strict";
-import { spawn } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
-import { homedir, tmpdir } from "node:os";
-import { join } from "node:path";
+import { readFileSync } from "node:fs";
+import { chromium } from "playwright";
 
 const baseUrl = process.env.BROWSER_QA_URL ?? "http://localhost:3000";
-
-function findBrowser() {
-  const candidates = [process.env.BROWSER_BIN, "/usr/bin/chromium", "/usr/bin/google-chrome"];
-  const caches = [process.env.PLAYWRIGHT_BROWSERS_PATH, join(homedir(), ".cache", "ms-playwright"), "/home/codex/.cache/ms-playwright"];
-  for (const cache of caches.filter(Boolean)) {
-    if (!existsSync(cache)) continue;
-    for (const entry of readdirSync(cache).sort().reverse()) {
-      candidates.push(join(cache, entry, "chrome-linux64", "chrome"), join(cache, entry, "chrome-linux", "chrome"));
-    }
-  }
-  return candidates.find((candidate) => candidate && existsSync(candidate));
-}
-
-const browser = findBrowser();
-if (!browser) throw new Error("Geen headless Chromium gevonden; stel BROWSER_BIN in.");
-
-const profile = mkdtempSync(join(tmpdir(), "vandijk-browser-qa-"));
-const chrome = spawn(browser, [
-  "--headless=new", "--no-sandbox", "--disable-gpu", "--hide-scrollbars",
-  "--remote-debugging-port=0", `--user-data-dir=${profile}`, "about:blank",
-], { stdio: "ignore" });
-
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-async function devtoolsPort() {
-  const file = join(profile, "DevToolsActivePort");
-  for (let attempt = 0; attempt < 100; attempt += 1) {
-    if (existsSync(file)) return Number(readFileSync(file, "utf8").split("\n")[0]);
-    await delay(50);
-  }
-  throw new Error("Chromium DevTools-start duurde te lang.");
-}
-
-const port = await devtoolsPort();
-const targets = await (await fetch(`http://127.0.0.1:${port}/json/list`)).json();
-const target = targets.find((item) => item.type === "page");
-if (!target) throw new Error("Geen Chromium-paginatarget gevonden.");
-
-const socket = new WebSocket(target.webSocketDebuggerUrl);
-await new Promise((resolve, reject) => {
-  socket.addEventListener("open", resolve, { once: true });
-  socket.addEventListener("error", reject, { once: true });
-});
-
-let commandId = 0;
-const pending = new Map();
-const listeners = new Map();
+const browser = await chromium.launch({ headless: true, args: ["--hide-scrollbars"] });
+const context = await browser.newContext();
+const page = await context.newPage();
+const session = await context.newCDPSession(page);
 const consoleProblems = [];
 
-socket.addEventListener("message", (event) => {
-  const message = JSON.parse(String(event.data));
-  if (message.id && pending.has(message.id)) {
-    const { resolve, reject } = pending.get(message.id);
-    pending.delete(message.id);
-    if (message.error) reject(new Error(message.error.message));
-    else resolve(message.result);
-    return;
-  }
-  if (message.method === "Runtime.exceptionThrown" || message.method === "Log.entryAdded") consoleProblems.push(message);
-  for (const listener of listeners.get(message.method) ?? []) listener(message.params);
-});
+session.on("Runtime.exceptionThrown", (params) => consoleProblems.push({ method: "Runtime.exceptionThrown", params }));
+session.on("Log.entryAdded", (params) => consoleProblems.push({ method: "Log.entryAdded", params }));
 
-function send(method, params = {}) {
-  const id = ++commandId;
-  socket.send(JSON.stringify({ id, method, params }));
-  return new Promise((resolve, reject) => pending.set(id, { resolve, reject }));
-}
+const send = (method, params = {}) => session.send(method, params);
 
 function once(method, timeoutMs = 12000) {
   return new Promise((resolve, reject) => {
     const handler = (params) => {
       clearTimeout(timer);
-      listeners.set(method, (listeners.get(method) ?? []).filter((item) => item !== handler));
+      session.off(method, handler);
       resolve(params);
     };
-    const timer = setTimeout(() => reject(new Error(`${method} timeout`)), timeoutMs);
-    listeners.set(method, [...(listeners.get(method) ?? []), handler]);
+    const timer = setTimeout(() => {
+      session.off(method, handler);
+      reject(new Error(`${method} timeout`));
+    }, timeoutMs);
+    session.on(method, handler);
   });
 }
 
@@ -265,8 +210,5 @@ try {
 
   console.log(`PASS browser QA: ${viewports.length} viewports, alle ${publicRoutes.length} routes op mobiel en desktop, representatieve matrix, menu, tabs, configurator, planner en reduced motion.`);
 } finally {
-  socket.close();
-  chrome.kill("SIGTERM");
-  await Promise.race([new Promise((resolve) => chrome.once("exit", resolve)), delay(750)]);
-  rmSync(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+  await browser.close();
 }

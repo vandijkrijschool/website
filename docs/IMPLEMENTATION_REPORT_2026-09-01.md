@@ -149,4 +149,6 @@ De eerste productionworkflow-run `33492823131` stopte veilig vóór deployment d
 
 Een eerste push van die jobsplitsing werd door GitHub vóór workflowstart afgewezen omdat `runner.temp` niet in jobniveau-`env` beschikbaar is. De cache gebruikt nu een expliciete tijdelijke map op de geïsoleerde hosted VM.
 
+Run `33493664097` installeerde Chromium en alle systeemdependencies correct, maar toonde dat de handmatige `DevToolsActivePort`-bootstrap runnerspecifiek was. `scripts/browser-qa.mjs` gebruikt nu Playwrights officiële `chromium.launch()` en behoudt alle bestaande CDP-asserties; deze bootstrap is lokaal opnieuw met de volledige browsermatrix gevalideerd.
+
 Push- en deploymentresultaten worden na deze lokale, immutable QA-gate aan de uiteindelijke oplevering toegevoegd.
