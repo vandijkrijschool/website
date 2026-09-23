@@ -26,7 +26,7 @@ const profile = mkdtempSync(join(tmpdir(), "vandijk-screenshots-"));
 mkdirSync(outputDirectory, { recursive: true });
 
 const pages = [
-  ["homepage", "/"], ["tarieven", "/tarieven"], ["proefles", "/proefles"], ["configurator", "/configurator"],
+  ["homepage", "/"], ["tarieven", "/tarieven"], ["proefles", "/proefles"], ["lespakketten", "/lespakketten"],
   ["werkgebied", "/werkgebied"], ["regio-den-haag", "/rijschool-den-haag"], ["regio-delft", "/regio/delft"], ["regio-naaldwijk", "/regio/naaldwijk"],
 ];
 const viewports = [["desktop", 1440, 900], ["mobile", 390, 844]];

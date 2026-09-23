@@ -1,13 +1,12 @@
 {
   "schemaVersion": 1,
-  "expectedIndexableCount": 29,
+  "expectedIndexableCount": 28,
   "intendedOrigin": "https://voorbeeld.vandijkrijschool.nl",
   "routes": [
     {"path": "/", "type": "core"},
     {"path": "/rijlessen", "type": "core"},
     {"path": "/lespakketten", "type": "core"},
     {"path": "/tarieven", "type": "core"},
-    {"path": "/configurator", "type": "core"},
     {"path": "/proefles", "type": "core"},
     {"path": "/theorie", "type": "core"},
     {"path": "/werkwijze", "type": "core"},
@@ -34,8 +33,7 @@
     {"path": "/regio/wateringen", "type": "region", "regionSlug": "wateringen"}
   ],
   "excludedRoutes": [
-    {"path": "/reviews", "robots": "noindex,follow", "reason": "demo reviews"},
-    {"path": "/leerlingomgeving", "robots": "noindex,follow", "reason": "demo student portal"},
+    {"path": "/leerlingomgeving", "robots": "noindex,follow", "reason": "external student-platform information"},
     {"path": "/privacy", "robots": "noindex,follow", "reason": "legal support page"},
     {"path": "/voorwaarden", "robots": "noindex,follow", "reason": "legal support page"}
   ]

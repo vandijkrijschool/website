@@ -63,7 +63,7 @@ const viewports = [
 ];
 const sitemapDefinition = JSON.parse(readFileSync(new URL("../data/sitemap.json", import.meta.url), "utf8"));
 const publicRoutes = [...sitemapDefinition.routes, ...sitemapDefinition.excludedRoutes].map((route) => route.path);
-const representativeRoutes = ["/", "/rijlessen", "/lespakketten", "/tarieven", "/configurator", "/proefles", "/theorie", "/werkgebied", "/rijschool-den-haag", "/regio/delft", "/regio/naaldwijk", "/leerlingomgeving"];
+const representativeRoutes = ["/", "/rijlessen", "/lespakketten", "/tarieven", "/proefles", "/theorie", "/werkgebied", "/rijschool-den-haag", "/regio/delft", "/regio/naaldwijk", "/leerlingomgeving"];
 
 try {
   for (const viewport of viewports) {
@@ -165,50 +165,21 @@ try {
   })()`);
   assert.deepEqual(menu, { opened: true, closed: true });
 
-  await navigate("/leerlingomgeving", { width: 390, height: 844 });
-  const tabs = await evaluate(`(async () => {
-    const agenda = document.querySelector('#portal-tab-agenda'); agenda.click();
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-    agenda.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-    return document.querySelector('#portal-tab-voortgang').getAttribute('aria-selected');
-  })()`);
-  assert.equal(tabs, "true");
-
-  await evaluate("sessionStorage.clear()");
-  await navigate("/configurator", { width: 390, height: 844 });
-  const configurator = await evaluate(`(async () => {
-    document.querySelector('[aria-label="Rijervaring"] [role="radio"]').click();
-    document.querySelector('[aria-label="Zelfvertrouwen"] [role="radio"]').click();
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-    [...document.querySelectorAll('button')].find((button) => button.textContent.includes('Volgende stap')).click();
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-    return document.body.textContent.includes('Hoe wil je jouw rijopleiding plannen?');
-  })()`);
-  assert.equal(configurator, true);
-
   await navigate("/proefles", { width: 390, height: 844 });
-  const planner = await evaluate(`(async () => {
-    document.querySelector('[aria-label="Voorkeursdag"] [role="radio"]').click();
-    document.querySelector('[aria-label="Voorkeursdagdelen"] button').click();
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-    [...document.querySelectorAll('button')].find((button) => button.textContent.includes('Toon 3 momenten')).click();
-    await new Promise((resolve) => setTimeout(resolve, 650));
-    const slots = document.querySelectorAll('[aria-label="Beschikbare proeflesmomenten"] [role="radio"]');
-    slots[0]?.click();
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-    [...document.querySelectorAll('button')].find((button) => button.textContent.includes('Kies dit moment'))?.click();
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-    return { count: slots.length, selected: Boolean(document.querySelector('input[name="proeflesmoment"]').value) };
-  })()`);
-  assert.deepEqual(planner, { count: 3, selected: true });
+  const intake = await evaluate(`(() => ({
+    form: Boolean(document.querySelector('form.lead-form')),
+    day: Boolean(document.querySelector('select[name="voorkeursdag"]')),
+    dayParts: document.querySelectorAll('input[name="dagdelen"]').length,
+    noFakeSlots: !document.querySelector('[aria-label="Beschikbare proeflesmomenten"]'),
+  }))()`);
+  assert.deepEqual(intake, { form: true, day: true, dayParts: 3, noFakeSlots: true });
 
   await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
   await navigate("/", { width: 390, height: 844 });
   const runningAnimations = await evaluate("document.getAnimations().filter((animation) => animation.playState === 'running' && Number(animation.effect?.getTiming().duration) > 1).length");
   assert.equal(runningAnimations, 0, "prefers-reduced-motion laat nog niet-essentiële animaties lopen");
 
-  console.log(`PASS browser QA: ${viewports.length} viewports, alle ${publicRoutes.length} routes op mobiel en desktop, representatieve matrix, menu, tabs, configurator, planner en reduced motion.`);
+  console.log(`PASS browser QA: ${viewports.length} viewports, alle ${publicRoutes.length} routes op mobiel en desktop, representatieve matrix, menu, intake en reduced motion.`);
 } finally {
   await browser.close();
 }

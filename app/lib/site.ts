@@ -42,21 +42,19 @@ export const siteConfig = {
   name: siteFacts.brand.publicName.value,
   tradeName: siteFacts.brand.publicName.value,
   shortName: "Van Dijk",
-  title: "Van Dijk Rijschool | Rijles in Den Haag en regio",
+  title: "Van Dijk – Rijschool | Rijles in Den Haag en regio",
   description: coreRouteMetadata["/"].description,
   url: configuredOrigin.replace(/\/$/, ""),
   intendedOrigin,
   organizationId: `${configuredOrigin.replace(/\/$/, "")}/#organization`,
   websiteId: `${configuredOrigin.replace(/\/$/, "")}/#website`,
-  legalName: siteFacts.brand.legalName,
+  legalName: siteFacts.brand.legalName.value,
   contact: siteFacts.contactFromRepository,
   areaLabel: "Den Haag, Delft, Pijnacker en Westland",
   areas: regions.map((region) => region.displayName),
 } as const;
 
-// De tijdelijke bedrijfs- en prijsgegevens zijn mock-data. Houd commerciële
-// structured data uitgeschakeld om die niet als feitelijke aanbiedingen te publiceren.
-export const isCommercialStructuredDataEnabled = false;
+export const isCommercialStructuredDataEnabled = true;
 
 export const primaryNavigation = [
   { href: "/rijlessen", label: "Rijlessen" },
@@ -67,7 +65,6 @@ export const primaryNavigation = [
 ] as const;
 
 export const footerNavigation = [
-  { href: "/configurator", label: "Pakketconfigurator" },
   { href: "/proefles", label: "Proefles aanvragen" },
   { href: "/theorie", label: "iTheorie" },
   { href: "/over-ons", label: "Over ons" },

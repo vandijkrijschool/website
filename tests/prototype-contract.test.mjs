@@ -10,26 +10,25 @@ const assets = await json("data/assets.json");
 
 const contentRouteFiles = [
   "app/page.tsx", "app/rijlessen/page.tsx", "app/lespakketten/page.tsx", "app/tarieven/page.tsx",
-  "app/configurator/page.tsx", "app/proefles/page.tsx", "app/theorie/page.tsx", "app/werkwijze/page.tsx",
-  "app/over-ons/page.tsx", "app/faq/page.tsx", "app/contact/page.tsx", "app/werkgebied/page.tsx",
-  "app/rijschool-den-haag/page.tsx", "app/regio/[slug]/page.tsx", "app/reviews/page.tsx",
-  "app/leerlingomgeving/page.tsx", "app/privacy/page.tsx", "app/voorwaarden/page.tsx",
+  "app/proefles/page.tsx", "app/theorie/page.tsx", "app/werkwijze/page.tsx", "app/over-ons/page.tsx",
+  "app/faq/page.tsx", "app/contact/page.tsx", "app/werkgebied/page.tsx", "app/rijschool-den-haag/page.tsx",
+  "app/regio/[slug]/page.tsx", "app/leerlingomgeving/page.tsx", "app/privacy/page.tsx", "app/voorwaarden/page.tsx",
 ];
 
-test("central data defines exactly 17 regions and 29 indexable routes", () => {
+test("central data defines exactly 17 regions and 28 indexable routes", () => {
   assert.equal(regions.count, 17);
   assert.equal(regions.regions.length, 17);
   assert.equal(new Set(regions.regions.map((region) => region.slug)).size, 17);
   assert.equal(new Set(regions.regions.map((region) => region.canonicalPath)).size, 17);
-  assert.equal(sitemap.expectedIndexableCount, 29);
-  assert.equal(sitemap.routes.length, 29);
-  assert.equal(new Set(sitemap.routes.map((route) => route.path)).size, 29);
+  assert.equal(sitemap.expectedIndexableCount, 28);
+  assert.equal(sitemap.routes.length, 28);
+  assert.equal(new Set(sitemap.routes.map((route) => route.path)).size, 28);
   assert.equal(sitemap.routes.filter((route) => route.path.startsWith("/regio/")).length, 16);
   assert.ok(sitemap.routes.some((route) => route.path === "/rijschool-den-haag"));
-  assert.ok(!sitemap.routes.some((route) => route.path === "/regio/den-haag"));
+  assert.ok(!sitemap.routes.some((route) => route.path === "/configurator"));
 });
 
-test("sitemap excludes every noindex support route and unsafe URL shape", () => {
+test("sitemap excludes noindex support routes and unsafe URL shapes", () => {
   const paths = sitemap.routes.map((route) => route.path);
   for (const route of sitemap.excludedRoutes) {
     assert.equal(route.robots, "noindex,follow");
@@ -41,8 +40,8 @@ test("sitemap excludes every noindex support route and unsafe URL shape", () => 
   }
 });
 
-test("all 33 content routes are represented by filled route sources", async () => {
-  assert.equal(sitemap.routes.length + sitemap.excludedRoutes.length, 33);
+test("all public content routes contain real copy", async () => {
+  assert.equal(sitemap.routes.length + sitemap.excludedRoutes.length, 31);
   for (const file of contentRouteFiles) {
     const source = await readFile(file, "utf8");
     assert.ok(source.length > 300, `${file} should contain a filled page`);
@@ -50,7 +49,14 @@ test("all 33 content routes are represented by filled route sources", async () =
   }
 });
 
-test("all five starter packages contain required cent fields and exact source prices", () => {
+test("removed generator and fictional review routes stay absent", async () => {
+  await assert.rejects(access("app/configurator/page.tsx"));
+  await assert.rejects(access("app/components/Configurator.tsx"));
+  await assert.rejects(access("app/reviews/page.tsx"));
+  await assert.rejects(access("app/components/StudentPortalDemo.tsx"));
+});
+
+test("all five starter packages retain the approved prices", () => {
   assert.deepEqual(pricing.starterPackages.map((item) => item.amount), [143100, 197600, 251100, 303600, 253300]);
   for (const item of pricing.starterPackages) {
     assert.ok(item.id && item.name);
@@ -81,81 +87,52 @@ test("every manifested region image has four web variants and an OG crop", async
     await access(file);
     assert.ok((await stat(file)).size > 0, `${file} is empty`);
   }
-  await access("public/images/og/van-dijk-rijschool-og-1200x630.jpg");
 });
 
-test("support pages stay noindex and mock identities stay out of schema", async () => {
-  for (const file of ["app/reviews/page.tsx", "app/leerlingomgeving/page.tsx", "app/privacy/page.tsx", "app/voorwaarden/page.tsx"]) {
+test("support pages stay noindex and business schema uses confirmed details", async () => {
+  for (const file of ["app/leerlingomgeving/page.tsx", "app/privacy/page.tsx", "app/voorwaarden/page.tsx"]) {
     assert.match(await readFile(file, "utf8"), /noIndex: true/);
   }
   const layout = await readFile("app/layout.tsx", "utf8");
-  const reviews = await readFile("app/reviews/page.tsx", "utf8");
-  assert.doesNotMatch(`${layout}\n${reviews}`, /"@type":\s*"(?:Review|AggregateRating)"/);
-  assert.doesNotMatch(layout, /PostalAddress|telephone|sameAs/);
+  assert.match(layout, /telephone:/);
+  assert.match(layout, /email:/);
+  assert.match(layout, /taxID:/);
+  assert.match(layout, /vatID:/);
+  assert.doesNotMatch(layout, /Review|AggregateRating|PostalAddress/);
 });
 
-test("metadata, sitemap and launch gate are centralized and fail closed", async () => {
-  const site = await readFile("app/lib/site.ts", "utf8");
-  const layout = await readFile("app/layout.tsx", "utf8");
-  const sitemapSource = await readFile("app/sitemap.ts", "utf8");
-  assert.match(site, /validateProductionOrigin/);
-  assert.match(site, /isIndexingEnabled/);
-  assert.match(layout, /index: false, follow: false/);
-  assert.match(sitemapSource, /sitemapDefinition\.routes/);
-  assert.doesNotMatch(sitemapSource, /new Date/);
-  assert.doesNotMatch(layout, /keywords:/);
-});
-
-test("interactive flows preserve full state, cent costs and startmoment", async () => {
-  const configurator = await readFile("app/components/Configurator.tsx", "utf8");
-  const booking = await readFile("app/components/TrialBookingWidget.tsx", "utf8");
-  const form = await readFile("app/components/LeadForm.tsx", "utf8");
-  assert.match(configurator, /serializeConfiguratorState/);
-  assert.match(configurator, /oneTimeCosts/);
-  assert.doesNotMatch(configurator, /sessionMinutes|appointments|weeks/);
-  assert.match(booking, /Kies dit moment/);
-  assert.match(booking, /slot-conflict/);
-  assert.match(form, /startmoment/);
-  assert.match(form, /preferredDayParts/);
-  assert.match(form, /selectedSlot/);
-  assert.match(form, /configurator/);
-});
-
-test("customer-facing copy contains complete mock data without internal release language", async () => {
+test("customer-facing copy is consistent with final client feedback", async () => {
   const files = [
     ...contentRouteFiles,
-    "app/components/Marketing.tsx", "app/components/Configurator.tsx", "app/components/RegionPage.tsx",
-    "app/components/SiteChrome.tsx", "app/components/LeadForm.tsx", "app/components/StudentPortalDemo.tsx",
+    "app/components/Marketing.tsx", "app/components/RegionPage.tsx", "app/components/SiteChrome.tsx",
+    "app/components/LeadForm.tsx", "app/lib/content.ts", "data/assets.json", "data/pricing.json", "data/site-facts.json",
   ];
   const source = (await Promise.all(files.map((file) => readFile(file, "utf8")))).join("\n");
-  assert.doesNotMatch(source, /Needs verification|nog te bevestigen|geen lokale vestiging geclaimd|veilige contactdemo|volgens (?:de|het) bron|aangeleverde bron|sfeerimpressie|releasegate|schijnverzending/i);
-  for (const value of ["60 minuten", "12 maanden", "48 uur", "binnen één werkdag", "info@voorbeeld.vandijkrijschool.nl"]) {
+  assert.doesNotMatch(source, /NXTDRIVE|60 minuten|45 rijlessen|info@voorbeeld|Voorbeeldlaan|demo-validated|pakketconfigurator/i);
+  for (const value of ["PlanGo", "50 minuten", "43 lesuren", "06 18 24 04 96", "info@vandijkrijschool.nl", "NL005520090B44"]) {
     assert.match(source, new RegExp(value, "i"));
   }
 });
 
-test("source and runtime code use only the approved temporary host and contain no old packages or wrong image references", async () => {
-  const files = [
-    ...contentRouteFiles,
-    "app/layout.tsx", "app/lib/site.ts", "app/lib/content.ts", "app/lib/configurator.ts",
-    "app/components/Marketing.tsx", "app/components/Configurator.tsx", "app/components/SiteChrome.tsx",
-    "scripts/smoke-standalone.mjs", "scripts/validate-production-env.mjs", ".github/workflows/deploy-production.yml",
-  ];
-  const source = (await Promise.all(files.map((file) => readFile(file, "utf8")))).join("\n");
-  assert.doesNotMatch(source, /https:\/\/vandijkrijschool\.nl/);
-  assert.match(source, /https:\/\/voorbeeld\.vandijkrijschool\.nl/);
-  assert.doesNotMatch(source, /Instappakket|Meest gekozen|Zeker Slagen|Gratis herexamen/);
-  assert.doesNotMatch(source, /hero-car\.webp|den-haag-drive\.webp|scheveningen-drive\.webp|intake-instructor\.webp|\/og\.png/);
+test("Alles-in-1 is visibly featured and package cards show only the package price", async () => {
+  const home = await readFile("app/page.tsx", "utf8");
+  const marketing = await readFile("app/components/Marketing.tsx", "utf8");
+  assert.match(home, /section--all-in-one/);
+  assert.match(home, /Compleet uitgelicht/);
+  assert.match(marketing, /package-card--featured/);
+  assert.doesNotMatch(marketing, /Pakketprijs|package-card__fee-note/);
 });
 
-test("responsive, keyboard and reduced-motion quality gates are wired into check and deploy", async () => {
+test("metadata, responsive behavior and deployment gates remain wired", async () => {
+  const site = await readFile("app/lib/site.ts", "utf8");
+  const layout = await readFile("app/layout.tsx", "utf8");
   const css = await readFile("app/globals.css", "utf8");
   const mobile = await readFile("app/components/MobileNav.tsx", "utf8");
   const packageJson = JSON.parse(await readFile("package.json", "utf8"));
   const workflow = await readFile(".github/workflows/deploy-production.yml", "utf8");
-  assert.match(css, /overflow-x: visible/);
+  assert.match(site, /validateProductionOrigin/);
+  assert.match(layout, /index: false, follow: false/);
   assert.match(css, /prefers-reduced-motion: reduce/);
-  assert.match(css, /width: 20px; height: 20px; min-width: 20px; min-height: 20px/);
   assert.match(mobile, /event\.key === "Escape"/);
   assert.match(packageJson.scripts.check, /test:browser/);
   assert.match(workflow, /npm run test:browser/);

@@ -68,8 +68,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               "@type": "Organization",
               "@id": siteConfig.organizationId,
               name: siteConfig.name,
+              legalName: siteConfig.legalName,
               url: siteConfig.url,
               logo: `${siteConfig.url}/icon-512.png`,
+              telephone: siteConfig.contact.telephone.value.replace(/\s/g, ""),
+              email: siteConfig.contact.email.value,
+              taxID: siteConfig.contact.kvk.value,
+              vatID: siteConfig.contact.vatId.value,
               areaServed: siteConfig.areas.map((name) => ({ "@type": "Place", name })),
             },
             {

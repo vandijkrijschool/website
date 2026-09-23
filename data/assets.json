@@ -37,9 +37,9 @@
       "alt": "Rijles vanuit de auto in stedelijk verkeer in Den Haag"
     },
     {
-      "id": "nxtdrive-tablet",
-      "imageBase": "nxtdrive-tablet-met-lesauto",
-      "source": "assets/website/general-sources/nxtdrive-tablet-met-lesauto.png",
+      "id": "plango-tablet",
+      "imageBase": "plango-tablet-met-lesauto",
+      "source": "assets/website/general-sources/plango-tablet-met-lesauto.png",
       "recommendedRoutes": ["/leerlingomgeving", "/werkwijze"],
       "alt": "Tablet met een bewust onscherp lesvoortgangsoverzicht en de Van Dijk-lesauto op de achtergrond"
     },
@@ -64,7 +64,6 @@
     "Do not serve the 8K source directly to web visitors",
     "Use next/image or responsive srcset with width height and sizes",
     "Only the real LCP hero receives priority",
-    "Label generated locations as Sfeerimpressie until human approval",
     "Do not claim a parked generated car is an actual driving lesson",
     "Require human brand approval or pixel-locked compositing for exact livery"
   ]

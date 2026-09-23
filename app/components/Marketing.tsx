@@ -25,7 +25,7 @@ export function SectionHeading({
 export function TrustRail() {
   const items = [
     { icon: Users, title: "Persoonlijke aanpak", text: "Lesopbouw afgestemd op jouw niveau" },
-    { icon: Calendar, title: "Snel starten", text: "Meestal binnen 7 dagen je eerste les" },
+    { icon: Calendar, title: "Persoonlijk starten", text: "Beschikbaarheid stemmen we samen af" },
     { icon: Gauge, title: "Duidelijke prijzen", text: "Vooraf inzicht in alle vaste kosten" },
     { icon: Car, title: "Flexibel lessen", text: "Overdag, ’s avonds en op zaterdag" },
   ];
@@ -61,12 +61,10 @@ export function PackageCards({ compact = false }: { compact?: boolean }) {
             ))}
           </ul>
           <div className="package-card__price">
-            <span>Pakketprijs</span>
             <strong>{formatPrice(item.amountCents)}</strong>
           </div>
-          <p className="package-card__fee-note">Exclusief eenmalig € 39,50 inschrijfkosten en € 41,50 garantiefonds.</p>
-          <Link className={item.featured ? "button" : "button button--ghost"} href={`/configurator?pakket=${item.id}`}>
-            Kies dit pakket <ArrowRight width="17" />
+          <Link className={item.featured ? "button" : "button button--ghost"} href={`/proefles?pakket=${item.id}`}>
+            Intake aanvragen <ArrowRight width="17" />
           </Link>
         </article>
       ))}

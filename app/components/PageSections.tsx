@@ -16,7 +16,7 @@ export function Checklist({ items }: { items: string[] }) {
 
 export function SplitCta({ title, text, primaryHref = "/proefles", primaryLabel = "Vraag een intake aan" }: { title: string; text: string; primaryHref?: string; primaryLabel?: string }) {
   return (
-    <section className="section section--compact"><div className="site-shell split-cta"><div><span className="eyebrow">Volgende stap</span><h2>{title}</h2><p>{text}</p></div><div className="button-row"><Link className="button" href={primaryHref}>{primaryLabel} <ArrowRight width="17" /></Link><Link className="button button--ghost" href="/configurator">Stel eerst je pakket samen</Link></div></div></section>
+    <section className="section section--compact"><div className="site-shell split-cta"><div><span className="eyebrow">Volgende stap</span><h2>{title}</h2><p>{text}</p></div><div className="button-row"><Link className="button" href={primaryHref}>{primaryLabel} <ArrowRight width="17" /></Link><Link className="button button--ghost" href="/lespakketten">Vergelijk lespakketten</Link></div></div></section>
   );
 }
 

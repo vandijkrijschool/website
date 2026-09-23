@@ -198,15 +198,14 @@ export const guaranteeFundFee = singleRateById.get("driveyou-guarantee-fund")!;
 export const installmentAdministrationFee = singleRateById.get("installment-administration-fee")!;
 
 export const coreRouteMetadata = {
-  "/": { title: "Van Dijk Rijschool | Rijles in Den Haag en regio", description: "Persoonlijke rijlessen, actuele pakketten en een gratis proefles bij Van Dijk Rijschool. Bekijk tarieven en het volledige werkgebied.", imageBase: "hero-den-haag-blue-hour" },
+  "/": { title: "Van Dijk – Rijschool | Rijles in Den Haag en regio", description: "Persoonlijke rijlessen, actuele pakketten en een gratis proefles bij Van Dijk Rijschool. Bekijk tarieven en het volledige werkgebied.", imageBase: "hero-den-haag-blue-hour" },
   "/rijlessen": { title: "Rijlessen op maat", description: "Lees hoe Van Dijk Rijschool rijlessen opbouwt en bekijk het actuele tarief, de werkwijze en mogelijkheden voor een proefles.", imageBase: "rijles-interieur-den-haag" },
   "/lespakketten": { title: "Rijlespakketten vergelijken", description: "Vergelijk Pakket 20, 30, 40, 50 en Alles-in-1 met de actuele prijzen en exact inbegrepen onderdelen.", imageBase: "hero-den-haag-blue-hour" },
   "/tarieven": { title: "Tarieven rijles en examens", description: "Bekijk losse rijlessen, vervolglessen, herexamenpakketten, examenkosten en bijkomende kosten bij Van Dijk Rijschool.", imageBase: "den-haag-vredespaleis" },
-  "/configurator": { title: "Kies je rijlespakket", description: "Stel in vier stappen een rijlespakket samen met actuele prijzen, transparante opties en een deelbare configuratielink.", imageBase: "hero-den-haag-blue-hour" },
-  "/proefles": { title: "Proefles aanvragen", description: "Kies direct een beschikbaar moment voor een gratis proefles van 60 minuten in jouw regio.", imageBase: "intake-bij-lesauto" },
+  "/proefles": { title: "Intake en proefles aanvragen", description: "Geef je voorkeuren door voor een gratis proefles van 50 minuten in jouw regio.", imageBase: "intake-bij-lesauto" },
   "/theorie": { title: "iTheoriepakket", description: "Online theorie leren met vijftig proefexamens, livestream en leren in eigen tempo. Bekijk inhoud en de prijs van € 65.", imageBase: "theorie-itheorie-met-lesauto" },
-  "/werkwijze": { title: "Zo werken de rijlessen", description: "Van kennismaking en lesplan tot voortgang en examenvoorbereiding: bekijk de werkwijze van Van Dijk Rijschool.", imageBase: "nxtdrive-tablet-met-lesauto" },
-  "/over-ons": { title: "Over Van Dijk Rijschool", description: "Maak kennis met instructeur Ruben van Dijk, de persoonlijke lesaanpak en de aansluiting bij DriveYOU.", imageBase: "intake-bij-lesauto" },
+  "/werkwijze": { title: "Zo werken de rijlessen", description: "Van kennismaking en lesplan tot voortgang en examenvoorbereiding: bekijk de werkwijze van Van Dijk Rijschool.", imageBase: "plango-tablet-met-lesauto" },
+  "/over-ons": { title: "Over Van Dijk Rijschool", description: "Lees over de persoonlijke lesaanpak van Van Dijk Rijschool en de aansluiting bij DriveYou.", imageBase: "intake-bij-lesauto" },
   "/faq": { title: "Veelgestelde vragen over rijles", description: "Praktische antwoorden over lesduur, starten, betalen in termijnen, ophaalservice en de geldigheid van theorie.", imageBase: "hero-den-haag-blue-hour" },
   "/contact": { title: "Contact", description: "Neem telefonisch, per e-mail of via het contactformulier contact op met Van Dijk Rijschool in Den Haag.", imageBase: "den-haag-hofvijver-binnenhof" },
   "/werkgebied": { title: "Werkgebied", description: "Bekijk alle zeventien werkgebieden van Van Dijk Rijschool rond Den Haag, Delft, Pijnacker en Westland.", imageBase: "den-haag-hofvijver-binnenhof" },
@@ -264,8 +263,8 @@ export function validateContentData() {
   }
 
   const sitemapRoutes = sitemapJson.routes.map((route) => route.path);
-  if (sitemapJson.expectedIndexableCount !== 29 || sitemapRoutes.length !== 29) {
-    throw new Error(`De sitemapbron moet exact 29 routes bevatten; ontvangen: ${sitemapRoutes.length}.`);
+  if (sitemapJson.expectedIndexableCount !== 28 || sitemapRoutes.length !== 28) {
+    throw new Error(`De sitemapbron moet exact 28 routes bevatten; ontvangen: ${sitemapRoutes.length}.`);
   }
   assertUnique(sitemapRoutes, "Sitemaproutes");
   const excluded = new Set(sitemapJson.excludedRoutes.map((route) => route.path));
@@ -280,7 +279,7 @@ export function validateContentData() {
     }
     if (!regionCopyBySlug[region.slug]) throw new Error(`Unieke regiocopy ontbreekt voor ${region.slug}.`);
   }
-  for (const supportRoute of ["/reviews", "/leerlingomgeving"]) {
+  for (const supportRoute of ["/leerlingomgeving"]) {
     const rule = sitemapJson.excludedRoutes.find((item) => item.path === supportRoute);
     if (!rule || rule.robots !== "noindex,follow") {
       throw new Error(`Ondersteunende route ${supportRoute} moet noindex,follow blijven.`);

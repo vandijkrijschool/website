@@ -7,18 +7,18 @@
     "file": "source/website-informatie-van-dijk-driveyou.pdf",
     "receivedOn": "2026-08-31",
     "effectiveDate": "2026-09-01",
-    "effectiveDateStatus": "temporaryMockData"
+    "effectiveDateStatus": "confirmedByClientOn2026-09-23"
   },
   "globalUnknowns": [],
   "commercialTerms": {
     "vatIncluded": true,
-    "lessonDurationMinutes": 60,
+    "lessonDurationMinutes": 50,
     "packageValidityMonths": 12,
     "cancellationNoticeHours": 48,
-    "trialLessonDurationMinutes": 60,
+    "trialLessonDurationMinutes": 50,
     "registrationFeeRequired": true,
     "guaranteeFundRequired": true,
-    "status": "temporaryMockData"
+    "status": "confirmedByClientOn2026-09-23"
   },
   "singleRates": [
     {
@@ -65,7 +65,7 @@
     },
     {
       "id": "driveyou-guarantee-fund",
-      "name": "DriveYOU-garantiefonds",
+      "name": "DriveYou-garantiefonds",
       "amount": 4150,
       "frequency": "one-time",
       "applicability": "requiredForNewStudents"
@@ -193,20 +193,20 @@
     {
       "id": "average-lessons",
       "question": "Wat is het gemiddelde aantal rijlessen dat iemand nodig heeft?",
-      "answer": "Het aantal lessen dat een gemiddelde leerling nodig heeft ligt rond de 45.",
-      "status": "temporaryMockData"
+      "answer": "Het aantal lessen varieert per persoon. Volgens het CBR is het landelijke gemiddelde ongeveer 43 lesuren.",
+      "status": "confirmedByClientOn2026-09-23"
     },
     {
       "id": "start-immediately",
       "question": "Kan ik gelijk starten met rijlessen?",
-      "answer": "Bij ons kun je direct starten, wij hebben geen wachtlijst.",
-      "status": "temporaryMockData"
+      "answer": "Neem contact op voor de actuele startmogelijkheden. We stemmen de eerste les persoonlijk met je af.",
+      "status": "availabilityDependent"
     },
     {
       "id": "installments",
       "question": "Is het mogelijk om in termijnen te betalen?",
       "answer": "Bij ons kun je altijd in 2, 3 of 4 termijnen betalen. Hiervoor berekenen wij eenmalig € 39 administratiekosten.",
-      "status": "temporaryMockData"
+      "status": "confirmedByClientOn2026-09-23"
     },
     {
       "id": "theory-validity",
@@ -217,26 +217,26 @@
     {
       "id": "lesson-duration",
       "question": "Hoelang duurt een rijles?",
-      "answer": "Een rijles duurt 60 minuten. In overleg kun je ook twee lessen achter elkaar plannen.",
-      "status": "temporaryMockData"
+      "answer": "Een rijles duurt 50 minuten. In overleg kun je ook twee lessen achter elkaar plannen.",
+      "status": "confirmedByClientOn2026-09-23"
     },
     {
       "id": "pickup-service",
       "question": "Waar word ik opgehaald?",
       "answer": "We halen je op bij huis, school, werk of een afgesproken station binnen één van onze 17 werkgebieden.",
-      "status": "temporaryMockData"
+      "status": "confirmedByClientOn2026-09-23"
     },
     {
       "id": "cancellation",
       "question": "Kan ik een rijles annuleren?",
       "answer": "Je kunt een rijles tot 48 uur voor aanvang kosteloos verplaatsen of annuleren.",
-      "status": "temporaryMockData"
+      "status": "confirmedByClientOn2026-09-23"
     },
     {
       "id": "package-validity",
       "question": "Hoelang blijft een rijlespakket geldig?",
       "answer": "Een rijlespakket blijft 12 maanden geldig vanaf de datum van je eerste rijles.",
-      "status": "temporaryMockData"
+      "status": "confirmedByClientOn2026-09-23"
     }
   ]
 }

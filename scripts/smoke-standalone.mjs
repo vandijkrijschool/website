@@ -14,7 +14,7 @@ const routes = [
   ...sitemapDefinition.excludedRoutes.map((route) => route.path),
 ];
 
-assert.equal(routes.length, 33, "the full content route set must contain 33 routes");
+assert.equal(routes.length, 31, "the full content route set must contain 31 routes");
 
 const server = spawn(process.execPath, [".next/standalone/server.js"], {
   cwd: new URL("..", import.meta.url),
@@ -70,10 +70,10 @@ try {
     assert.match(response.headers.get("content-type") ?? "", /^text\/html/i, `${path} did not return HTML`);
     const html = await response.text();
     const settledHtml = html.includes('<div hidden id="S:0">') ? html.slice(html.indexOf('<div hidden id="S:0">')) : html;
-    assert.match(settledHtml, /Van Dijk Rijschool/i, `${path} did not render the brand`);
+    assert.match(settledHtml, /Van Dijk(?: –)? Rijschool/i, `${path} did not render the brand`);
     assert.doesNotMatch(
       settledHtml,
-      /Needs verification|nog te bevestigen|geen lokale vestiging geclaimd|veilige contactdemo|volgens (?:de|het) bron|aangeleverde bron|sfeerimpressie|releasegate|schijnverzending|websiteprototype|demo-data/i,
+      /NXTDRIVE|Needs verification|nog te bevestigen|geen lokale vestiging geclaimd|veilige contactdemo|volgens (?:de|het) bron|aangeleverde bron|sfeerimpressie|releasegate|schijnverzending|websiteprototype|demo-data/i,
       `${path} exposes internal release or verification language`,
     );
     assert.equal((settledHtml.match(/<h1\b/gi) ?? []).length, 1, `${path} should render one resolved-page H1`);

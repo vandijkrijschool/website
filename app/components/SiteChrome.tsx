@@ -2,15 +2,11 @@ import Link from "next/link";
 import {
   ArrowRight,
   Lock,
-  MapPin,
-  Smartphone,
 } from "./Icons";
 import {
-  footerNavigation,
   primaryNavigation,
   siteConfig,
 } from "../lib/site";
-import { regions } from "../lib/content";
 import MobileNav from "./MobileNav";
 
 export function Brand({ compact = false }: { compact?: boolean }) {
@@ -50,51 +46,33 @@ export function Header() {
 }
 
 export function Footer() {
-  const featuredRegions = regions.filter((region) => ["den-haag", "delft", "rijswijk", "naaldwijk", "wateringen"].includes(region.slug));
   return (
     <footer className="site-footer">
       <div className="site-shell">
         <div className="footer-grid">
-          <div className="footer-brand">
-            <Brand />
-            <p>Persoonlijke autorijlessen en transparante pakketten in Den Haag, Delft, Pijnacker en Westland.</p>
-            <div className="footer-badges">
-              <span><MapPin width="16" /> {siteConfig.areaLabel}</span>
-              <span><Smartphone width="16" /> Online proefles plannen</span>
-            </div>
-            <p className="footer-company-details">
-              <strong>{siteConfig.tradeName}</strong>
-              <span>{siteConfig.contact.streetAddress.value}, {siteConfig.contact.postalCode.value} {siteConfig.contact.locality.value}</span>
-              <a href={`tel:${siteConfig.contact.telephone.value.replace(/\s/g, "")}`}>{siteConfig.contact.telephone.displayValue}</a>
-              <a href={`mailto:${siteConfig.contact.email.value}`}>{siteConfig.contact.email.value}</a>
-            </p>
-          </div>
-          <div>
-            <h3>Rijopleiding</h3>
-            {primaryNavigation.slice(0, 3).map((item) => <Link href={item.href} key={item.href}>{item.label}</Link>)}
-            <Link href="/configurator">Pakket samenstellen</Link>
-            <Link href="/proefles">Proefles / intake</Link>
-          </div>
-          <div>
-            <h3>Van Dijk</h3>
-            {footerNavigation.slice(2).map((item) => <Link href={item.href} key={item.href}>{item.label}</Link>)}
-            <Link href="/reviews">Ervaringen</Link>
-            <Link href="/leerlingomgeving">Leerlingomgeving</Link>
-          </div>
-          <div>
-            <h3>Werkgebied</h3>
-            <Link href="/werkgebied">Alle 17 plaatsen</Link>
-            {featuredRegions.map((region) => <Link href={region.canonicalPath} key={region.slug}>Rijschool {region.displayName}</Link>)}
-          </div>
+          <section>
+            <h2>Van Dijk – Rijschool</h2>
+            <p>De snelste weg naar jouw rijbewijs</p>
+            <p>Zelfstandig franchisenemer van DriveYou</p>
+            <p>KVK {siteConfig.contact.kvk.value}</p>
+            <p>BTW-id {siteConfig.contact.vatId.value}</p>
+          </section>
+          <section>
+            <h2>Contact</h2>
+            <a href={`tel:${siteConfig.contact.telephone.value.replace(/\s/g, "")}`}>{siteConfig.contact.telephone.displayValue}</a>
+            <a href={`mailto:${siteConfig.contact.email.value}`}>{siteConfig.contact.email.value} ↗</a>
+            <p>{siteConfig.contact.locality.value}</p>
+          </section>
+          <section>
+            <h2>Informatie</h2>
+            <Link href="/voorwaarden">Algemene voorwaarden</Link>
+            <Link href="/privacy">Privacyverklaring</Link>
+            <Link href="/privacy#cookies">Cookiebeleid</Link>
+          </section>
         </div>
 
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} {siteConfig.tradeName}</span>
-          <span className="footer-affiliation">Aangesloten bij DriveYOU · Digitale rijlesmap via NXTDRIVE</span>
-          <div>
-            <Link href="/privacy">Privacy</Link>
-            <Link href="/voorwaarden">Voorwaarden</Link>
-          </div>
+          <span>© {new Date().getFullYear()} Van Dijk – Rijschool · Alle rechten voorbehouden</span>
         </div>
       </div>
     </footer>
