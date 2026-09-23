@@ -16,6 +16,7 @@ const transport = nodemailer.createTransport({
   requireTLS: port !== 465,
   name: new URL(process.env.NEXT_PUBLIC_SITE_URL).hostname,
   auth: { user, pass: password },
+  authMethod: "LOGIN",
   connectionTimeout: 10_000,
   greetingTimeout: 10_000,
   socketTimeout: 15_000,

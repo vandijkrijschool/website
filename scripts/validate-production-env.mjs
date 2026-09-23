@@ -32,8 +32,8 @@ if (process.env.LEAD_SMTP_HOSTS !== "mail.mijndomein.nl") {
 if (process.env.LEAD_SMTP_PORT !== "587") {
   errors.push("LEAD_SMTP_PORT must equal 587");
 }
-if (!/^[^\s@]+@vandijkrijschool\.nl$/i.test(process.env.LEAD_SMTP_USER ?? "")) {
-  errors.push("LEAD_SMTP_USER must be a vandijkrijschool.nl mailbox");
+if (process.env.LEAD_SMTP_USER !== "noreply@vandijkrijschool.nl") {
+  errors.push("LEAD_SMTP_USER must equal noreply@vandijkrijschool.nl");
 }
 if (!process.env.LEAD_SMTP_PASSWORD) {
   errors.push("LEAD_SMTP_PASSWORD must be configured as a production secret");
