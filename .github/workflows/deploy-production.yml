@@ -111,6 +111,9 @@ jobs:
       - name: Validate production configuration
         run: npm run validate:production-env
 
+      - name: Verify SMTP connection and credentials
+        run: npm run verify:smtp
+
       - name: Lint
         run: npm run lint
 
