@@ -26,6 +26,18 @@ if (!/^[0-9a-f]{40}$/i.test(process.env.APP_REVISION ?? "")) {
 if (!["true", "false"].includes(process.env.NEXT_PUBLIC_INDEXING_ENABLED ?? "")) {
   errors.push("NEXT_PUBLIC_INDEXING_ENABLED must explicitly equal true or false");
 }
+if (process.env.LEAD_SMTP_HOSTS !== "mail.mijndomein.nl") {
+  errors.push("LEAD_SMTP_HOSTS must equal mail.mijndomein.nl");
+}
+if (process.env.LEAD_SMTP_PORT !== "587") {
+  errors.push("LEAD_SMTP_PORT must equal 587");
+}
+if (!/^[^\s@]+@vandijkrijschool\.nl$/i.test(process.env.LEAD_SMTP_USER ?? "")) {
+  errors.push("LEAD_SMTP_USER must be a vandijkrijschool.nl mailbox");
+}
+if (!process.env.LEAD_SMTP_PASSWORD) {
+  errors.push("LEAD_SMTP_PASSWORD must be configured as a production secret");
+}
 
 if (errors.length > 0) {
   for (const error of errors) process.stderr.write(`${error}\n`);

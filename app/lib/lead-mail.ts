@@ -105,7 +105,7 @@ function escapeHtml(value: string) {
 }
 
 export async function sendLeadEmail(lead: LeadSubmission) {
-  const hosts = (process.env.LEAD_SMTP_HOSTS ?? "smtp.mijndomein.nl")
+  const hosts = (process.env.LEAD_SMTP_HOSTS ?? "mail.mijndomein.nl")
     .split(",")
     .map((host) => host.trim())
     .filter(Boolean);
@@ -135,7 +135,7 @@ export async function sendLeadEmail(lead: LeadSubmission) {
         tls: { minVersion: "TLSv1.2", servername: host },
       });
       await transport.sendMail({
-        from: `Van Dijk Rijschool website <${leadDestination}>`,
+        from: `Van Dijk Rijschool website <${user}>`,
         to: leadDestination,
         replyTo: lead.email || undefined,
         subject,

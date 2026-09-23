@@ -137,5 +137,8 @@ test("metadata, responsive behavior and deployment gates remain wired", async ()
   assert.match(packageJson.scripts.check, /test:browser/);
   assert.match(workflow, /npm run test:browser/);
   assert.match(workflow, /NEXT_PUBLIC_INDEXING_ENABLED: "false"/);
+  assert.match(workflow, /LEAD_SMTP_HOSTS: mail\.mijndomein\.nl/);
+  assert.match(workflow, /LEAD_SMTP_PORT: "587"/);
+  assert.match(workflow, /LEAD_SMTP_USER: \$\{\{ secrets\.LEAD_SMTP_USER \}\}/);
   assert.match(workflow, /https:\/\/voorbeeld\.vandijkrijschool\.nl/);
 });
