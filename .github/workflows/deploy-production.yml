@@ -71,8 +71,13 @@ jobs:
       NEXT_PUBLIC_INDEXING_ENABLED: "false"
       APP_ENVIRONMENT: production
       APP_REVISION: ${{ github.sha }}
+      LEAD_SMTP_HOSTS: smtp.mijndomein.nl
+      LEAD_SMTP_PORT: "587"
+      LEAD_SMTP_USER: info@vandijkrijschool.nl
+      LEAD_SMTP_PASSWORD: ${{ secrets.LEAD_SMTP_PASSWORD }}
       DG_RUNTIME_ENV_KEYS: >-
         NEXT_PUBLIC_SITE_URL NEXT_PUBLIC_INDEXING_ENABLED APP_ENVIRONMENT APP_REVISION
+        LEAD_SMTP_HOSTS LEAD_SMTP_PORT LEAD_SMTP_USER LEAD_SMTP_PASSWORD
 
     steps:
       - name: Check out exact revision

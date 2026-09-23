@@ -15,6 +15,7 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState("");
+  const [emailFallback, setEmailFallback] = useState("");
   const [packageName, setPackageName] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
@@ -53,7 +54,21 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
     const dayParts = data.getAll("dagdelen").map(String);
     setFieldErrors({});
     setSubmissionError("");
+    setEmailFallback("");
     setSubmitting(true);
+    const fallbackLines = [
+      kind === "proefles" ? "Proeflesaanvraag" : "Contactaanvraag",
+      `Naam: ${name}`,
+      email ? `E-mail: ${email}` : "",
+      phone ? `Telefoon: ${phone}` : "",
+      postcode ? `Postcode: ${postcode.toUpperCase()}` : "",
+      packageName ? `Pakketvoorkeur: ${packageName}` : "",
+      kind === "proefles" ? `Gewenste start: ${String(data.get("startmoment") ?? "")}` : "",
+      kind === "proefles" ? `Voorkeursdag: ${String(data.get("voorkeursdag") ?? "")}` : "",
+      kind === "proefles" && dayParts.length ? `Voorkeursdagdelen: ${dayParts.join(", ")}` : "",
+      `Voorkeurscontact: ${channels.join(", ")}`,
+      String(data.get("bericht") ?? "").trim() ? `Toelichting: ${String(data.get("bericht")).trim()}` : "",
+    ].filter(Boolean);
     try {
       const response = await fetch("/api/aanvragen", {
         method: "POST",
@@ -79,6 +94,7 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
       setSubmitted(true);
     } catch (error) {
       setSubmissionError(error instanceof Error ? error.message : "Verzenden is niet gelukt.");
+      setEmailFallback(`mailto:info@vandijkrijschool.nl?subject=${encodeURIComponent(fallbackLines[0])}&body=${encodeURIComponent(fallbackLines.join("\n"))}`);
     } finally {
       setSubmitting(false);
     }
@@ -111,7 +127,7 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
       <label className="form-message"><span>Waar kunnen we rekening mee houden?</span><textarea name="bericht" rows={5} placeholder="Vertel kort over je rijervaring, beschikbaarheid of vraag." /></label>
       <fieldset className="contact-preference"><legend>Voorkeurscontact</legend><label><input type="checkbox" defaultChecked name="contactkanalen" value="bellen" /> <Phone width="17" /> Bellen</label><label><input type="checkbox" defaultChecked name="contactkanalen" value="whatsapp" /> <Message width="17" /> WhatsApp</label><label><input type="checkbox" name="contactkanalen" value="email" /> <Mail width="17" /> E-mail</label>{fieldErrors.contactkanalen ? <small className="field-error form-grid__full">{fieldErrors.contactkanalen}</small> : null}</fieldset>
       <label className="consent"><input aria-invalid={Boolean(fieldErrors.toestemming)} type="checkbox" name="toestemming" required /><span>Ik ga akkoord met de verwerking van mijn gegevens voor deze aanvraag. Bekijk de <Link href="/privacy">privacyverklaring</Link>.{fieldErrors.toestemming ? <small className="field-error">{fieldErrors.toestemming}</small> : null}</span></label>
-      {submissionError ? <p className="form-error" role="alert">{submissionError}</p> : null}
+      {submissionError ? <p className="form-error" role="alert">{submissionError}{emailFallback ? <> <a href={emailFallback}>Verstuur de aanvraag per e-mail.</a></> : null}</p> : null}
       <button className="button lead-form__submit" disabled={submitting} type="submit">{submitting ? "Bezig met verzenden…" : kind === "proefles" ? "Verstuur proeflesaanvraag" : "Verstuur contactbericht"}<ArrowRight width="17" /></button>
       <p className="form-note">Je gegevens worden alleen gebruikt om je aanvraag te behandelen.</p>
     </form>

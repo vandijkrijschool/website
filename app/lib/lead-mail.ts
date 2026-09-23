@@ -105,13 +105,14 @@ function escapeHtml(value: string) {
 }
 
 export async function sendLeadEmail(lead: LeadSubmission) {
-  const hosts = (process.env.LEAD_SMTP_HOSTS ?? "mx1.mijndomein.nl,mx2.mijndomein.nl")
+  const hosts = (process.env.LEAD_SMTP_HOSTS ?? "smtp.mijndomein.nl")
     .split(",")
     .map((host) => host.trim())
     .filter(Boolean);
-  const port = Number(process.env.LEAD_SMTP_PORT ?? "25");
+  const port = Number(process.env.LEAD_SMTP_PORT ?? "587");
   const user = process.env.LEAD_SMTP_USER;
   const password = process.env.LEAD_SMTP_PASSWORD;
+  if (!user || !password) throw new Error("SMTP credentials are not configured.");
   const siteHost = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://voorbeeld.vandijkrijschool.nl").hostname;
   const lines = leadLines(lead);
   const subject = lead.kind === "proefles"
@@ -127,7 +128,7 @@ export async function sendLeadEmail(lead: LeadSubmission) {
         secure: port === 465,
         requireTLS: port !== 465,
         name: siteHost,
-        auth: user && password ? { user, pass: password } : undefined,
+        auth: { user, pass: password },
         connectionTimeout: 10_000,
         greetingTimeout: 10_000,
         socketTimeout: 15_000,
