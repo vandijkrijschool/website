@@ -34,7 +34,7 @@ test("intake submissions target the confirmed mailbox", async () => {
   assert.match(route, /sendLeadEmail/);
   assert.match(form, /Voorkeursdagdelen/);
   assert.match(form, /Pakketvoorkeur/);
-  assert.match(form, /mailto:info@vandijkrijschool\.nl/);
+  assert.doesNotMatch(form, /mailto:|emailFallback|fallbackLines/);
   assert.doesNotMatch(form, /wa\.me|demo|simulat|demo-validated|selectedSlot/i);
 });
 

@@ -46,6 +46,6 @@ export async function POST(request: Request) {
     return json({ ok: true }, 200);
   } catch (error) {
     console.error("Lead e-mail delivery failed", error instanceof Error ? error.message : "unknown error");
-    return json({ error: "Verzenden is tijdelijk niet gelukt. Bel of mail ons rechtstreeks." }, 502);
+    return json({ error: "Verzenden is tijdelijk niet gelukt. Probeer het later opnieuw." }, 502);
   }
 }

@@ -774,7 +774,6 @@ p { color: var(--muted-strong); }
 .form-error { border-left: 3px solid var(--danger); color: #ffd0ca; background: rgba(255,91,70,.08); padding: 12px 14px; font-size: .75rem; }
 .form-error strong { display: block; margin-bottom: 3px; }
 .form-error p { margin: 0; color: inherit; font-size: inherit; }
-.form-error a { color: white; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
 .form-note { margin: 12px 0 0; color: #696d72; font-size: .65rem; }
 .lead-form__submit { min-height: 54px; }
 .form-success { display: grid; justify-items: start; border: 1px solid rgba(255,194,28,.35); border-radius: var(--radius-lg); background: radial-gradient(circle at 100% 0,rgba(255,194,28,.14),transparent 35%),#111418; padding: 40px; }
