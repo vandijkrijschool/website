@@ -50,25 +50,27 @@ export function Footer() {
     <footer className="site-footer">
       <div className="site-shell">
         <div className="footer-grid">
-          <section>
-            <h2>Van Dijk – Rijschool</h2>
+          <div className="footer-brand">
+            <Brand />
             <p>De snelste weg naar jouw rijbewijs</p>
-            <p>Zelfstandig franchisenemer van DriveYou</p>
-            <p>KVK {siteConfig.contact.kvk.value}</p>
-            <p>BTW-id {siteConfig.contact.vatId.value}</p>
-          </section>
-          <section>
-            <h2>Contact</h2>
+            <p className="footer-company-details">
+              <span>Zelfstandig franchisenemer van DriveYou</span>
+              <span>KVK {siteConfig.contact.kvk.value}</span>
+              <span>BTW-id {siteConfig.contact.vatId.value}</span>
+            </p>
+          </div>
+          <div>
+            <h3>Contact</h3>
             <a href={`tel:${siteConfig.contact.telephone.value.replace(/\s/g, "")}`}>{siteConfig.contact.telephone.displayValue}</a>
             <a href={`mailto:${siteConfig.contact.email.value}`}>{siteConfig.contact.email.value} ↗</a>
-            <p>{siteConfig.contact.locality.value}</p>
-          </section>
-          <section>
-            <h2>Informatie</h2>
+            <span>{siteConfig.contact.locality.value}</span>
+          </div>
+          <div>
+            <h3>Informatie</h3>
             <Link href="/voorwaarden">Algemene voorwaarden</Link>
             <Link href="/privacy">Privacyverklaring</Link>
             <Link href="/privacy#cookies">Cookiebeleid</Link>
-          </section>
+          </div>
         </div>
 
         <div className="footer-bottom">

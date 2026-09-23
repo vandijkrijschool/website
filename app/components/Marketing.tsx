@@ -48,25 +48,27 @@ export function PackageCards({ compact = false }: { compact?: boolean }) {
   return (
     <div className={`package-grid ${compact ? "package-grid--compact" : ""}`}>
       {packages.map((item) => (
-        <article className={`package-card ${item.featured ? "package-card--featured" : ""}`} id={item.id} key={item.id}>
+        <div className={`package-card-shell ${item.featured ? "package-card-shell--featured" : ""}`} key={item.id}>
           {item.featured ? <span className="package-card__badge">Inclusief iTheorie en toets</span> : null}
-          <div className="package-card__top">
-            <span className="package-card__number">{String(item.lessonCount).padStart(2, "0")}</span>
-            <div><small>rijlessen</small><h3>{item.name}</h3></div>
-          </div>
-          {!compact ? <p>{item.description}</p> : null}
-          <ul>
-            {item.includes.slice(0, compact ? 4 : undefined).map((feature) => (
-              <li key={feature}><Check width="17" /> {feature}</li>
-            ))}
-          </ul>
-          <div className="package-card__price">
-            <strong>{formatPrice(item.amountCents)}</strong>
-          </div>
-          <Link className={item.featured ? "button" : "button button--ghost"} href={`/proefles?pakket=${item.id}`}>
-            Intake aanvragen <ArrowRight width="17" />
-          </Link>
-        </article>
+          <article className={`package-card ${item.featured ? "package-card--featured" : ""}`} id={item.id}>
+            <div className="package-card__top">
+              <span className="package-card__number">{String(item.lessonCount).padStart(2, "0")}</span>
+              <div><small>rijlessen</small><h3>{item.name}</h3></div>
+            </div>
+            {!compact ? <p>{item.description}</p> : null}
+            <ul>
+              {item.includes.slice(0, compact ? 4 : undefined).map((feature) => (
+                <li key={feature}><Check width="17" /> {feature}</li>
+              ))}
+            </ul>
+            <div className="package-card__price">
+              <strong>{formatPrice(item.amountCents)}</strong>
+            </div>
+            <Link className={item.featured ? "button" : "button button--ghost"} href={`/proefles?pakket=${item.id}`}>
+              Intake aanvragen <ArrowRight width="17" />
+            </Link>
+          </article>
+        </div>
       ))}
     </div>
   );
