@@ -13,9 +13,10 @@ const startOptions = ["Zo snel mogelijk", "Binnen 1 maand", "Binnen 2–3 maande
 
 export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "contact" }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState("");
   const [packageName, setPackageName] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [handoffUrl, setHandoffUrl] = useState("");
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -26,7 +27,7 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = String(data.get("naam") ?? "").trim();
@@ -50,38 +51,45 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
     }
 
     const dayParts = data.getAll("dagdelen").map(String);
-    const lines = [
-      kind === "proefles" ? "Intake- en proeflesaanvraag" : "Contactaanvraag",
-      `Naam: ${name}`,
-      email ? `E-mail: ${email}` : "",
-      phone ? `Telefoon: ${phone}` : "",
-      postcode ? `Postcode: ${postcode.toUpperCase()}` : "",
-      packageName ? `Pakketvoorkeur: ${packageName}` : "",
-      kind === "proefles" ? `Gewenste start: ${String(data.get("startmoment") ?? "In overleg")}` : "",
-      kind === "proefles" ? `Voorkeursdag: ${String(data.get("voorkeursdag") ?? "Geen voorkeur")}` : "",
-      kind === "proefles" && dayParts.length ? `Voorkeursdagdelen: ${dayParts.join(", ")}` : "",
-      `Voorkeurscontact: ${channels.join(", ")}`,
-      String(data.get("bericht") ?? "").trim() ? `Toelichting: ${String(data.get("bericht")).trim()}` : "",
-    ].filter(Boolean);
-    const body = lines.join("\n");
-    const prefersEmail = channels.includes("email") && !channels.includes("whatsapp");
-    const url = prefersEmail
-      ? `mailto:info@vandijkrijschool.nl?subject=${encodeURIComponent(lines[0])}&body=${encodeURIComponent(body)}`
-      : `https://wa.me/31618240496?text=${encodeURIComponent(body)}`;
-
     setFieldErrors({});
-    setHandoffUrl(url);
-    setSubmitted(true);
-    window.open(url, "_blank", "noopener,noreferrer");
+    setSubmissionError("");
+    setSubmitting(true);
+    try {
+      const response = await fetch("/api/aanvragen", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind,
+          name,
+          email,
+          phone,
+          postcode,
+          packageName,
+          startMoment: String(data.get("startmoment") ?? ""),
+          preferredDay: String(data.get("voorkeursdag") ?? ""),
+          dayParts,
+          channels,
+          message: String(data.get("bericht") ?? "").trim(),
+          website: String(data.get("website") ?? ""),
+          consent: Boolean(data.get("toestemming")),
+        }),
+      });
+      const result = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(result.error || "Verzenden is niet gelukt.");
+      setSubmitted(true);
+    } catch (error) {
+      setSubmissionError(error instanceof Error ? error.message : "Verzenden is niet gelukt.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (submitted) {
     return (
       <div className="form-success" role="status">
-        <span><Check width="30" /></span><small>Aanvraag klaargezet</small>
-        <h2>{kind === "proefles" ? "Je intake staat klaar." : "Je bericht staat klaar."}</h2>
-        <p>Verstuur het bericht in WhatsApp of je e-mailapp om je aanvraag definitief te verzenden.</p>
-        <a className="button" href={handoffUrl} rel="noreferrer" target="_blank">Open bericht opnieuw <ArrowRight width="17" /></a>
+        <span><Check width="30" /></span><small>Aanvraag verzonden</small>
+        <h2>{kind === "proefles" ? "Je proeflesaanvraag is binnen." : "Je bericht is binnen."}</h2>
+        <p>Je aanvraag is rechtstreeks verzonden naar info@vandijkrijschool.nl. We nemen persoonlijk contact met je op.</p>
         <button className="text-button" type="button" onClick={() => setSubmitted(false)}>Gegevens aanpassen</button>
       </div>
     );
@@ -89,7 +97,8 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
 
   return (
     <form className="lead-form" onSubmit={submit} noValidate>
-      <div className="lead-form__heading"><span className="eyebrow">{kind === "proefles" ? "Jouw intake" : "Contact"}</span><h2>{kind === "proefles" ? "Geef je voorkeuren door." : "Waar kunnen we je mee helpen?"}</h2><p>Na het invullen wordt je aanvraag klaargezet in WhatsApp of je e-mailapp.</p></div>
+      <div className="lead-form__heading"><span className="eyebrow">{kind === "proefles" ? "Gratis proefles" : "Contact"}</span>{kind === "proefles" ? <h1>Vraag je proefles aan.</h1> : <h2>Waar kunnen we je mee helpen?</h2>}<p>Je aanvraag wordt rechtstreeks verzonden naar info@vandijkrijschool.nl.</p></div>
+      <label className="form-honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
       {packageName ? <div className="selected-package"><Check width="17" /><span>Pakketvoorkeur: <strong>{packageName}</strong></span></div> : null}
       <div className="form-grid">
         <label htmlFor={`${kind}-naam`}><span>Voor- en achternaam *</span><input aria-invalid={Boolean(fieldErrors.naam)} id={`${kind}-naam`} name="naam" autoComplete="name" placeholder="Jouw naam" required />{fieldErrors.naam ? <small className="field-error">{fieldErrors.naam}</small> : null}</label>
@@ -102,8 +111,9 @@ export default function LeadForm({ kind = "proefles" }: { kind?: "proefles" | "c
       <label className="form-message"><span>Waar kunnen we rekening mee houden?</span><textarea name="bericht" rows={5} placeholder="Vertel kort over je rijervaring, beschikbaarheid of vraag." /></label>
       <fieldset className="contact-preference"><legend>Voorkeurscontact</legend><label><input type="checkbox" defaultChecked name="contactkanalen" value="bellen" /> <Phone width="17" /> Bellen</label><label><input type="checkbox" defaultChecked name="contactkanalen" value="whatsapp" /> <Message width="17" /> WhatsApp</label><label><input type="checkbox" name="contactkanalen" value="email" /> <Mail width="17" /> E-mail</label>{fieldErrors.contactkanalen ? <small className="field-error form-grid__full">{fieldErrors.contactkanalen}</small> : null}</fieldset>
       <label className="consent"><input aria-invalid={Boolean(fieldErrors.toestemming)} type="checkbox" name="toestemming" required /><span>Ik ga akkoord met de verwerking van mijn gegevens voor deze aanvraag. Bekijk de <Link href="/privacy">privacyverklaring</Link>.{fieldErrors.toestemming ? <small className="field-error">{fieldErrors.toestemming}</small> : null}</span></label>
-      <button className="button lead-form__submit" type="submit">{kind === "proefles" ? "Open intakeaanvraag" : "Open contactbericht"}<ArrowRight width="17" /></button>
-      <p className="form-note">Je gegevens worden pas verzonden nadat je het klaargezette bericht zelf verstuurt.</p>
+      {submissionError ? <p className="form-error" role="alert">{submissionError}</p> : null}
+      <button className="button lead-form__submit" disabled={submitting} type="submit">{submitting ? "Bezig met verzenden…" : kind === "proefles" ? "Verstuur proeflesaanvraag" : "Verstuur contactbericht"}<ArrowRight width="17" /></button>
+      <p className="form-note">Je gegevens worden alleen gebruikt om je aanvraag te behandelen.</p>
     </form>
   );
 }

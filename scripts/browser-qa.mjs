@@ -168,11 +168,12 @@ try {
   await navigate("/proefles", { width: 390, height: 844 });
   const intake = await evaluate(`(() => ({
     form: Boolean(document.querySelector('form.lead-form')),
+    formFirst: Boolean(document.querySelector('main > section:first-child form.lead-form')),
     day: Boolean(document.querySelector('select[name="voorkeursdag"]')),
     dayParts: document.querySelectorAll('input[name="dagdelen"]').length,
     noFakeSlots: !document.querySelector('[aria-label="Beschikbare proeflesmomenten"]'),
   }))()`);
-  assert.deepEqual(intake, { form: true, day: true, dayParts: 3, noFakeSlots: true });
+  assert.deepEqual(intake, { form: true, formFirst: true, day: true, dayParts: 3, noFakeSlots: true });
 
   await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
   await navigate("/", { width: 390, height: 844 });

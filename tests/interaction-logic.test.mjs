@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { formatPrice } from "../app/lib/content.ts";
+import { leadDestination, parseLeadSubmission } from "../app/lib/lead-mail.ts";
 
 const pricing = JSON.parse(await readFile("data/pricing.json", "utf8"));
 const siteFacts = JSON.parse(await readFile("data/site-facts.json", "utf8"));
@@ -25,13 +26,36 @@ test("confirmed lesson and company facts stay centralized", () => {
   assert.equal(siteFacts.integration.studentPlatform.value, "PlanGo");
 });
 
-test("intake handoff targets the confirmed contact channels", async () => {
+test("intake submissions target the confirmed mailbox", async () => {
   const form = await readFile("app/components/LeadForm.tsx", "utf8");
-  assert.match(form, /wa\.me\/31618240496/);
-  assert.match(form, /mailto:info@vandijkrijschool\.nl/);
+  const route = await readFile("app/api/aanvragen/route.ts", "utf8");
+  assert.equal(leadDestination, "info@vandijkrijschool.nl");
+  assert.match(form, /fetch\("\/api\/aanvragen"/);
+  assert.match(route, /sendLeadEmail/);
   assert.match(form, /Voorkeursdagdelen/);
   assert.match(form, /Pakketvoorkeur/);
-  assert.doesNotMatch(form, /demo|simulat|demo-validated|selectedSlot/i);
+  assert.doesNotMatch(form, /mailto:|wa\.me|demo|simulat|demo-validated|selectedSlot/i);
+});
+
+test("server-side lead validation accepts a complete proefles request", () => {
+  const result = parseLeadSubmission({
+    kind: "proefles",
+    name: "Test Leerling",
+    email: "leerling@example.com",
+    phone: "06 12345678",
+    postcode: "2511 AB",
+    packageName: "Pakket 30",
+    startMoment: "Binnen 1 maand",
+    preferredDay: "Zaterdag",
+    dayParts: ["ochtend"],
+    channels: ["email"],
+    message: "Graag meer informatie.",
+    website: "",
+    consent: true,
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.ok && result.honeypot, false);
+  assert.equal(result.ok && result.lead.email, "leerling@example.com");
 });
 
 test("package selection continues into the intake form", async () => {

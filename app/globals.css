@@ -704,6 +704,9 @@ p { color: var(--muted-strong); }
 .curriculum__track i { height: 3px; display: block; border-radius: 99px; background: linear-gradient(90deg,var(--yellow-deep),var(--yellow) 48%,#fff0ae 62%,var(--yellow) 76%); background-size: 220% 100%; box-shadow: 0 0 12px rgba(255,194,28,.25); }
 
 .form-layout { display: grid; grid-template-columns: .72fr 1.28fr; gap: 68px; align-items: start; }
+.form-layout--form-first { grid-template-columns: 1.28fr .72fr; }
+.trial-form-first { padding-top: clamp(42px,6vw,78px); }
+.trial-form-first .breadcrumbs { margin-bottom: 34px; }
 .booking-aside { position: sticky; top: 118px; }
 .booking-aside > p { margin: -24px 0 28px; font-size: .9rem; line-height: 1.75; }
 .booking-flow-rail { position: relative; display: grid; gap: 10px; margin: 28px 0; }
@@ -720,8 +723,9 @@ p { color: var(--muted-strong); }
 .location-note span { color: var(--muted); font-size: .72rem; }
 .lead-form { position: relative; isolation: isolate; overflow: hidden; border: 1px solid var(--line-strong); border-radius: var(--radius-lg); background: radial-gradient(circle at 100% 0,rgba(255,194,28,.105),transparent 29%),linear-gradient(145deg,#14171b,#0d0f12); padding: 34px; box-shadow: var(--shadow); }
 .lead-form::before { position: absolute; inset: 0 24px auto; height: 1px; content: ""; background: linear-gradient(90deg,transparent,rgba(255,194,28,.75),transparent); }
-.lead-form__heading h2 { margin-bottom: 12px; font-size: clamp(1.75rem,3vw,2.7rem); text-transform: uppercase; }
+.lead-form__heading h1, .lead-form__heading h2 { margin-bottom: 12px; font-size: clamp(1.75rem,3vw,2.7rem); text-transform: uppercase; }
 .lead-form__heading p { font-size: .8rem; }
+.form-honeypot { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0 0 0 0) !important; clip-path: inset(50%) !important; white-space: nowrap !important; }
 .selected-package { display: flex; align-items: center; gap: 9px; margin: 22px 0; border: 1px solid rgba(255,194,28,.3); border-radius: 10px; color: var(--muted-strong); background: var(--yellow-soft); padding: 13px 15px; font-size: .78rem; }
 .selected-package svg { color: var(--yellow); }
 .form-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
