@@ -205,7 +205,7 @@ export const coreRouteMetadata = {
   "/proefles": { title: "Intake en proefles aanvragen", description: "Geef je voorkeuren door voor een gratis proefles van 50 minuten in jouw regio.", imageBase: "intake-bij-lesauto" },
   "/theorie": { title: "iTheoriepakket", description: "Online theorie leren met vijftig proefexamens, livestream en leren in eigen tempo. Bekijk inhoud en de prijs van € 65.", imageBase: "theorie-itheorie-met-lesauto" },
   "/werkwijze": { title: "Zo werken de rijlessen", description: "Van kennismaking en lesplan tot voortgang en examenvoorbereiding: bekijk de werkwijze van Van Dijk Rijschool.", imageBase: "plango-tablet-met-lesauto" },
-  "/over-ons": { title: "Over Van Dijk Rijschool", description: "Lees over de persoonlijke lesaanpak van Van Dijk Rijschool en de aansluiting bij DriveYou.", imageBase: "intake-bij-lesauto" },
+  "/over-ons": { title: "Over Eric van Dijk", description: "Maak kennis met Eric van Dijk: een rustige, geduldige en duidelijke rijinstructeur met ruim tien jaar ervaring als beroepschauffeur.", imageBase: "intake-bij-lesauto" },
   "/faq": { title: "Veelgestelde vragen over rijles", description: "Praktische antwoorden over lesduur, starten, betalen in termijnen, ophaalservice en de geldigheid van theorie.", imageBase: "hero-den-haag-blue-hour" },
   "/contact": { title: "Contact", description: "Neem telefonisch, per e-mail of via het contactformulier contact op met Van Dijk Rijschool in Den Haag.", imageBase: "den-haag-hofvijver-binnenhof" },
   "/werkgebied": { title: "Werkgebied", description: "Bekijk alle zeventien werkgebieden van Van Dijk Rijschool rond Den Haag, Delft, Pijnacker en Westland.", imageBase: "den-haag-hofvijver-binnenhof" },

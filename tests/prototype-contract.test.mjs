@@ -65,7 +65,10 @@ test("all five starter packages retain the approved prices", () => {
     assert.ok(item.includes.length >= 4);
   }
   assert.equal(pricing.singleRates.find((rate) => rate.id === "registration-fee").amount, 3950);
-  assert.equal(pricing.singleRates.find((rate) => rate.id === "driveyou-guarantee-fund").amount, 4150);
+  const guaranteeFund = pricing.singleRates.find((rate) => rate.id === "driveyou-guarantee-fund");
+  assert.equal(guaranteeFund.amount, 4150);
+  assert.equal(guaranteeFund.applicability, "optionalForStudents");
+  assert.equal(pricing.commercialTerms.guaranteeFundRequired, false);
 });
 
 test("every manifested region image has four web variants and an OG crop", async () => {
@@ -87,6 +90,22 @@ test("every manifested region image has four web variants and an OG crop", async
     await access(file);
     assert.ok((await stat(file)).size > 0, `${file} is empty`);
   }
+});
+
+test("Over mij uses the supplied Eric, lesson-car and DriveYOU brand assets", async () => {
+  for (const file of [
+    "public/images/eric-van-dijk.jpg",
+    "public/images/driveyou-auto.png",
+    "public/images/driveyou-logo.svg",
+    "public/images/driveyou-logo-inverse.svg",
+  ]) {
+    await access(file);
+    assert.ok((await stat(file)).size > 0, `${file} is empty`);
+  }
+  const about = await readFile("app/over-ons/page.tsx", "utf8");
+  assert.match(about, /Eric van Dijk/);
+  assert.match(about, /eric-van-dijk\.jpg/);
+  assert.match(about, /driveyou-auto\.png/);
 });
 
 test("support pages stay noindex and business schema uses confirmed details", async () => {

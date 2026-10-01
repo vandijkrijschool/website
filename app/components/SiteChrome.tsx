@@ -54,7 +54,7 @@ export function Footer() {
             <Brand />
             <p>De snelste weg naar jouw rijbewijs</p>
             <p className="footer-company-details">
-              <span>Zelfstandig franchisenemer van DriveYou</span>
+              <span>Zelfstandig franchisenemer van DriveYOU</span>
               <span>KVK {siteConfig.contact.kvk.value}</span>
               <span>BTW-id {siteConfig.contact.vatId.value}</span>
             </p>

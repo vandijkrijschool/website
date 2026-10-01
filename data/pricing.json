@@ -17,8 +17,8 @@
     "cancellationNoticeHours": 48,
     "trialLessonDurationMinutes": 50,
     "registrationFeeRequired": true,
-    "guaranteeFundRequired": true,
-    "status": "confirmedByClientOn2026-09-23"
+    "guaranteeFundRequired": false,
+    "status": "confirmedByClientOn2026-10-01"
   },
   "singleRates": [
     {
@@ -65,10 +65,10 @@
     },
     {
       "id": "driveyou-guarantee-fund",
-      "name": "DriveYou-garantiefonds",
+      "name": "DriveYOU-garantiefonds",
       "amount": 4150,
       "frequency": "one-time",
-      "applicability": "requiredForNewStudents"
+      "applicability": "optionalForStudents"
     },
     {
       "id": "installment-administration-fee",

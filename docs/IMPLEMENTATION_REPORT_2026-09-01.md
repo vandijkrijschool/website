@@ -128,9 +128,9 @@ De 29 beoogde sitemaproutes zijn:
 - prijspeildatum, btw-status, duur van één rijles en pakketgeldigheid;
 - annulering, no-show, restitutie en exacte exameninclusies;
 - voorwaarden en duur van de gratis proefles;
-- verplichte toepasselijkheid van € 39,50 inschrijving en € 41,50 garantiefonds;
-- actualiteit van circa 45 lessen, directe start en geen wachtlijst;
-- echt NXTDRIVE-endpoint/widgetcontract, tenant en providerbevestiging;
+- bevestigde toepasselijkheid van € 39,50 inschrijfkosten en vrijwillige deelname van € 41,50 aan het garantiefonds;
+- actualiteit van circa 43 lesuren en beschikbaarheid;
+- definitieve PlanGo-koppeling en toegangsroute;
 - menselijke goedkeuring van gegenereerde voertuig-, livery- en locatiescènes.
 
 ## Uitgevoerde commando’s en resultaten

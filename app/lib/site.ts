@@ -62,12 +62,12 @@ export const primaryNavigation = [
   { href: "/tarieven", label: "Tarieven" },
   { href: "/werkwijze", label: "Werkwijze" },
   { href: "/werkgebied", label: "Werkgebied" },
+  { href: "/over-ons", label: "Over mij" },
 ] as const;
 
 export const footerNavigation = [
   { href: "/proefles", label: "Proefles aanvragen" },
   { href: "/theorie", label: "iTheorie" },
-  { href: "/over-ons", label: "Over ons" },
   { href: "/faq", label: "Veelgestelde vragen" },
   { href: "/contact", label: "Contact" },
 ] as const;
