@@ -408,6 +408,9 @@ p { color: var(--muted-strong); }
 .footer-grid > div:not(.footer-brand) a, .footer-grid > div:not(.footer-brand) span { color: var(--muted-strong); font-size: .77rem; }
 .footer-grid > div:not(.footer-brand) a:hover { color: var(--yellow); }
 .footer-bottom { min-height: 75px; display: flex; align-items: center; border-top: 1px solid var(--line); color: #74777b; font-size: .65rem; }
+.footer-navigation { display: flex; flex-wrap: wrap; gap: 4px 24px; border-top: 1px solid var(--line); padding: 20px 0; }
+.footer-navigation a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted-strong); font-size: .77rem; }
+.footer-navigation a:hover { color: var(--yellow); }
 
 .breadcrumbs { display: flex; flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: .7rem; }
 .breadcrumbs > span { display: inline-flex; gap: 8px; }
@@ -474,6 +477,7 @@ p { color: var(--muted-strong); }
 
 @media (max-width: 1060px) {
   .desktop-nav, .header-login { display: none; }
+  .mobile-nav { display: block; }
   .header-actions { margin-left: auto; }
   .cockpit-preview { grid-template-columns: 1fr 1fr; }
   .cockpit-stats { grid-column: 1 / -1; grid-template-columns: repeat(3,1fr); border-top: 1px solid var(--line); }
@@ -1023,7 +1027,7 @@ p { color: var(--muted-strong); }
 .route-state__mark { width: 68px; height: 4px; margin-bottom: 28px; border-radius: 999px; background: linear-gradient(90deg,transparent,var(--yellow),transparent); box-shadow: 0 0 24px rgba(255,194,28,.7); }
 .route-state__icon { width: 64px; height: 64px; display: grid; place-items: center; margin-bottom: 22px; border-radius: 50%; color: var(--yellow); background: var(--yellow-soft); }
 .route-state small { color: var(--yellow); font-size: .65rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
-.route-state h1 { margin: 10px 0 16px; font-size: clamp(2rem,5vw,4.2rem); text-transform: uppercase; }
+.route-state h1, .route-state .route-state__title { margin: 10px 0 16px; color: var(--text); font-size: clamp(2rem,5vw,4.2rem); font-weight: 800; line-height: 1.08; text-transform: uppercase; }
 .route-state p { max-width: 580px; margin-bottom: 25px; }
 
 @media (prefers-reduced-motion: no-preference) {

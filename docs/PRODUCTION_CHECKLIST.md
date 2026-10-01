@@ -1,32 +1,34 @@
-# Production- en indexeringschecklist
+# Productie- en indexeringschecklist
 
-## Technisch gereed
+Bijgewerkt op 1 oktober 2026 naar aanleiding van de livegang en het verzoek om SEO-optimalisatie.
 
-- [x] 28 beoogde indexroutes en 3 ondersteunende routes zijn gevuld;
-- [x] canonicals, metadata en één H1 per route zijn geautomatiseerd gecontroleerd;
-- [x] werkgebied bevat echte HTML-links naar exact 17 canonieke regiopagina’s;
-- [x] prijzen en pakketinhoud komen uit één centrale bron en bedragen blijven in centen;
-- [x] pakketkeuze wordt correct naar het proeflesformulier doorgegeven;
-- [x] proeflesaanvragen worden via de geverifieerde SMTP-route naar de bevestigde mailbox verzonden;
-- [x] beelden zijn responsive en lokale locaties zijn als sfeerimpressie gelabeld;
-- [x] sitewide launch gate, lege sitemap en veilige structured data zijn actief;
-- [x] lint, types, tests, build, standalone smoke en browsermatrix zijn groen.
+## Vastgelegde productie-instellingen
 
-## Vereist vóór `NEXT_PUBLIC_INDEXING_ENABLED=true`
+- Canonical origin: `https://vandijkrijschool.nl`.
+- `APP_ENVIRONMENT=production` en `NEXT_PUBLIC_INDEXING_ENABLED=true` tijdens build én runtime.
+- 28 inhoudsroutes in `/sitemap.xml`; drie ondersteunende routes met `noindex,follow` erbuiten.
+- Publieke HTML, CSS, JavaScript en afbeeldingen zijn crawlbaar; `/api/` is uitgesloten.
+- De sitemap gebruikt een echte inhoudelijke wijzigingsdatum, niet automatisch iedere deploydatum.
+- Development en previews blijven standaard `noindex,nofollow`.
+- Geen verzonnen straatadres, reviews, beoordelingen of lokale vestigingen in structured data.
 
-- [ ] juridische handelsnaam en publieke merknaam primair bevestigen;
-- [ ] telefoon, e-mail, adres, plaatsweergave, KVK en openingstijden bevestigen;
-- [ ] apex/www-keuze, TLS, DNS en permanente redirectrichting bevestigen;
-- [ ] privacyverantwoordelijke, doeleinden, grondslagen, verwerkers, bewaartermijnen en rechtenroute vastleggen;
-- [ ] algemene voorwaarden, annulering, no-show en restitutie juridisch goedkeuren;
-- [ ] prijspeildatum, btw-status, lesduur, pakketgeldigheid en exameninclusies bevestigen;
-- [ ] proeflesvoorwaarden bevestigen;
-- [x] inschrijfkosten zijn verplicht en deelname aan het DriveYOU-garantiefonds is vrijwillig;
-- [x] het landelijke gemiddelde is gecorrigeerd naar circa 43 lesuren, zonder claims over directe beschikbaarheid;
-- [x] de DriveYOU-relatie en vrijwillige garantiefondsdeelname zijn door de opdrachtgever bevestigd;
-- [ ] gegenereerde auto, belettering en locaties visueel goedkeuren;
-- [ ] definitieve review-/leerlingdata verwijderen of aantoonbaar rechtmatig maken;
-- [ ] live formulieren uitsluitend na privacy-, beveiligings- en providerreview activeren;
-- [ ] eindcontrole op het publieke domein uitvoeren en pas daarna de gate op `true` zetten.
+## Automatische releasecontroles
 
-De productionworkflow staat bewust op `NEXT_PUBLIC_INDEXING_ENABLED=false`. Alleen een expliciete, gereviewde wijziging mag dit omzetten.
+De productie-workflow stopt bij een fout in:
+
+- dependency-audit, lint, TypeScript, regressietests of build;
+- SMTP-verbinding en authenticatie;
+- browsertests voor responsive layout, menu’s, toegankelijkheidsinteracties en formulieren;
+- HTTP-status, canonicals, unieke metadata, robots of structured data op alle 31 pagina’s;
+- sitemapinhoud, afbeeldingen, interne links, query-URL’s en echte 404’s;
+- publieke healthcheck/revisie of permanente domeinredirects na publicatie.
+
+Lokaal: `npm run check`. Losse live SEO-controle: `SEO_CHECK_REDIRECTS=true npm run verify:seo`.
+
+## Doorlopend beheer buiten de release
+
+- Verifieer het domein in Google Search Console en dien `https://vandijkrijschool.nl/sitemap.xml` in.
+- Volg daadwerkelijke indexering, zoekprestaties en Core Web Vitals in Search Console; technische indexeerbaarheid garandeert geen opname of positie.
+- Houd bedrijfsprofiel, openingstijden, diensten, prijzen en juridische informatie actueel. Voeg alleen bevestigde gegevens aan de website en structured data toe.
+- Werk de sitemapdatum bij na betekenisvolle inhoudswijzigingen; maak bij latere individuele pagina-updates een datum per route.
+- Controleer formulieraflevering periodiek. SMTP-authenticatie alleen bewijst niet dat een bericht in de inbox belandt.

@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:production": "node scripts/build-production.mjs && node scripts/prepare-standalone.mjs",
     "postbuild": "node scripts/prepare-standalone.mjs",
     "start": "HOSTNAME=127.0.0.1 PORT=${PORT:-3108} node .next/standalone/server.js",
     "test": "node --test tests/*.test.mjs",
@@ -16,8 +17,9 @@
     "test:smoke": "node scripts/smoke-standalone.mjs",
     "validate:production-env": "node scripts/validate-production-env.mjs",
     "verify:smtp": "node scripts/verify-smtp.mjs",
+    "verify:seo": "node scripts/verify-seo.mjs",
     "typecheck": "tsc --noEmit",
-    "check": "npm run lint && npm run typecheck && npm test && npm run build && npm run test:smoke && npm run test:browser",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build:production && npm run test:smoke && npm run test:browser",
     "lint": "eslint . --ignore-pattern .next"
   },
   "dependencies": {

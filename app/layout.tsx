@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Footer, Header, JsonLd } from "./components/SiteChrome";
-import { isIndexingEnabled, siteConfig } from "./lib/site";
+import { pageRobots, siteConfig } from "./lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
     default: siteConfig.title,
-    template: `%s | ${siteConfig.tradeName}`,
+    template: "%s | Van Dijk Rijschool",
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
@@ -15,10 +15,7 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
   publisher: siteConfig.name,
-  robots: isIndexingEnabled
-    ? { index: true, follow: true }
-    : { index: false, follow: false, nocache: true },
-  alternates: { canonical: `${siteConfig.url}/` },
+  robots: pageRobots(),
   openGraph: {
     type: "website",
     locale: "nl_NL",
@@ -68,13 +65,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               "@type": "Organization",
               "@id": siteConfig.organizationId,
               name: siteConfig.name,
+              alternateName: "Van Dijk Rijschool",
+              description: siteConfig.description,
               legalName: siteConfig.legalName,
               url: siteConfig.url,
               logo: `${siteConfig.url}/icon-512.png`,
               telephone: siteConfig.contact.telephone.value.replace(/\s/g, ""),
               email: siteConfig.contact.email.value,
-              taxID: siteConfig.contact.kvk.value,
+              identifier: { "@type": "PropertyValue", propertyID: "KVK", value: siteConfig.contact.kvk.value },
               vatID: siteConfig.contact.vatId.value,
+              founder: { "@type": "Person", "@id": `${siteConfig.url}/over-ons#eric-van-dijk`, name: "Eric van Dijk", url: `${siteConfig.url}/over-ons` },
+              contactPoint: { "@type": "ContactPoint", telephone: siteConfig.contact.telephone.value.replace(/\s/g, ""), email: siteConfig.contact.email.value, contactType: "Klantenservice", availableLanguage: "nl", areaServed: "NL" },
               areaServed: siteConfig.areas.map((name) => ({ "@type": "Place", name })),
             },
             {
@@ -82,6 +83,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               "@type": "WebSite",
               "@id": siteConfig.websiteId,
               name: siteConfig.name,
+              alternateName: "Van Dijk Rijschool",
               url: siteConfig.url,
               inLanguage: "nl-NL",
               publisher: { "@id": siteConfig.organizationId },

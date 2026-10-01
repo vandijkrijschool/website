@@ -50,7 +50,7 @@ export default function AboutPage() {
         <figure className="about-car"><img alt="DriveYOU-lesauto" height="629" loading="lazy" src="/images/driveyou-auto.png" width="1400" /></figure>
       </div></section>
 
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "Person", name: "Eric van Dijk", jobTitle: "Rijinstructeur", worksFor: { "@id": siteConfig.organizationId }, url: `${siteConfig.url}/over-ons` }} />
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "Person", "@id": `${siteConfig.url}/over-ons#eric-van-dijk`, name: "Eric van Dijk", jobTitle: "Rijinstructeur", image: `${siteConfig.url}/images/eric-van-dijk.jpg`, worksFor: { "@id": siteConfig.organizationId }, mainEntityOfPage: { "@id": `${siteConfig.url}/over-ons#webpage` }, url: `${siteConfig.url}/over-ons` }} />
     </main>
   );
 }

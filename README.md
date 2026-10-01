@@ -30,7 +30,7 @@ Open `http://localhost:3000`.
 npm run lint
 npm run typecheck
 npm test
-npm run build
+npm run build:production
 npm run test:smoke
 npm run test:browser
 ```
@@ -49,4 +49,6 @@ npm run test:browser
 
 Een push naar `production` start `.github/workflows/deploy-production.yml`. De workflow voert browser-QA, lint, typecheck, tests, build en smoketests uit en publiceert daarna via de bestaande Sites VPS-runner. `main` deployt niet automatisch.
 
-De publieke healthcheck staat op `/api/health` en rapporteert de actieve revisie.
+De website gebruikt `https://vandijkrijschool.nl` als canonical origin. Productie is indexeerbaar; lokale ontwikkeling en previews zijn standaard noindex. De publieke healthcheck staat op `/api/health` en rapporteert de actieve revisie.
+
+`SEO_CHECK_REDIRECTS=true npm run verify:seo` controleert de live website inclusief alle 31 pagina’s, sitemap, robots en domeinredirects. Deze controle draait ook automatisch na deployment. Zie [SEO-beheer](docs/SEO_RELEASE_2026-10-01.md).

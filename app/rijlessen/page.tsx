@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import DrivingServiceSchema from "../components/DrivingServiceSchema";
 import Link from "next/link";
 import { ArrowRight, Car, Gauge, RouteIcon, Shield } from "../components/Icons";
 import { IconCards, SplitCta } from "../components/PageSections";
@@ -14,6 +15,7 @@ export default function LessonsPage() {
   const singleLesson = singleRateById.get("single-driving-lesson")!;
   return (
     <main id="main-content">
+      <DrivingServiceSchema />
       <PageHero eyebrow="Autorijbewijs B" title="Rijlessen met een" accent="duidelijke opbouw." intro={`Een rijles duurt 50 minuten en kost ${formatPrice(singleLesson.amount)}. Je rijdt in een vaste lesauto met persoonlijke begeleiding op jouw niveau.`}><Breadcrumbs currentPath="/rijlessen" items={[{ label: "Rijlessen" }]} /><div className="button-row page-hero__actions"><Link className="button" href="/proefles">Plan gratis proefles <ArrowRight width="17" /></Link><Link className="button button--ghost" href="/tarieven">Alle tarieven</Link></div></PageHero>
       <section className="section"><div className="site-shell"><SectionHeading eyebrow="Jouw ontwikkeling centraal" title="Van basisbediening naar zelfstandig rijden." text="We stemmen iedere les af op je ervaring, voortgang en zelfvertrouwen. Na afloop zie je in PlanGo precies waar je staat en wat je volgende leerdoel is." /><IconCards items={[{ icon: Car, title: "Voertuigbeheersing", text: "Bediening, kijktechniek en een veilige plaats op de weg." },{ icon: RouteIcon, title: "Verkeersinzicht", text: "Situaties leren herkennen, risico’s afwegen en tijdig kiezen." },{ icon: Shield, title: "Zelfstandig rijden", text: "Steeds meer verkeerssituaties verantwoord zonder voortdurende aanwijzing uitvoeren." },{ icon: Gauge, title: "Examenvoorbereiding", text: "Gericht oefenen op onderdelen die nog aandacht vragen." }]} /></div></section>
       <section className="lesson-photo-band"><ResponsiveImage imageBase="rijles-interieur-den-haag" alt="Rijles vanuit de auto in stedelijk verkeer in Den Haag" sizes="100vw" /><div className="site-shell"><div><span className="eyebrow">Onderweg in Den Haag</span><strong>Rustig opbouwen naar zelfstandig verkeersinzicht.</strong></div></div></section>

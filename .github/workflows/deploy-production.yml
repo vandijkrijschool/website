@@ -20,8 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      NEXT_PUBLIC_SITE_URL: https://voorbeeld.vandijkrijschool.nl
-      NEXT_PUBLIC_INDEXING_ENABLED: "false"
+      NEXT_PUBLIC_SITE_URL: https://vandijkrijschool.nl
+      NEXT_PUBLIC_INDEXING_ENABLED: "true"
       APP_ENVIRONMENT: production
       APP_REVISION: ${{ github.sha }}
       PLAYWRIGHT_BROWSERS_PATH: /tmp/vandijkrijschool-playwright
@@ -57,7 +57,7 @@ jobs:
     needs: browser-qa
     environment:
       name: production
-      url: https://voorbeeld.vandijkrijschool.nl
+      url: https://vandijkrijschool.nl
     runs-on:
       - self-hosted
       - Linux
@@ -67,8 +67,8 @@ jobs:
       - vandijkrijschool
     timeout-minutes: 30
     env:
-      NEXT_PUBLIC_SITE_URL: https://voorbeeld.vandijkrijschool.nl
-      NEXT_PUBLIC_INDEXING_ENABLED: "false"
+      NEXT_PUBLIC_SITE_URL: https://vandijkrijschool.nl
+      NEXT_PUBLIC_INDEXING_ENABLED: "true"
       APP_ENVIRONMENT: production
       APP_REVISION: ${{ github.sha }}
       LEAD_SMTP_HOSTS: mail.mijndomein.nl
@@ -141,7 +141,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          health="$(curl --fail --silent --show-error --retry 12 --retry-all-errors --retry-delay 5 https://voorbeeld.vandijkrijschool.nl/api/health)"
+          health="$(curl --fail --silent --show-error --retry 12 --retry-all-errors --retry-delay 5 https://vandijkrijschool.nl/api/health)"
           HEALTH_JSON="${health}" node --input-type=module <<'NODE'
           const health = JSON.parse(process.env.HEALTH_JSON);
           if (
@@ -151,6 +151,4 @@ jobs:
             health.revision !== process.env.GITHUB_SHA
           ) throw new Error("The public health response does not match the deployed revision.");
           NODE
-          html="$(curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 3 https://voorbeeld.vandijkrijschool.nl/)"
-          [[ "${html}" == *"Van Dijk Rijschool"* ]]
-          [[ "${html}" == *"noindex"* ]]
+          SEO_CHECK_REDIRECTS=true npm run verify:seo

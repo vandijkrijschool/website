@@ -5,6 +5,7 @@ import {
 } from "./Icons";
 import {
   primaryNavigation,
+  footerNavigation,
   siteConfig,
 } from "../lib/site";
 import MobileNav from "./MobileNav";
@@ -73,6 +74,9 @@ export function Footer() {
           </div>
         </div>
 
+        <nav className="footer-navigation" aria-label="Pagina’s van Van Dijk Rijschool">
+          {[...primaryNavigation, ...footerNavigation].map((item) => <Link href={item.href} key={item.href}>{item.label}</Link>)}
+        </nav>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} Van Dijk – Rijschool · Alle rechten voorbehouden</span>
         </div>
@@ -97,7 +101,10 @@ export function Breadcrumbs({ items, currentPath }: { items: { label: string; hr
           </span>
         ))}
       </nav>
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: structuredItems.map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.label, item: new URL(item.href, siteConfig.url).toString() })) }} />
+      <JsonLd data={[
+        { "@context": "https://schema.org", "@type": "BreadcrumbList", "@id": `${siteConfig.url}${currentPath}#breadcrumbs`, itemListElement: structuredItems.map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.label, item: new URL(item.href, siteConfig.url).toString() })) },
+        { "@context": "https://schema.org", "@type": currentPath === "/contact" ? "ContactPage" : currentPath === "/over-ons" ? "AboutPage" : "WebPage", "@id": `${siteConfig.url}${currentPath}#webpage`, url: `${siteConfig.url}${currentPath}`, name: items.at(-1)?.label, inLanguage: "nl-NL", isPartOf: { "@id": siteConfig.websiteId }, about: { "@id": siteConfig.organizationId }, breadcrumb: { "@id": `${siteConfig.url}${currentPath}#breadcrumbs` } },
+      ]} />
     </>
   );
 }

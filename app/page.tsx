@@ -2,8 +2,12 @@ import Link from "next/link";
 import { ArrowRight, Check, MapPin, Sparkles } from "./components/Icons";
 import { AssuranceStrip, PackageCards, SectionHeading, TrustRail } from "./components/Marketing";
 import DriveYouLogo from "./components/DriveYouLogo";
+import { corePageMetadata, siteConfig } from "./lib/site";
+import { JsonLd } from "./components/SiteChrome";
 import ResponsiveImage from "./components/ResponsiveImage";
 import { faqFacts, formatPrice, packages, regions, singleRateById } from "./lib/content";
+
+export const metadata = corePageMetadata("/");
 
 export default function Home() {
   const singleLesson = singleRateById.get("single-driving-lesson")!;
@@ -14,7 +18,7 @@ export default function Home() {
         <ResponsiveImage imageBase="hero-den-haag-blue-hour" alt="Zwarte Van Dijk Rijschool-lesauto met de Haagse skyline tijdens het blauwe uur" className="home-hero__image" priority sizes="100vw" />
         <div className="home-hero__shade" /><div className="home-hero__route" aria-hidden="true" />
         <div className="site-shell home-hero__inner"><div className="home-hero__copy">
-          <h1>Jouw rijopleiding, <em>helder van start.</em></h1>
+          <h1>Rijles in Den Haag, <em>helder van start.</em></h1>
           <p>Persoonlijke rijlessen, duidelijke tarieven en een gratis proefles aanvragen in Den Haag, Delft, Pijnacker en Westland.</p>
           <div className="button-row"><Link className="button" href="/proefles">Plan gratis proefles <ArrowRight width="18" /></Link><Link className="button button--ghost" href="/tarieven">Bekijk alle tarieven</Link></div>
           <div className="hero-proof"><span><Check width="16" /> Losse rijles {formatPrice(singleLesson.amount)}</span><span><Check width="16" /> Alles-in-1 pakket</span><span><MapPin width="16" /> 17 werkgebieden</span></div>
@@ -45,6 +49,7 @@ export default function Home() {
       <section className="home-closing-cta" aria-labelledby="home-closing-cta-title"><div className="site-shell home-closing-cta__inner"><div><span className="eyebrow">Klaar voor de eerste stap?</span><h2 id="home-closing-cta-title">Kies eerst wat je wilt vergelijken.</h2></div><div className="button-row"><Link className="button" href="/tarieven">Alle tarieven <ArrowRight width="18" /></Link><Link className="button button--ghost" href="/proefles">Plan je intake</Link></div></div></section>
 
       <section className="partner-band"><div className="site-shell partner-band__inner"><div className="partner-band__brand"><small>Zelfstandig franchisenemer van</small><DriveYouLogo inverse /></div><i /><div><small>Digitale rijlesmap</small><strong>PlanGo</strong></div><p>Plan je lessen online, volg je voortgang en bekijk na iedere rijles je persoonlijke leerdoelen.</p></div></section>
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebPage", "@id": `${siteConfig.url}/#webpage`, url: `${siteConfig.url}/`, name: siteConfig.title, description: siteConfig.description, inLanguage: "nl-NL", isPartOf: { "@id": siteConfig.websiteId }, about: { "@id": siteConfig.organizationId } }} />
     </main>
   );
 }

@@ -113,7 +113,7 @@ export async function sendLeadEmail(lead: LeadSubmission) {
   const user = process.env.LEAD_SMTP_USER;
   const password = process.env.LEAD_SMTP_PASSWORD;
   if (!user || !password) throw new Error("SMTP credentials are not configured.");
-  const siteHost = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://voorbeeld.vandijkrijschool.nl").hostname;
+  const siteHost = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://vandijkrijschool.nl").hostname;
   const lines = leadLines(lead);
   const subject = lead.kind === "proefles"
     ? `[Website] Proeflesaanvraag van ${lead.name}`

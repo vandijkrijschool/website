@@ -42,7 +42,7 @@ export const siteConfig = {
   name: siteFacts.brand.publicName.value,
   tradeName: siteFacts.brand.publicName.value,
   shortName: "Van Dijk",
-  title: "Van Dijk – Rijschool | Rijles in Den Haag en regio",
+  title: coreRouteMetadata["/"].title,
   description: coreRouteMetadata["/"].description,
   url: configuredOrigin.replace(/\/$/, ""),
   intendedOrigin,
@@ -55,6 +55,18 @@ export const siteConfig = {
 } as const;
 
 export const isCommercialStructuredDataEnabled = true;
+
+export function pageRobots(noIndex = false): Metadata["robots"] {
+  if (!isIndexingEnabled) return { index: false, follow: false };
+  if (noIndex) return { index: false, follow: true };
+  return {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+  };
+}
 
 export const primaryNavigation = [
   { href: "/rijlessen", label: "Rijlessen" },
@@ -82,12 +94,10 @@ export function pageMetadata(
   const imageUrl = new URL(getOgImagePath(options.imageBase), siteConfig.url).toString();
 
   return {
-    title,
+    title: path === "/" ? { absolute: title } : title,
     description,
     alternates: { canonical },
-    ...(options.noIndex
-      ? { robots: { index: false, follow: isIndexingEnabled } }
-      : {}),
+    robots: pageRobots(options.noIndex),
     openGraph: {
       type: "website",
       locale: "nl_NL",

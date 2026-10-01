@@ -154,16 +154,19 @@ try {
     }
   }
 
-  await navigate("/", { width: 390, height: 844 });
-  const menu = await evaluate(`(async () => {
+  for (const width of [390, 820, 1024]) {
+    await navigate("/", { width, height: 844 });
+    const menu = await evaluate(`(async () => {
     const toggle = document.querySelector('.mobile-nav__toggle');
+    const visible = toggle.getBoundingClientRect().width > 0;
     toggle.click(); await new Promise((resolve) => setTimeout(resolve, 150));
     const opened = toggle.getAttribute('aria-expanded') === 'true' && document.body.style.overflow === 'hidden';
     document.querySelector('.mobile-nav__panel').dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     await new Promise((resolve) => setTimeout(resolve, 30));
-    return { opened, closed: toggle.getAttribute('aria-expanded') === 'false' && document.body.style.overflow !== 'hidden' };
+    return { visible, opened, closed: toggle.getAttribute('aria-expanded') === 'false' && document.body.style.overflow !== 'hidden' };
   })()`);
-  assert.deepEqual(menu, { opened: true, closed: true });
+    assert.deepEqual(menu, { visible: true, opened: true, closed: true }, `Mobile/tablet menu at ${width}px`);
+  }
 
   await navigate("/proefles", { width: 390, height: 844 });
   const intake = await evaluate(`(() => ({

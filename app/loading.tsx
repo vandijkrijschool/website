@@ -4,7 +4,7 @@ export default function Loading() {
       <div>
         <span className="route-state__mark" aria-hidden="true" />
         <small>Van Dijk Rijschool</small>
-        <h1>Route wordt klaargezet.</h1>
+        <p className="route-state__title">Route wordt klaargezet.</p>
         <p>Een ogenblik, de volgende pagina wordt geladen.</p>
       </div>
     </main>

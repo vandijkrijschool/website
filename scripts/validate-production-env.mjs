@@ -1,4 +1,7 @@
-const expectedUrl = "https://voorbeeld.vandijkrijschool.nl";
+import { readFile } from "node:fs/promises";
+
+const facts = JSON.parse(await readFile(new URL("../data/site-facts.json", import.meta.url), "utf8"));
+const expectedUrl = facts.web.intendedCanonicalOrigin.value;
 const errors = [];
 let parsed;
 
@@ -15,7 +18,7 @@ if (
   parsed &&
   (parsed.protocol !== "https:" || parsed.origin !== expectedUrl)
 ) {
-  errors.push("NEXT_PUBLIC_SITE_URL must be the explicitly approved temporary HTTPS origin");
+  errors.push("NEXT_PUBLIC_SITE_URL must be the approved live HTTPS origin");
 }
 if (process.env.APP_ENVIRONMENT !== "production") {
   errors.push("APP_ENVIRONMENT must equal production");
@@ -23,8 +26,8 @@ if (process.env.APP_ENVIRONMENT !== "production") {
 if (!/^[0-9a-f]{40}$/i.test(process.env.APP_REVISION ?? "")) {
   errors.push("APP_REVISION must be a full 40-character Git commit SHA");
 }
-if (!["true", "false"].includes(process.env.NEXT_PUBLIC_INDEXING_ENABLED ?? "")) {
-  errors.push("NEXT_PUBLIC_INDEXING_ENABLED must explicitly equal true or false");
+if (process.env.NEXT_PUBLIC_INDEXING_ENABLED !== "true") {
+  errors.push("NEXT_PUBLIC_INDEXING_ENABLED must equal true for the live production site");
 }
 if (process.env.LEAD_SMTP_HOSTS !== "mail.mijndomein.nl") {
   errors.push("LEAD_SMTP_HOSTS must equal mail.mijndomein.nl");

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import DrivingServiceSchema from "../components/DrivingServiceSchema";
 import Link from "next/link";
 import { ArrowRight, Check, Shield, Sparkles } from "../components/Icons";
 import { AssuranceStrip, PackageCards, SectionHeading } from "../components/Marketing";
@@ -19,6 +20,7 @@ const comparisonRows = [
 export default function PackagesPage() {
   return (
     <main id="main-content">
+      <DrivingServiceSchema packagesOnly />
       <PageHero eyebrow="Rijlespakketten" title="Vergelijk vijf pakketten" accent="voor jouw rijopleiding." intro="Pakket 20, 30, 40 en 50 bevatten een gratis proefles, rijlessen, praktijkexamen en digitale rijlesmap. Alles-in-1 voegt iTheorie en de tussentijdse toets toe."><Breadcrumbs currentPath="/lespakketten" items={[{ label: "Lespakketten" }]} /></PageHero>
       <section className="section"><div className="site-shell"><PackageCards /><AssuranceStrip /><p className="fineprint">Alle startpakketten zijn inclusief btw en exclusief {formatPrice(registrationFee.amount)} inschrijfkosten voor nieuwe leerlingen. Vrijwillige deelname aan het DriveYOU-garantiefonds kost eenmalig € 41,50.</p></div></section>
       <section className="section section--soft"><div className="site-shell"><SectionHeading eyebrow="Pakketten vergelijken" title="Wat is bij ieder pakket inbegrepen?" text="Bekijk in één oogopslag hoeveel rijlessen en welke extra onderdelen je krijgt." /><div className="comparison-wrap"><table className="comparison-table"><thead><tr><th>Onderdeel</th>{packages.map((item) => <th key={item.id}>{item.name}<span>{formatPrice(item.amountCents)}</span></th>)}</tr></thead><tbody><tr><th>Rijlessen</th>{packages.map((item) => <td key={item.id}>{item.lessonCount}</td>)}</tr>{comparisonRows.map((label) => <tr key={label}><th>{label}</th>{packages.map((item) => <td key={item.id}>{item.includes.includes(label) ? <Check width="19" aria-label="Inbegrepen" /> : <span className="table-dash">—</span>}</td>)}</tr>)}</tbody></table></div></div></section>
