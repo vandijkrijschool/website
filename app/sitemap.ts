@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: new URL(route.path, siteConfig.url).toString(),
     lastModified: sitemapDefinition.lastModified,
     images: route.path === "/over-ons"
-      ? [new URL("/images/eric-van-dijk.jpg", siteConfig.url).toString(), new URL("/images/driveyou-auto.png", siteConfig.url).toString()]
+      ? [new URL("/images/eric-van-dijk-zwarte-polo.jpg", siteConfig.url).toString(), new URL("/images/driveyou-auto.png", siteConfig.url).toString()]
       : regions.filter((region) => region.canonicalPath === route.path).map((region) => new URL(`/images/${region.imageBase}-1600.webp`, siteConfig.url).toString()),
   }));
 }

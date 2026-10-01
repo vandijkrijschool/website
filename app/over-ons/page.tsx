@@ -15,7 +15,7 @@ export default function AboutPage() {
         <div className="site-shell about-hero__grid">
           <figure className="about-portrait">
             <div className="about-portrait__frame">
-              <img alt="Eric van Dijk, rijinstructeur en eigenaar van Van Dijk Rijschool" fetchPriority="high" height="960" src="/images/eric-van-dijk.jpg" width="960" />
+              <img alt="Eric van Dijk, rijinstructeur en eigenaar van Van Dijk Rijschool" fetchPriority="high" height="1280" src="/images/eric-van-dijk-zwarte-polo.jpg" width="1280" />
             </div>
             <figcaption><span>Eric van Dijk</span><small>Rijinstructeur &amp; zelfstandig ondernemer</small></figcaption>
           </figure>
@@ -50,7 +50,7 @@ export default function AboutPage() {
         <figure className="about-car"><img alt="DriveYOU-lesauto" height="629" loading="lazy" src="/images/driveyou-auto.png" width="1400" /></figure>
       </div></section>
 
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "Person", "@id": `${siteConfig.url}/over-ons#eric-van-dijk`, name: "Eric van Dijk", jobTitle: "Rijinstructeur", image: `${siteConfig.url}/images/eric-van-dijk.jpg`, worksFor: { "@id": siteConfig.organizationId }, mainEntityOfPage: { "@id": `${siteConfig.url}/over-ons#webpage` }, url: `${siteConfig.url}/over-ons` }} />
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "Person", "@id": `${siteConfig.url}/over-ons#eric-van-dijk`, name: "Eric van Dijk", jobTitle: "Rijinstructeur", image: `${siteConfig.url}/images/eric-van-dijk-zwarte-polo.jpg`, worksFor: { "@id": siteConfig.organizationId }, mainEntityOfPage: { "@id": `${siteConfig.url}/over-ons#webpage` }, url: `${siteConfig.url}/over-ons` }} />
     </main>
   );
 }

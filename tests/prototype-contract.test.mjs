@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { access, readFile, stat } from "node:fs/promises";
 import test from "node:test";
 
@@ -94,7 +95,7 @@ test("every manifested region image has four web variants and an OG crop", async
 
 test("Over mij uses the supplied Eric, lesson-car and DriveYOU brand assets", async () => {
   for (const file of [
-    "public/images/eric-van-dijk.jpg",
+    "public/images/eric-van-dijk-zwarte-polo.jpg",
     "public/images/driveyou-auto.png",
     "public/images/driveyou-logo.svg",
     "public/images/driveyou-logo-inverse.svg",
@@ -104,8 +105,13 @@ test("Over mij uses the supplied Eric, lesson-car and DriveYOU brand assets", as
   }
   const about = await readFile("app/over-ons/page.tsx", "utf8");
   assert.match(about, /Eric van Dijk/);
-  assert.match(about, /eric-van-dijk\.jpg/);
+  assert.match(about, /eric-van-dijk-zwarte-polo\.jpg/);
   assert.match(about, /driveyou-auto\.png/);
+  const portrait = await readFile("public/images/eric-van-dijk-zwarte-polo.jpg");
+  assert.equal(createHash("sha256").update(portrait).digest("hex"), "9d71540e6e82efaa7ebbc0b3507b351b36a593bea976068842284f7f7ec01d02", "Use the exact client-supplied portrait without image edits");
+  const sitemapSource = await readFile("app/sitemap.ts", "utf8");
+  assert.match(sitemapSource, /eric-van-dijk-zwarte-polo\.jpg/);
+  assert.doesNotMatch(about + sitemapSource, /eric-van-dijk\.jpg/);
 });
 
 test("support pages stay noindex and business schema uses confirmed details", async () => {
